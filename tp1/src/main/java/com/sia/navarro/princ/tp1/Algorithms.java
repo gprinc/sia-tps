@@ -30,12 +30,27 @@ public class Algorithms {
             if (hasWon) {
                 aux.printBoards();
             } else {
-                aux.getNextNodes(dfsStack);
+                aux.getNextNodesDfs(dfsStack);
             }
         }
-        if (hasWon) {
-            // aux.hasWon();
-            return; // TODO
+    }
+
+    public void bfs() {
+        LinkedList<Board> firstBoard = new LinkedList<Board>();
+        firstBoard.add(this.board);
+        Node init = new Node(firstBoard);
+        boolean hasWon = false;
+        bfsQueue.add(init);
+
+        Node aux;
+        while (bfsQueue.size() != 0 && !hasWon) {
+            aux = bfsQueue.poll();
+            hasWon = aux.hasWon();
+            if (hasWon) {
+                aux.printBoards();
+            } else {
+                aux.getNextNodesBfs(bfsQueue);
+            }
         }
     }
 }

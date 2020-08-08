@@ -62,7 +62,6 @@ public class Board {
         }
         for (int i = 0; i < this.boxes.length; i++) {
             aux = this.boxes[i].getPos();
-            System.out.println(aux.getX() == x);
             if (aux.getX() == x && aux.getY() == y) {
                 switch (movement) {
                     case UP:

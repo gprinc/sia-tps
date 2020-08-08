@@ -11,5 +11,6 @@ public class Main {
 
         Algorithms alg = new Algorithms(board);
         alg.dfs();
+        alg.bfs();
     }
 }
