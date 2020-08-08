@@ -39,13 +39,10 @@ public class Board {
 
     public boolean moveBox(int x, int y, int position) {
         Position aux;
-        System.out.println("Hola 0");
         if (this.walls[y][x] == 1){
-            System.out.println("Hola 1");
             return false;
         }
         for (int i = 0; i < this.boxes.length; i++) {
-            System.out.println("Hola 2");
             aux = this.boxes[i].getPos();
             if (aux.getX() == x && aux.getY() == y) {
                 return false;
@@ -61,7 +58,6 @@ public class Board {
         boolean hasMoved = false;
 
         if (this.walls[y][x] == 1){
-            System.out.println("Choque");
             return false;
         }
         for (int i = 0; i < this.boxes.length; i++) {
@@ -93,29 +89,18 @@ public class Board {
     public boolean movePlayer(char movement) {
         Position playerPos = this.player.getPos();
         boolean hasMoved = false;
-        int x;
-        int y;
         switch (movement) {
             case UP:
-                System.out.println("UP");
-                x = playerPos.getX();
-                y = playerPos.getY() + 1;
-                hasMoved = move(x, y, UP);
+                hasMoved = move(playerPos.getX(), playerPos.getY() + 1, UP);
                 break;
             case DOWN:
-                System.out.println("DOWN");
                 hasMoved = move(playerPos.getX(), playerPos.getY() - 1, DOWN);
                 break;
             case LEFT:
-                System.out.println("LEFT");
                 hasMoved = move(playerPos.getX() - 1, playerPos.getY(), LEFT);
                 break;
             case RIGHT:
-                System.out.println("RIGHT");
-                x = playerPos.getX() + 1;
-                y = playerPos.getY() ;
-                System.out.println(x);
-                hasMoved = move(x, y, RIGHT);
+                hasMoved = move(playerPos.getX() + 1, playerPos.getY(), RIGHT);
                 break;
         }
         return hasMoved;

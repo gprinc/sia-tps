@@ -31,7 +31,6 @@ public class Algorithms {
                 aux.printBoards();
             } else {
                 aux.getNextNodes(dfsStack);
-                System.out.println("llegue aca");
             }
         }
         if (hasWon) {
