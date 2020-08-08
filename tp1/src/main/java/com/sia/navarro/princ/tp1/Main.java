@@ -8,6 +8,8 @@ public class Main {
         winPoints[0] = new Position(5, 1);
         int[][] walls = {{1,1,1,1,1,1,1}, {1,0,0,0,0,0,1}, {1,1,1,1,1,1,1}};
         Board board = new Board(new Player(new Position(1 ,1)), boxes, winPoints, walls);
-        return;
+
+        Algorithms alg = new Algorithms(board);
+        alg.dfs();
     }
 }
