@@ -21,7 +21,7 @@ public class Algorithms {
         firstBoard.add(this.board);
         Node init = new Node(firstBoard);
         boolean hasWon = false;
-        dfsStack.add(init);
+        dfsStack.push(init);
 
         Node aux;
         while (!dfsStack.empty() && !hasWon) {
@@ -30,7 +30,7 @@ public class Algorithms {
             if (hasWon) {
                 aux.printBoards();
             } else {
-                dfsStack.addAll(aux.getNextNodes());
+                aux.getNextNodes(dfsStack);
                 System.out.println("llegue aca");
             }
         }

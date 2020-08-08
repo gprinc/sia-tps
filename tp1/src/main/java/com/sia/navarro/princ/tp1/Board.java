@@ -38,11 +38,14 @@ public class Board {
     }
 
     public boolean moveBox(int x, int y, int position) {
-        Position aux = null;
-        if (this.walls[x][y] == 1){
+        Position aux;
+        System.out.println("Hola 0");
+        if (this.walls[y][x] == 1){
+            System.out.println("Hola 1");
             return false;
         }
         for (int i = 0; i < this.boxes.length; i++) {
+            System.out.println("Hola 2");
             aux = this.boxes[i].getPos();
             if (aux.getX() == x && aux.getY() == y) {
                 return false;
@@ -53,13 +56,17 @@ public class Board {
     }
 
     private boolean move(int x, int y, char movement) {
-        Position aux = null;
+        Position aux;
+
         boolean hasMoved = false;
-        if (this.walls[x][y] == 1){
+
+        if (this.walls[y][x] == 1){
+            System.out.println("Choque");
             return false;
         }
         for (int i = 0; i < this.boxes.length; i++) {
             aux = this.boxes[i].getPos();
+            System.out.println(aux.getX() == x);
             if (aux.getX() == x && aux.getY() == y) {
                 switch (movement) {
                     case UP:
@@ -71,7 +78,7 @@ public class Board {
                     case LEFT:
                         hasMoved = moveBox(x - 1, y, i);
                         break;
-                    default:
+                    case RIGHT:
                         hasMoved = moveBox(x + 1, y, i);
                         break;
                 }
@@ -86,19 +93,29 @@ public class Board {
     public boolean movePlayer(char movement) {
         Position playerPos = this.player.getPos();
         boolean hasMoved = false;
-
+        int x;
+        int y;
         switch (movement) {
             case UP:
-                hasMoved = move(playerPos.getX(), playerPos.getY() + 1, UP);
+                System.out.println("UP");
+                x = playerPos.getX();
+                y = playerPos.getY() + 1;
+                hasMoved = move(x, y, UP);
                 break;
             case DOWN:
+                System.out.println("DOWN");
                 hasMoved = move(playerPos.getX(), playerPos.getY() - 1, DOWN);
                 break;
             case LEFT:
+                System.out.println("LEFT");
                 hasMoved = move(playerPos.getX() - 1, playerPos.getY(), LEFT);
                 break;
-            default:
-                hasMoved = move(playerPos.getX() + 1, playerPos.getY(), RIGHT);
+            case RIGHT:
+                System.out.println("RIGHT");
+                x = playerPos.getX() + 1;
+                y = playerPos.getY() ;
+                System.out.println(x);
+                hasMoved = move(x, y, RIGHT);
                 break;
         }
         return hasMoved;
