@@ -6,19 +6,17 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class Algorithms {
-    private Board board;
     private Stack<Node> dfsStack;
     private Queue<Node> bfsQueue;
 
-    public Algorithms(Board board) {
-        this.board = board;
+    public Algorithms() {
         this.dfsStack = new Stack<Node>();
         this.bfsQueue = new PriorityQueue<Node>();
     }
 
-    public void dfs() {
+    public void dfs(Board board) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
-        firstBoard.add(this.board);
+        firstBoard.add(new Board(board));
         Node init = new Node(firstBoard);
         boolean hasWon = false;
         dfsStack.push(init);
@@ -29,15 +27,17 @@ public class Algorithms {
             hasWon = aux.hasWon();
             if (hasWon) {
                 aux.printBoards();
+                return;
             } else if (!aux.isStuck()) {
-                aux.getNextNodesDfs(dfsStack);
+                for(Node n: aux.getNextNodes())
+                    dfsStack.push(n);
             }
         }
     }
 
-    public void bfs() {
+    public void bfs(Board board) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
-        firstBoard.add(this.board);
+        firstBoard.add(new Board(board));
         Node init = new Node(firstBoard);
         boolean hasWon = false;
         bfsQueue.add(init);
@@ -49,7 +49,8 @@ public class Algorithms {
             if (hasWon) {
                 aux.printBoards();
             } else if (!aux.isStuck()) {
-                aux.getNextNodesBfs(bfsQueue);
+                for(Node n: aux.getNextNodes())
+                    bfsQueue.add(n);
             }
         }
     }

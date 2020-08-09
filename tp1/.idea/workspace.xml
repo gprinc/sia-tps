@@ -5,11 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc2085b3-edeb-4564-b16a-54b61e877bcd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Algorithms.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Graph.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Algorithms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Algorithms.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sia/navarro/princ/tp1/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sia/navarro/princ/tp1/Algorithms.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sia/navarro/princ/tp1/Algorithms.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sia/navarro/princ/tp1/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sia/navarro/princ/tp1/Board.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sia/navarro/princ/tp1/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sia/navarro/princ/tp1/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sia/navarro/princ/tp1/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sia/navarro/princ/tp1/Node.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +58,30 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sia.navarro.princ.tp1.Main" />
       <module name="tp1" />
@@ -68,24 +95,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -111,12 +127,13 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state width="1878" height="282" key="GridCell.Tab.0.bottom" timestamp="1596933903719">

@@ -7,10 +7,10 @@ public class Main {
         Position[] winPoints = new Position[1];
         winPoints[0] = new Position(5, 1);
         int[][] walls = {{1,1,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,1,1}};
-        Board board = new Board(new Player(new Position(1 ,1)), boxes, winPoints, walls);
+        Board board = new Board(new Player(new Position(1 ,1)), boxes, winPoints, walls, new Position(7, 3));
 
-        Algorithms alg = new Algorithms(board);
-        alg.dfs();
-        alg.bfs();
+        Algorithms alg = new Algorithms();
+        alg.dfs(board);
+        alg.bfs(board);
     }
 }

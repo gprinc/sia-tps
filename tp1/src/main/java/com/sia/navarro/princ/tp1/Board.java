@@ -9,16 +9,32 @@ public class Board {
     public static final char LEFT = 'a';
     public static final char RIGHT = 'd';
 
+    private static final char wallChar = '#';
+    private static final char winPointChar = '.';
+    private static final char boxChar = '$';
+    private static final char playerChar = '@';
+
     private Player player;
     private Box[] boxes;
     private Position[] winPoints;
     private int[][] walls;
+    private Position size;
 
-    public Board(Player player, Box[] boxes, Position[] winPoints, int[][] walls) {
+
+    public Board(Board b) {
+        this.player = b.getPlayer();
+        this.boxes = b.getBoxes();
+        this.winPoints = b.getWinPoints();
+        this.walls = b.getWalls();
+        this.size = b.getSize();
+    }
+
+    public Board(Player player, Box[] boxes, Position[] winPoints, int[][] walls, Position size) {
         this.player = player;
         this.boxes = boxes;
         this.winPoints = winPoints;
         this.walls = walls;
+        this.size = size;
     }
 
     private boolean isInVictoryPoint(Position pos) {
@@ -138,5 +154,62 @@ public class Board {
                 break;
         }
         return hasMoved;
+    }
+
+
+    public void print() {
+        Position aux;
+        int rows = this.size.getX();
+        int columns = this.size.getY();
+        char[][] matrix = new char[rows][columns];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if(walls[i][j] == 1) {
+                    matrix[i][j] = wallChar;
+                } else {
+                    matrix[i][j] = ' ';
+                }
+            }
+        }
+
+
+        matrix[this.player.getPos().getX()][this.player.getPos().getY()] = playerChar;
+
+        for (int i = 0; i < this.winPoints.length; i++) {
+            aux = this.winPoints[i];
+            matrix[aux.getX()][aux.getY()] = winPointChar;
+        }
+        for (int i = 0; i < this.boxes.length; i++) {
+            aux = this.boxes[i].getPos();
+            matrix[aux.getX()][aux.getY()] = boxChar;
+        }
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                System.out.print(matrix[i][j]);
+            }
+            System.out.print('\n');
+        }
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Box[] getBoxes() {
+        return boxes;
+    }
+
+    public Position[] getWinPoints() {
+        return winPoints;
+    }
+
+    public int[][] getWalls() {
+        return walls;
+    }
+
+    public Position getSize() {
+        return size;
     }
 }
