@@ -5,16 +5,20 @@ import java.util.LinkedList;
 public class Node{
     private LinkedList<Board> boards;
 
+    public Node(Node n) {
+        this.boards = n.boards;
+    }
+
     public Node(LinkedList<Board> boards) {
         this.boards = boards;
     }
 
     public void printBoards() {
-        /*for (Board board : this.boards) {
+        for (Board board : this.boards) {
             board.print();
             System.out.print('\n');
         }
-        System.out.println("Gane");*/
+        System.out.println("Gane");
     }
 
     public boolean hasWon() {
@@ -28,23 +32,24 @@ public class Node{
     public LinkedList<Node> getNextNodes() {
         LinkedList<Node> aux = new LinkedList<Node>();
         LinkedList<Board> auxBoards = new LinkedList<Board>(this.boards);
-        Board auxBoard = new Board(this.boards.getLast());
+        Board lastBoard = this.boards.getLast().cloneBoard();
+        Board auxBoard = lastBoard.cloneBoard();
 
         if (auxBoard.movePlayer(Board.UP)) {
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
-            auxBoard = new Board(this.boards.getLast());
+            auxBoard = lastBoard.cloneBoard();
         }
         if (auxBoard.movePlayer(Board.DOWN)) {
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
-            auxBoard = new Board(this.boards.getLast());
+            auxBoard = lastBoard.cloneBoard();
         }
 
         if (auxBoard.movePlayer(Board.LEFT)) {
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
-            auxBoard = new Board(this.boards.getLast());
+            auxBoard = lastBoard.cloneBoard();
         }
         if (auxBoard.movePlayer(Board.RIGHT)) {
             auxBoards.add(new Board(auxBoard));

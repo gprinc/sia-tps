@@ -10,7 +10,8 @@ public class Main {
         Board board = new Board(new Player(new Position(1 ,1)), boxes, winPoints, walls, new Position(7, 3));
 
         Algorithms alg = new Algorithms();
-        alg.dfs(board);
-        alg.bfs(board);
+        alg.dfs(board.cloneBoard());
+        alg.bfs(board.cloneBoard());
+
     }
 }

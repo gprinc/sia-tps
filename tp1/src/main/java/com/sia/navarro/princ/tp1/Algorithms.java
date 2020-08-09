@@ -16,14 +16,16 @@ public class Algorithms {
 
     public void dfs(Board board) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
-        firstBoard.add(new Board(board));
+        firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
         boolean hasWon = false;
         dfsStack.push(init);
 
         Node aux;
         while (!dfsStack.empty() && !hasWon) {
-            aux = dfsStack.pop();
+            board.print();
+            System.out.print('\n');
+            aux = new Node(dfsStack.pop());
             hasWon = aux.hasWon();
             if (hasWon) {
                 aux.printBoards();
@@ -37,7 +39,7 @@ public class Algorithms {
 
     public void bfs(Board board) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
-        firstBoard.add(new Board(board));
+        firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
         boolean hasWon = false;
         bfsQueue.add(init);

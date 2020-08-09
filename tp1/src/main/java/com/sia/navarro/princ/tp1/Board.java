@@ -2,7 +2,7 @@ package com.sia.navarro.princ.tp1;
 
 import jdk.nashorn.internal.ir.IfNode;
 
-public class Board {
+public class Board implements Cloneable {
 
     public static final char UP = 'w';
     public static final char DOWN = 's';
@@ -22,11 +22,7 @@ public class Board {
 
 
     public Board(Board b) {
-        this.player = b.getPlayer();
-        this.boxes = b.getBoxes();
-        this.winPoints = b.getWinPoints();
-        this.walls = b.getWalls();
-        this.size = b.getSize();
+        this(b.getPlayer(), b.getBoxes(), b.getWinPoints(), b.getWalls(), b.getSize());
     }
 
     public Board(Player player, Box[] boxes, Position[] winPoints, int[][] walls, Position size) {
@@ -211,5 +207,10 @@ public class Board {
 
     public Position getSize() {
         return size;
+    }
+
+    public Board cloneBoard() {
+        Board clone = new Board(this.player, this.boxes, this.winPoints, this.walls, this.size);
+        return clone;
     }
 }
