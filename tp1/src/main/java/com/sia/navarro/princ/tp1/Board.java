@@ -26,9 +26,15 @@ public class Board implements Cloneable {
     }
 
     public Board(Player player, Box[] boxes, Position[] winPoints, int[][] walls, Position size) {
-        this.player = player;
-        this.boxes = boxes;
-        this.winPoints = winPoints;
+        this.player = new Player(player.getPos());
+        this.boxes = new Box[boxes.length];
+        for (int j = 0; j < boxes.length; j++) {
+            this.boxes[j] = new Box(boxes[j].getPos());
+        }
+        this.winPoints = new Position[winPoints.length];
+        for (int j = 0; j < boxes.length; j++) {
+            this.winPoints[j] = new Position(winPoints[j].getX(),winPoints[j].getY());
+        }
         this.walls = walls;
         this.size = size;
     }

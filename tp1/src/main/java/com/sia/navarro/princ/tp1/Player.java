@@ -4,7 +4,7 @@ public class Player {
     private Position pos;
 
     public Player(Position pos) {
-        this.pos = pos;
+        this.pos = new Position(pos.getX(), pos.getY());
     }
 
     public Position getPos() {

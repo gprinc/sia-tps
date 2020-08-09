@@ -23,8 +23,6 @@ public class Algorithms {
 
         Node aux;
         while (!dfsStack.empty() && !hasWon) {
-            board.print();
-            System.out.print('\n');
             aux = new Node(dfsStack.pop());
             hasWon = aux.hasWon();
             if (hasWon) {

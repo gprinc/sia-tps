@@ -4,7 +4,7 @@ public class Box {
     private Position pos;
 
     public Box(Position pos) {
-        this.pos = pos;
+        this.pos = new Position(pos.getX(), pos.getY());
     }
 
     public Position getPos() {
