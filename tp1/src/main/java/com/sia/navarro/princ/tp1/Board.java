@@ -181,9 +181,9 @@ public class Board implements Cloneable {
             matrix[aux.getX()][aux.getY()] = boxChar;
         }
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                System.out.print(matrix[i][j]);
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
+                System.out.print(matrix[j][i]);
             }
             System.out.print('\n');
         }
