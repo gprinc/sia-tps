@@ -20,6 +20,10 @@ public class Node{
     public boolean hasWon() {
         return this.boards.getLast().hasWon();
     }
+    public boolean isStuck() {
+        return this.boards.getLast().isStuck();
+    }
+
 
     public LinkedList<Node> getNextNodesDfs(Stack<Node> dfsStack) {
         LinkedList<Node> aux = new LinkedList<Node>();

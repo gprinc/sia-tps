@@ -29,7 +29,7 @@ public class Algorithms {
             hasWon = aux.hasWon();
             if (hasWon) {
                 aux.printBoards();
-            } else {
+            } else if (!aux.isStuck()) {
                 aux.getNextNodesDfs(dfsStack);
             }
         }
@@ -48,7 +48,7 @@ public class Algorithms {
             hasWon = aux.hasWon();
             if (hasWon) {
                 aux.printBoards();
-            } else {
+            } else if (!aux.isStuck()) {
                 aux.getNextNodesBfs(bfsQueue);
             }
         }

@@ -1,5 +1,7 @@
 package com.sia.navarro.princ.tp1;
 
+import jdk.nashorn.internal.ir.IfNode;
+
 public class Board {
 
     public static final char UP = 'w';
@@ -17,6 +19,15 @@ public class Board {
         this.boxes = boxes;
         this.winPoints = winPoints;
         this.walls = walls;
+    }
+
+    private boolean isInVictoryPoint(Position pos) {
+        for (int j = 0; j < this.winPoints.length; j++) {
+            if (this.winPoints[j].getX() == pos.getX() && this.winPoints[j].getY() == pos.getY()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean hasWon() {
@@ -37,9 +48,33 @@ public class Board {
         return boxPositioned;
     }
 
+    private boolean isBoxStucked(Position pos) {
+        int x = pos.getX();
+        int y = pos.getY();
+        if (isInVictoryPoint(pos)) {
+            return false;
+        }
+        if ( (this.walls[x+1][y] == 1 &&  this.walls[x][y+1] == 1) || ( y>0 && this.walls[x+1][y] == 1 &&  this.walls[x][y-1] == 1)) {
+            return true;
+        }
+        if ( x > 0 && ((this.walls[x-1][y] == 1 &&  this.walls[x][y+1] == 1) || ( y>0 && this.walls[x-1][y] == 1 &&  this.walls[x][y-1] == 1))) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isStuck() {
+        for (int i = 0; i < this.boxes.length; i++) {
+            if (isBoxStucked(this.boxes[i].getPos())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean moveBox(int x, int y, int position) {
         Position aux;
-        if (this.walls[y][x] == 1){
+        if (this.walls[x][y] == 1){
             return false;
         }
         for (int i = 0; i < this.boxes.length; i++) {
@@ -57,7 +92,7 @@ public class Board {
 
         boolean hasMoved = false;
 
-        if (this.walls[y][x] == 1){
+        if (this.walls[x][y] == 1){
             return false;
         }
         for (int i = 0; i < this.boxes.length; i++) {
