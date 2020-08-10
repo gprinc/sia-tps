@@ -8,6 +8,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class Main {
+    private final static String DFS = "DFS";
+    private final static String BFS = "BFS";
+    private final static String IDDFS = "IDDFS";
+    private final static String A_STAR = "A*";
+
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
 
@@ -20,6 +25,7 @@ public class Main {
             // TODO
             JSONArray wallsJSON = (JSONArray) data.get("walls");
             JSONObject playerJSON = (JSONObject) data.get("player");
+            String algorithm = (String) data.get("algorithm");
             int width = Integer.parseInt((String) data.get("width"));
             int height = Integer.parseInt((String) data.get("height"));
 
@@ -45,11 +51,15 @@ public class Main {
                 }
                 int[][] walls = {{1,1,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,1,1}};
                 Board board = new Board(new Player(new Position(Integer.parseInt((String) playerJSON.get("x")) ,Integer.parseInt((String) playerJSON.get("y")))), boxes, winPoints, walls, new Position(width, height));
-                
+
                 Algorithms alg = new Algorithms();
-                alg.dfs(board.cloneBoard());
-                alg.bfs(board.cloneBoard());
-                alg.iddfs(board.cloneBoard(),1);
+                if (DFS.equals(algorithm)) {
+                    alg.dfs(board.cloneBoard());
+                } else if (BFS.equals(algorithm)) {
+                    alg.bfs(board.cloneBoard());
+                } else if (IDDFS.equals(algorithm)) {
+                    alg.iddfs(board.cloneBoard(), 1);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
