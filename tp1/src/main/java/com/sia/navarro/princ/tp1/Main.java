@@ -12,6 +12,6 @@ public class Main {
         Algorithms alg = new Algorithms();
         alg.dfs(board.cloneBoard());
         alg.bfs(board.cloneBoard());
-        alg.iddfs(board.cloneBoard(),3);
+        alg.iddfs(board.cloneBoard(),1);
     }
 }

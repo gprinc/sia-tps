@@ -33,6 +33,10 @@ public class Algorithms {
                     dfsStack.push(n);
             }
         }
+
+        if (!hasWon) {
+            System.out.println("No solution found");
+        }
     }
 
     public void bfs(Board board) {
@@ -43,7 +47,7 @@ public class Algorithms {
         bfsQueue.add(init);
 
         Node aux;
-            while (bfsQueue.size() != 0 && !hasWon) {
+        while (bfsQueue.size() != 0 && !hasWon) {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
             if (hasWon) {
@@ -52,6 +56,10 @@ public class Algorithms {
                 for(Node n: aux.getNextNodes())
                     bfsQueue.add(n);
             }
+        }
+
+        if (!hasWon) {
+            System.out.println("No solution found");
         }
     }
 
@@ -68,7 +76,7 @@ public class Algorithms {
             hasWon = aux.hasWon();
             if (hasWon) {
                 aux.printBoards();
-            } else if (!aux.isStuck() && aux.getDepth() < depth) {
+            } else if (!aux.isStuck() && (aux.getDepth() <= depth)) {
                 for(Node n: aux.getNextNodes())
                     dfsStack.push(n);
             }
