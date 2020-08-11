@@ -15,14 +15,17 @@ public class Main {
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
-
+        String fileName;
+        if (args.length > 0) {
+            fileName = args[0];
+        } else {
+            fileName = "map/mapa1.json";
+        }
 
         try {
-            JSONObject data = (JSONObject) parser.parse(new FileReader("map/mapa1.json"));
-
+            JSONObject data = (JSONObject) parser.parse(new FileReader(fileName));
             JSONArray boxesJSON = (JSONArray) data.get("boxes");
             JSONArray winPointsJSON = (JSONArray) data.get("winPoints");
-            // TODO
             JSONArray wallsJSON = (JSONArray) data.get("walls");
             JSONObject playerJSON = (JSONObject) data.get("player");
             String algorithm = (String) data.get("algorithm");
@@ -49,7 +52,19 @@ public class Main {
                     winPoints[auxId] = new Position(Integer.parseInt((String) aux.get("x")), Integer.parseInt((String) aux.get("y")));
                     auxId++;
                 }
-                int[][] walls = {{1,1,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,0,1},{1,1,1}};
+                int[][] walls = new int[width][height];
+                Iterator<JSONArray> iteratorArray = boxesJSON.iterator();
+                iteratorArray = wallsJSON.iterator();
+                auxId = 0;
+                JSONArray auxArray;
+                while (iteratorArray.hasNext()) {
+                    auxArray = iteratorArray.next();
+                    for (int i = 0; i < auxArray.size(); i++) {
+                        walls[auxId][i] = Integer.parseInt((String) auxArray.get(i));
+                    }
+                    auxId++;
+                }
+
                 Board board = new Board(new Player(new Position(Integer.parseInt((String) playerJSON.get("x")) ,Integer.parseInt((String) playerJSON.get("y")))), boxes, winPoints, walls, new Position(width, height));
 
                 Algorithms alg = new Algorithms();
