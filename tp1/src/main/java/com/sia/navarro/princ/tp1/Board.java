@@ -31,10 +31,7 @@ public class Board implements Cloneable {
         for (int j = 0; j < boxes.length; j++) {
             this.boxes[j] = new Box(boxes[j].getPos());
         }
-        this.winPoints = new Position[winPoints.length];
-        for (int j = 0; j < boxes.length; j++) {
-            this.winPoints[j] = new Position(winPoints[j].getX(),winPoints[j].getY());
-        }
+        this.winPoints = winPoints;
         this.walls = walls;
         this.size = size;
     }
@@ -66,6 +63,10 @@ public class Board implements Cloneable {
         return boxPositioned;
     }
 
+    private boolean boxesTriangle(Position pos) {
+        return false;
+    }
+
     private boolean isBoxStucked(Position pos, Position original, int i) {
         int x = pos.getX();
         int y = pos.getY();
@@ -79,8 +80,15 @@ public class Board implements Cloneable {
         if (isInVictoryPoint(pos)) {
             return false;
         }
+
         if ( (this.walls[x+1][y] == 1 &&  this.walls[x][y+1] == 1) || ( y>0 && this.walls[x+1][y] == 1 &&  this.walls[x][y-1] == 1)) {
             return true;
+        }
+
+        if (boxes.length >= 3) {
+            if (boxesTriangle(pos)) {
+                return true;
+            }
         }
 
         if (x > 0) {
