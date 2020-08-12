@@ -1,5 +1,6 @@
 package com.sia.navarro.princ.tp1;
 
+import java.io.File;
 import java.io.FileReader;
 import java.util.Iterator;
 
@@ -17,7 +18,7 @@ public class Main {
         JSONParser parser = new JSONParser();
         String fileName;
         if (args.length > 0) {
-            fileName = args[0];
+            fileName = "map/mapa" + args[0] + ".json";
         } else {
             fileName = "map/mapa1.json";
         }
