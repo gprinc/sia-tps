@@ -19,7 +19,7 @@ public class Main {
         if (args.length > 0) {
             fileName = "map/mapa" + args[0] + ".json";
         } else {
-            fileName = "map/mapa2.json";
+            fileName = "map/mapa4.json";
         }
 
         try {
@@ -73,7 +73,7 @@ public class Main {
                 else if (BFS.equals(algorithm))
                     alg.bfs(board.cloneBoard());
                 else if (IDDFS.equals(algorithm))
-                    alg.iddfs(board.cloneBoard(), 1);
+                    alg.iddfs(board.cloneBoard(), 6);
                 else if (A_STAR.equals(algorithm))
                     alg.aStar(board.cloneBoard(), null);
             }

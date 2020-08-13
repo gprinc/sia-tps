@@ -223,6 +223,7 @@ public class Board implements Cloneable {
         if (this.walls[x][y] == 1){
             return false;
         }
+
         for (int i = 0; i < this.boxes.length; i++) {
             aux = this.boxes[i].getPos();
             if (aux.getX() == x && aux.getY() == y) {
@@ -242,8 +243,14 @@ public class Board implements Cloneable {
                 }
             }
         }
-        if (hasMoved) {
+
+        if (isThereBox(x,y)) {
+            if (hasMoved) {
+                this.player.setPos(new Position(x, y));
+            }
+        } else {
             this.player.setPos(new Position(x, y));
+            hasMoved = true;
         }
         return hasMoved;
     }
@@ -253,10 +260,10 @@ public class Board implements Cloneable {
         boolean hasMoved = false;
         switch (movement) {
             case UP:
-                hasMoved = move(playerPos.getX(), playerPos.getY() + 1, UP);
+                hasMoved = move(playerPos.getX(), playerPos.getY() - 1, UP);
                 break;
             case DOWN:
-                hasMoved = move(playerPos.getX(), playerPos.getY() - 1, DOWN);
+                hasMoved = move(playerPos.getX(), playerPos.getY() + 1, DOWN);
                 break;
             case LEFT:
                 hasMoved = move(playerPos.getX() - 1, playerPos.getY(), LEFT);
@@ -285,9 +292,6 @@ public class Board implements Cloneable {
             }
         }
 
-
-        matrix[this.player.getPos().getX()][this.player.getPos().getY()] = playerChar;
-
         for (int i = 0; i < this.winPoints.length; i++) {
             aux = this.winPoints[i];
             matrix[aux.getX()][aux.getY()] = winPointChar;
@@ -296,6 +300,8 @@ public class Board implements Cloneable {
             aux = this.boxes[i].getPos();
             matrix[aux.getX()][aux.getY()] = boxChar;
         }
+
+        matrix[this.player.getPos().getX()][this.player.getPos().getY()] = playerChar;
 
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
@@ -335,14 +341,24 @@ public class Board implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Board board = (Board) o;
-        return player.equals(board.player) &&
-                Arrays.equals(boxes, board.boxes);
+        if (player.getPos().getX() == board.player.getPos().getX() && player.getPos().getY() == board.player.getPos().getY()){
+            for (Box b : board.boxes) {
+                if(!isThereBox(b.getPos().getX(),b.getPos().getY())){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(player);
-        result = 31 * result + Arrays.hashCode(boxes);
-        return result;
+        String hash = new String();
+        hash.concat(this.player.getPos().toString());
+        for (Box b : this.boxes) {
+            hash.concat(b.getPos().toString());
+        }
+        return hash.hashCode();
     }
 }

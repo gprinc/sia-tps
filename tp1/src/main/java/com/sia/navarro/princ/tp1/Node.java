@@ -35,17 +35,20 @@ public class Node{
         if (auxBoard.movePlayer(Board.UP)) {
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
+            auxBoards = new LinkedList<Board>(this.boards);
             auxBoard = lastBoard.cloneBoard();
         }
         if (auxBoard.movePlayer(Board.DOWN)) {
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
+            auxBoards = new LinkedList<Board>(this.boards);
             auxBoard = lastBoard.cloneBoard();
         }
 
         if (auxBoard.movePlayer(Board.LEFT)) {
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
+            auxBoards = new LinkedList<Board>(this.boards);
             auxBoard = lastBoard.cloneBoard();
         }
         if (auxBoard.movePlayer(Board.RIGHT)) {
