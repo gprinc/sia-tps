@@ -37,11 +37,6 @@ public class Algorithms {
             }
         }
 
-        for (Board b : repeated) {
-            b.print();
-        }
-
-
         if (!hasWon) {
             System.out.println("No solution found");
         }
@@ -101,10 +96,6 @@ public class Algorithms {
                     }
                 }
             }
-        }
-
-        for (Board b : repeated) {
-            b.print();
         }
 
         if (!hasWon) {

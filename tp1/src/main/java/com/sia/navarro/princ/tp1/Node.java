@@ -33,22 +33,26 @@ public class Node{
         Board auxBoard = lastBoard.cloneBoard();
 
         if (auxBoard.movePlayer(Board.UP)) {
+            System.out.println("UP");
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
             auxBoard = lastBoard.cloneBoard();
         }
         if (auxBoard.movePlayer(Board.DOWN)) {
+            System.out.println("DOWN");
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
             auxBoard = lastBoard.cloneBoard();
         }
 
         if (auxBoard.movePlayer(Board.LEFT)) {
+            System.out.println("LEFT");
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
             auxBoard = lastBoard.cloneBoard();
         }
         if (auxBoard.movePlayer(Board.RIGHT)) {
+            System.out.println("RIGHT");
             auxBoards.add(new Board(auxBoard));
             aux.add(new Node(auxBoards));
         }
