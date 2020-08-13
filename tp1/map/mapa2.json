@@ -1,6 +1,6 @@
 {
   "id": 2,
-  "algorithm": "BFS",
+  "algorithm": "DFS",
   "width": "8",
   "height": "9",
   "walls": [

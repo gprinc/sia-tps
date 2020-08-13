@@ -24,7 +24,7 @@ public class Node{
     public boolean isStuck() {
         return this.boards.getLast().isStuck();
     }
-
+    public Board getBoard() {return this.boards.getLast();}
 
     public LinkedList<Node> getNextNodes() {
         LinkedList<Node> aux = new LinkedList<Node>();

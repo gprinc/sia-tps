@@ -2,6 +2,9 @@ package com.sia.navarro.princ.tp1;
 
 import jdk.nashorn.internal.ir.IfNode;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Board implements Cloneable {
 
     public static final char UP = 'w';
@@ -225,10 +228,10 @@ public class Board implements Cloneable {
             if (aux.getX() == x && aux.getY() == y) {
                 switch (movement) {
                     case UP:
-                        hasMoved = moveBox(x, y + 1, i);
+                        hasMoved = moveBox(x, y - 1, i);
                         break;
                     case DOWN:
-                        hasMoved = moveBox(x, y - 1, i);
+                        hasMoved = moveBox(x, y + 1, i);
                         break;
                     case LEFT:
                         hasMoved = moveBox(x - 1, y, i);
@@ -325,5 +328,21 @@ public class Board implements Cloneable {
     public Board cloneBoard() {
         Board clone = new Board(this.player, this.boxes, this.winPoints, this.walls, this.size);
         return clone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board = (Board) o;
+        return player.equals(board.player) &&
+                Arrays.equals(boxes, board.boxes);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(player);
+        result = 31 * result + Arrays.hashCode(boxes);
+        return result;
     }
 }
