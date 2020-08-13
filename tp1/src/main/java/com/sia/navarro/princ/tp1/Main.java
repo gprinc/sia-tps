@@ -19,7 +19,7 @@ public class Main {
         if (args.length > 0) {
             fileName = args[0];
         } else {
-            fileName = "map/mapa1.json";
+            fileName = "map/mapa2.json";
         }
 
         try {
