@@ -292,9 +292,6 @@ public class Board implements Cloneable {
             }
         }
 
-
-        matrix[this.player.getPos().getX()][this.player.getPos().getY()] = playerChar;
-
         for (int i = 0; i < this.winPoints.length; i++) {
             aux = this.winPoints[i];
             matrix[aux.getX()][aux.getY()] = winPointChar;
@@ -303,6 +300,8 @@ public class Board implements Cloneable {
             aux = this.boxes[i].getPos();
             matrix[aux.getX()][aux.getY()] = boxChar;
         }
+
+        matrix[this.player.getPos().getX()][this.player.getPos().getY()] = playerChar;
 
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
