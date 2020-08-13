@@ -32,9 +32,15 @@ public class Algorithms {
                     if(!repeated.contains(n.getBoard())) {
                         repeated.add(n.getBoard());
                         dfsStack.push(n);
+                        n.getBoard().print();
+                        System.out.println("-----------------------------------");
                     }
                 }
             }
+        }
+
+        for (Board n : repeated) {
+            n.print();
         }
 
         if (!hasWon) {

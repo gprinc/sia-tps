@@ -223,6 +223,7 @@ public class Board implements Cloneable {
         if (this.walls[x][y] == 1){
             return false;
         }
+
         for (int i = 0; i < this.boxes.length; i++) {
             aux = this.boxes[i].getPos();
             if (aux.getX() == x && aux.getY() == y) {
@@ -242,8 +243,14 @@ public class Board implements Cloneable {
                 }
             }
         }
-        if (hasMoved) {
+
+        if (isThereBox(x,y)) {
+            if (hasMoved) {
+                this.player.setPos(new Position(x, y));
+            }
+        } else {
             this.player.setPos(new Position(x, y));
+            hasMoved = true;
         }
         return hasMoved;
     }
@@ -335,7 +342,7 @@ public class Board implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Board board = (Board) o;
-        if (player.getPos().toString() == board.player.getPos().toString()){
+        if (player.getPos().getX() == board.player.getPos().getX() && player.getPos().getY() == board.player.getPos().getY()){
             for (Box b : board.boxes) {
                 if(!isThereBox(b.getPos().getX(),b.getPos().getY())){
                     return false;

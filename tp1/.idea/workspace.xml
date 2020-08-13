@@ -75,24 +75,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -115,6 +104,7 @@
       <workItem from="1597111342205" duration="93000" />
       <workItem from="1597155674850" duration="1390000" />
       <workItem from="1597277150352" duration="8630000" />
+      <workItem from="1597318970021" duration="3228000" />
     </task>
     <servers />
   </component>
@@ -138,22 +128,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="766" y="221" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1597284532932" />
-    <state width="1878" height="282" key="GridCell.Tab.0.bottom" timestamp="1597286321967">
+    <state width="1878" height="282" key="GridCell.Tab.0.bottom" timestamp="1597321877539">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597286321967" />
-    <state width="1878" height="282" key="GridCell.Tab.0.center" timestamp="1597286321967">
+    <state width="1878" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597321877539" />
+    <state width="1878" height="282" key="GridCell.Tab.0.center" timestamp="1597321877539">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597286321967" />
-    <state width="1878" height="282" key="GridCell.Tab.0.left" timestamp="1597286321967">
+    <state width="1878" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597321877539" />
+    <state width="1878" height="282" key="GridCell.Tab.0.left" timestamp="1597321877539">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597286321967" />
-    <state width="1878" height="282" key="GridCell.Tab.0.right" timestamp="1597286321967">
+    <state width="1878" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597321877539" />
+    <state width="1878" height="282" key="GridCell.Tab.0.right" timestamp="1597321877539">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597286321967" />
+    <state width="1878" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597321877539" />
     <state width="1878" height="348" key="GridCell.Tab.1.bottom" timestamp="1596917553550">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
