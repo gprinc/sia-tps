@@ -27,13 +27,11 @@ public class Algorithms {
             if (hasWon) {
                 aux.printBoards();
                 return;
-            } else if (!aux.isStuck()) {
+            } else {
                 for(Node n: aux.getNextNodes()){
                     if(!repeated.contains(n.getBoard())) {
                         repeated.add(n.getBoard());
                         dfsStack.push(n);
-                        n.getBoard().print();
-                        System.out.println("-----------------------------------");
                     }
                 }
             }
