@@ -30,11 +30,17 @@ public class Algorithms {
             } else if (!aux.isStuck()) {
                 for(Node n: aux.getNextNodes()){
                     if(!repeated.contains(n.getBoard())) {
+                        repeated.add(n.getBoard());
                         dfsStack.push(n);
                     }
                 }
             }
         }
+
+        for (Board b : repeated) {
+            b.print();
+        }
+
 
         if (!hasWon) {
             System.out.println("No solution found");
@@ -60,6 +66,7 @@ public class Algorithms {
             } else if (!aux.isStuck()) {
                 for(Node n: aux.getNextNodes()) {
                     if(!repeated.contains(n.getBoard())) {
+                        repeated.add(n.getBoard());
                         bfsQueue.add(n);
                     }
                 }
@@ -89,10 +96,15 @@ public class Algorithms {
             } else if (!aux.isStuck() && (aux.getDepth() <= depth)) {
                 for(Node n: aux.getNextNodes()){
                     if(!repeated.contains(n.getBoard())) {
+                        repeated.add(n.getBoard());
                         dfsStack.push(n);
                     }
                 }
             }
+        }
+
+        for (Board b : repeated) {
+            b.print();
         }
 
         if (!hasWon) {

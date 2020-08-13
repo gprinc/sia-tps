@@ -253,10 +253,10 @@ public class Board implements Cloneable {
         boolean hasMoved = false;
         switch (movement) {
             case UP:
-                hasMoved = move(playerPos.getX(), playerPos.getY() + 1, UP);
+                hasMoved = move(playerPos.getX(), playerPos.getY() - 1, UP);
                 break;
             case DOWN:
-                hasMoved = move(playerPos.getX(), playerPos.getY() - 1, DOWN);
+                hasMoved = move(playerPos.getX(), playerPos.getY() + 1, DOWN);
                 break;
             case LEFT:
                 hasMoved = move(playerPos.getX() - 1, playerPos.getY(), LEFT);
@@ -335,14 +335,24 @@ public class Board implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Board board = (Board) o;
-        return player.equals(board.player) &&
-                Arrays.equals(boxes, board.boxes);
+        if (player.getPos().toString() == board.player.getPos().toString()){
+            for (Box b : board.boxes) {
+                if(!isThereBox(b.getPos().getX(),b.getPos().getY())){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(player);
-        result = 31 * result + Arrays.hashCode(boxes);
-        return result;
+        String hash = new String();
+        hash.concat(this.player.getPos().toString());
+        for (Box b : this.boxes) {
+            hash.concat(b.getPos().toString());
+        }
+        return hash.hashCode();
     }
 }
