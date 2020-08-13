@@ -38,10 +38,6 @@ public class Algorithms {
             }
         }
 
-        for (Board n : repeated) {
-            n.print();
-        }
-
         if (!hasWon) {
             System.out.println("No solution found");
         }
