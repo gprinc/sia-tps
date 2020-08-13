@@ -62,7 +62,7 @@ public class Algorithms {
             hasWon = aux.hasWon();
             if (hasWon) {
                 aux.printBoards();
-            } else if (!aux.isStuck()) {
+            } else {
                 for(Node n: aux.getNextNodes()) {
                     if(!repeated.contains(n.getBoard())) {
                         repeated.add(n.getBoard());
@@ -92,7 +92,7 @@ public class Algorithms {
             hasWon = aux.hasWon();
             if (hasWon) {
                 aux.printBoards();
-            } else if (!aux.isStuck() && (aux.getDepth() <= depth)) {
+            } else if (aux.getDepth() <= depth) {
                 for(Node n: aux.getNextNodes()){
                     if(!repeated.contains(n.getBoard())) {
                         repeated.add(n.getBoard());
