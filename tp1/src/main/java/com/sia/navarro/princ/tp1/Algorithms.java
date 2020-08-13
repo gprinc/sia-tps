@@ -86,4 +86,8 @@ public class Algorithms {
             System.out.println("No solution found");
         }
     }
+
+    public void aStar(Board board, Heuristic heuristic) {
+
+    }
 }

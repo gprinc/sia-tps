@@ -1,6 +1,5 @@
 package com.sia.navarro.princ.tp1;
 
-import java.io.File;
 import java.io.FileReader;
 import java.util.Iterator;
 
@@ -20,7 +19,7 @@ public class Main {
         if (args.length > 0) {
             fileName = "map/mapa" + args[0] + ".json";
         } else {
-            fileName = "map/mapa1.json";
+            fileName = "map/mapa2.json";
         }
 
         try {
@@ -69,13 +68,14 @@ public class Main {
                 Board board = new Board(new Player(new Position(Integer.parseInt((String) playerJSON.get("x")) ,Integer.parseInt((String) playerJSON.get("y")))), boxes, winPoints, walls, new Position(width, height));
 
                 Algorithms alg = new Algorithms();
-                if (DFS.equals(algorithm)) {
+                if (DFS.equals(algorithm))
                     alg.dfs(board.cloneBoard());
-                } else if (BFS.equals(algorithm)) {
+                else if (BFS.equals(algorithm))
                     alg.bfs(board.cloneBoard());
-                } else if (IDDFS.equals(algorithm)) {
+                else if (IDDFS.equals(algorithm))
                     alg.iddfs(board.cloneBoard(), 1);
-                }
+                else if (A_STAR.equals(algorithm))
+                    alg.aStar(board.cloneBoard(), null);
             }
         } catch (Exception e) {
             e.printStackTrace();
