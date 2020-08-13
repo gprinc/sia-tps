@@ -1,9 +1,6 @@
 package com.sia.navarro.princ.tp1;
 
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class Algorithms {
     private Stack<Node> dfsStack;
@@ -18,6 +15,8 @@ public class Algorithms {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
         boolean hasWon = false;
         dfsStack.push(init);
 
@@ -29,8 +28,11 @@ public class Algorithms {
                 aux.printBoards();
                 return;
             } else if (!aux.isStuck()) {
-                for(Node n: aux.getNextNodes())
-                    dfsStack.push(n);
+                for(Node n: aux.getNextNodes()){
+                    if(!repeated.contains(n.getBoard())) {
+                        dfsStack.push(n);
+                    }
+                }
             }
         }
 
@@ -43,8 +45,11 @@ public class Algorithms {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
         boolean hasWon = false;
         bfsQueue.add(init);
+        board.print();
 
         Node aux;
         while (bfsQueue.size() != 0 && !hasWon) {
@@ -53,8 +58,11 @@ public class Algorithms {
             if (hasWon) {
                 aux.printBoards();
             } else if (!aux.isStuck()) {
-                for(Node n: aux.getNextNodes())
-                    bfsQueue.add(n);
+                for(Node n: aux.getNextNodes()) {
+                    if(!repeated.contains(n.getBoard())) {
+                        bfsQueue.add(n);
+                    }
+                }
             }
         }
 
@@ -67,6 +75,8 @@ public class Algorithms {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
         boolean hasWon = false;
         dfsStack.add(init);
 
@@ -77,8 +87,11 @@ public class Algorithms {
             if (hasWon) {
                 aux.printBoards();
             } else if (!aux.isStuck() && (aux.getDepth() <= depth)) {
-                for(Node n: aux.getNextNodes())
-                    dfsStack.push(n);
+                for(Node n: aux.getNextNodes()){
+                    if(!repeated.contains(n.getBoard())) {
+                        dfsStack.push(n);
+                    }
+                }
             }
         }
 
