@@ -2,12 +2,19 @@ package com.sia.navarro.princ.tp1;
 
 import java.util.LinkedList;
 
-public class Node{
+public class Node implements Comparable<Node> {
     private LinkedList<Board> boards;
+    private int cost;
 
 
     public Node(LinkedList<Board> boards) {
+        this.cost = 0;
         this.boards = boards;
+    }
+
+    public Node(LinkedList<Board> boards, int cost) {
+        this.boards = boards;
+        this.cost = cost;
     }
 
     public void printBoards() {
@@ -62,10 +69,30 @@ public class Node{
         return this.boards.size() - 1;
     }
 
-    /* System.out.print('\n');
-            for (Board b: auxBoards) {
-        b.print();
-        System.out.print('\n');
+    public LinkedList<Board> getBoards() { return boards; }
+
+    public int getCost() { return this.cost; }
+    public void setCost(int cost) { this.cost = cost; }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        if(node.getBoards().size() != this.boards.size()) return false;
+        boolean areEquals = false;
+        for (Board b: node.getBoards()) {
+            areEquals = this.boards.contains((Board) b);
+            if (!areEquals)
+                break;
+        }
+        return areEquals;
     }
-    System.out.println("Saliiiiii 222222"); */
+
+    public int compareTo(Node n) {
+        Integer ownCost = this.cost;
+        Integer nCost = n.getCost();
+        return ownCost.compareTo(nCost);
+    }
 }
