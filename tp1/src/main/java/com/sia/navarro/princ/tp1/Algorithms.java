@@ -105,7 +105,7 @@ public class Algorithms {
         }
     }
 
-    private void aStar(Board board, Heuristic heuristic) {
+    public void aStar(Board board, Heuristic heuristic) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard, 0);
