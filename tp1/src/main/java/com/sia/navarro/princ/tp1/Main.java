@@ -12,6 +12,7 @@ public class Main {
     private final static String BFS = "BFS";
     private final static String IDDFS = "IDDFS";
     private final static String A_STAR = "A*";
+    private final static String IDA_STAR = "IDA*";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -31,6 +32,8 @@ public class Main {
             String algorithm = (String) data.get("algorithm");
             int width = Integer.parseInt((String) data.get("width"));
             int height = Integer.parseInt((String) data.get("height"));
+            int limit = Integer.parseInt((String) data.get("limit"));
+            int depth = Integer.parseInt((String) data.get("depth"));
 
             if (boxesJSON.size() != winPointsJSON.size()) {
                 System.out.println("There are different amount of boxes than winpoints");
@@ -73,9 +76,11 @@ public class Main {
                 else if (BFS.equals(algorithm))
                     alg.bfs(board.cloneBoard());
                 else if (IDDFS.equals(algorithm))
-                    alg.iddfs(board.cloneBoard(), 6);
+                    alg.iddfs(board.cloneBoard(), depth);
                 else if (A_STAR.equals(algorithm))
                     alg.aStar(board.cloneBoard(), null);
+                else if (IDA_STAR.equals(algorithm))
+                    alg.idaStar(board.cloneBoard(), null, limit);
             }
         } catch (Exception e) {
             e.printStackTrace();

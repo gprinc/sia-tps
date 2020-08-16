@@ -149,4 +149,49 @@ public class Algorithms {
             }
         }
     }
+
+    public void idaStar(Board board, Heuristic heuristic, int limit) {
+        LinkedList<Board> firstBoard = new LinkedList<Board>();
+        firstBoard.add(board.cloneBoard());
+        Node init = new Node(firstBoard, 0);
+        // aca va la heurisitca para el primer nodo y ver si no se puede continuar
+        int h = 1;
+        if(h >= 1000000000) {
+            return;
+        }
+
+        init.setCost(init.getCost() + h);
+        Queue<Node> nextNodes = new PriorityQueue<Node>();
+        nextNodes.add(init);
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
+
+        while (!nextNodes.isEmpty()) {
+            Node currentNode = nextNodes.poll();
+            if (currentNode.getBoard().hasWon()) {
+                currentNode.printBoards();
+            }
+            repeated.add(currentNode.getBoard());
+            for(Node childNode : currentNode.getNextNodes()){
+                // conseguir la heuristica del childNode
+                h = 0;
+                childNode.setCost(childNode.getCost() + h);
+                if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
+                    nextNodes.add(childNode);
+                } else if(nextNodes.contains(childNode)){
+                    for(Node n : nextNodes) {
+                        if(childNode.equals(n)) {
+                            if(childNode.getCost() < n.getCost()){
+                                nextNodes.remove(n);
+                                nextNodes.add(childNode);
+                                break;
+                            }
+                        }
+                    }
+                } else if(repeated.contains(childNode.getBoard())) {
+                    // Me falta ver cuando esta el board en repetidos pero hay menor costo
+                }
+            }
+        }
+    }
 }

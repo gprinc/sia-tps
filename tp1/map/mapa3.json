@@ -1,6 +1,7 @@
 {
   "id": 1,
   "algorithm": "DFS",
+  "heuristic": "manhattan",
   "width": "7",
   "height": "3",
   "walls": [
