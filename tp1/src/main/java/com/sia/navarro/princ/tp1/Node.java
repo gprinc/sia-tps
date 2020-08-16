@@ -22,7 +22,6 @@ public class Node implements Comparable<Node> {
             board.print();
             System.out.print('\n');
         }
-        System.out.println("Gane");
     }
 
     public boolean hasWon() {

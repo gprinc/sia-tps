@@ -2,7 +2,7 @@ package com.sia.navarro.princ.tp1;
 
 import java.util.Arrays;
 
-public class Heuristic {
+public class  Heuristic {
 
     public double getValue(Board board) {
         return this.manhattan(board) + this.euclidean(board);
