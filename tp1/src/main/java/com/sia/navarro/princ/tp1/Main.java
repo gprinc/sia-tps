@@ -1,6 +1,7 @@
 package com.sia.navarro.princ.tp1;
 
 import java.io.FileReader;
+import java.sql.Timestamp;
 import java.util.Iterator;
 
 import org.json.simple.JSONArray;
@@ -16,12 +17,21 @@ public class Main {
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
-        String fileName;
-        if (args.length > 0) {
-            fileName = "map/mapa" + args[0] + ".json";
-        } else {
-            fileName = "map/mapa4.json";
+        String fileName = "map/config.json";
+        int mapNumber;
+        String algorithm;
+
+        try {
+            JSONObject data = (JSONObject) parser.parse(new FileReader(fileName));
+            algorithm = (String) data.get("algorithm");
+            mapNumber = Integer.parseInt((String) data.get("map"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error at config file");
+            return;
         }
+
+        fileName = "map/mapa" + mapNumber + ".json";
 
         try {
             JSONObject data = (JSONObject) parser.parse(new FileReader(fileName));
@@ -29,7 +39,7 @@ public class Main {
             JSONArray winPointsJSON = (JSONArray) data.get("winPoints");
             JSONArray wallsJSON = (JSONArray) data.get("walls");
             JSONObject playerJSON = (JSONObject) data.get("player");
-            String algorithm = (String) data.get("algorithm");
+
             int width = Integer.parseInt((String) data.get("width"));
             int height = Integer.parseInt((String) data.get("height"));
             int limit = Integer.parseInt((String) data.get("limit"));
@@ -71,6 +81,17 @@ public class Main {
                 Board board = new Board(new Player(new Position(Integer.parseInt((String) playerJSON.get("x")) ,Integer.parseInt((String) playerJSON.get("y")))), boxes, winPoints, walls, new Position(width, height));
 
                 Algorithms alg = new Algorithms();
+
+                System.out.println("Algorithm: " + algorithm);
+                System.out.print('\n');
+                System.out.println("Heuristic: " + algorithm);
+                System.out.print('\n');
+                System.out.println("Initial Map: ");
+                System.out.print('\n');
+                board.print();
+                System.out.print('\n');
+                long startTime = System.nanoTime();
+
                 if (DFS.equals(algorithm))
                     alg.dfs(board.cloneBoard());
                 else if (BFS.equals(algorithm))
@@ -81,10 +102,15 @@ public class Main {
                     alg.aStar(board.cloneBoard(), null);
                 else if (IDA_STAR.equals(algorithm))
                     alg.idaStar(board.cloneBoard(), null, limit);
+
+                long stopTime = System.nanoTime();
+                double elapsedTimeInSecond = (double) (stopTime - startTime) / 1000000000;
+                System.out.println("Execution Time: " + elapsedTimeInSecond + " Seconds");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error");
+            System.out.println("Error at map");
+            return;
         }
     }
 }
