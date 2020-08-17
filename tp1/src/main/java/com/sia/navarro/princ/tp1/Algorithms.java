@@ -124,8 +124,7 @@ public class Algorithms {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard, 0);
-        // aca va la heurisitca para el primer nodo y ver si no se puede continuar
-        int h = 1;
+        double h = heuristic.getValue(init);
         if(h >= 1000000000) {
             return;
         }
@@ -143,8 +142,7 @@ public class Algorithms {
             }
             repeated.add(currentNode.getBoard());
             for(Node childNode : currentNode.getNextNodes()){
-                // conseguir la heuristica del childNode
-                h = 0;
+                h = heuristic.getValue(childNode);
                 childNode.setCost(childNode.getCost() + h);
                 if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
                     nextNodes.add(childNode);
@@ -169,8 +167,7 @@ public class Algorithms {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard, 0);
-        // aca va la heurisitca para el primer nodo y ver si no se puede continuar
-        int h = 1;
+        double h = heuristic.getValue(init);
         if(h >= 1000000000) {
             return;
         }
@@ -188,8 +185,7 @@ public class Algorithms {
             }
             repeated.add(currentNode.getBoard());
             for(Node childNode : currentNode.getNextNodes()){
-                // conseguir la heuristica del childNode
-                h = 0;
+                h = heuristic.getValue(childNode);
                 childNode.setCost(childNode.getCost() + h);
                 if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
                     nextNodes.add(childNode);

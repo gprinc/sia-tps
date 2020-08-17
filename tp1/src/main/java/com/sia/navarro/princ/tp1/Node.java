@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class Node implements Comparable<Node> {
     private LinkedList<Board> boards;
-    private int cost;
+    private double cost;
 
 
     public Node(LinkedList<Board> boards) {
@@ -70,8 +70,8 @@ public class Node implements Comparable<Node> {
 
     public LinkedList<Board> getBoards() { return boards; }
 
-    public int getCost() { return this.cost; }
-    public void setCost(int cost) { this.cost = cost; }
+    public double getCost() { return this.cost; }
+    public void setCost(double cost) { this.cost = cost; }
 
 
     @Override
@@ -90,8 +90,8 @@ public class Node implements Comparable<Node> {
     }
 
     public int compareTo(Node n) {
-        Integer ownCost = this.cost;
-        Integer nCost = n.getCost();
+        Double ownCost = this.cost;
+        Double nCost = n.getCost();
         return ownCost.compareTo(nCost);
     }
 }

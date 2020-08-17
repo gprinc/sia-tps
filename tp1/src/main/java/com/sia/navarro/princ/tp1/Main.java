@@ -15,7 +15,8 @@ public class Main {
     private final static String A_STAR = "A*";
     private final static String IDA_STAR = "IDA*";
     private final static String MANHATTAN = "manhattan";
-    private final static String EUCLIDEAN = "euclidean*";
+    private final static String EUCLIDEAN = "euclidean";
+    private final static String COMBINATION = "combination";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -23,18 +24,18 @@ public class Main {
         int mapNumber = 1;
         int limit = 1;
         int depth = 1;
-        String algorithm = MANHATTAN;
-        String heuristic = DFS;
+        String algorithm = DFS;
+        String heuristic = COMBINATION;
 
         if (args.length > 0) {
             mapNumber = Integer.parseInt(args[0]);
             algorithm = args[1];
             if (IDDFS.equals(algorithm)) {
-                depth = Integer.parseInt(args[1]);
+                depth = Integer.parseInt(args[2]);
             } else {
-                heuristic = args[1];
+                heuristic = args[2];
                 if (IDA_STAR.equals(algorithm)) {
-                    limit = Integer.parseInt(args[2]);
+                    limit = Integer.parseInt(args[3]);
                 }
             }
 
@@ -107,9 +108,9 @@ public class Main {
                 else if (IDDFS.equals(algorithm))
                     alg.iddfs(board.cloneBoard(), depth);
                 else if (A_STAR.equals(algorithm))
-                    alg.aStar(board.cloneBoard(), null);
+                    alg.aStar(board.cloneBoard(), new Heuristic(heuristic));
                 else if (IDA_STAR.equals(algorithm))
-                    alg.idaStar(board.cloneBoard(), null, limit);
+                    alg.idaStar(board.cloneBoard(), new Heuristic(heuristic), limit);
 
                 long stopTime = System.nanoTime();
                 double elapsedTimeInSecond = (double) (stopTime - startTime) / 1000000000;
