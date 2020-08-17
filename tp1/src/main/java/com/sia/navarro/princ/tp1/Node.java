@@ -75,6 +75,7 @@ public class Node implements Comparable<Node> {
     public LinkedList<Board> getBoards() { return boards; }
 
     public double getCost() { return this.cost; }
+
     public void setCost(double cost) {
         this.cost = cost;
         this.boards.getLast().setCost(cost);
@@ -104,8 +105,8 @@ public class Node implements Comparable<Node> {
     }
 
     public int compareTo(Node n) {
-        Integer ownCost = (int) this.cost;
-        Integer nCost = (int) n.getCost();
+        Double ownCost = this.cost;
+        Double nCost = n.getCost();
         return ownCost.compareTo(nCost);
     }
 }

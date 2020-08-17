@@ -12,10 +12,26 @@ public class Algorithms {
         this.bfsQueue = new PriorityQueue<Node>();
     }
 
+
     public Algorithms(String heuristic) {
         this.dfsStack = new Stack<Node>();
         this.bfsQueue = new PriorityQueue<Node>();
         this.heuristic = new Heuristic(heuristic);
+    }
+
+    private void printSolution(Node aux, HashSet<Board> expanded) {
+        System.out.println("Solution Found:");
+        System.out.print('\n');
+        aux.printBoards();
+        System.out.println("Depth: " + aux.getDepth());
+        System.out.print('\n');
+        System.out.println("Cost: " + aux.getCost());
+        System.out.print('\n');
+        System.out.println("Expanded Nodes: " + expanded.size());
+        System.out.print('\n');
+        System.out.println("Border Nodes: " + "ayuda no se como hacerlo");
+        System.out.print('\n');
+        return;
     }
 
     public void dfs(Board board) {
@@ -32,9 +48,7 @@ public class Algorithms {
             aux = dfsStack.pop();
             hasWon = aux.hasWon();
             if (hasWon) {
-                System.out.println("Solution Found:");
-                System.out.print('\n');
-                aux.printBoards();
+                printSolution(aux, repeated);
                 return;
             } else {
                 for(Node n: aux.getNextNodes()){
@@ -66,9 +80,8 @@ public class Algorithms {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
             if (hasWon) {
-                System.out.println("Solution Found:");
-                System.out.print('\n');
-                aux.printBoards();
+                printSolution(aux, repeated);
+                return;
             } else {
                 for(Node n: aux.getNextNodes()) {
                     if(!repeated.contains(n.getBoard())) {
@@ -98,9 +111,8 @@ public class Algorithms {
             aux = dfsStack.pop();
             hasWon = aux.hasWon();
             if (hasWon) {
-                System.out.println("Solution Found:");
-                System.out.print('\n');
-                aux.printBoards();
+                printSolution(aux, repeated);
+                return;
             } else if (aux.getDepth() <= depth) {
                 for(Node n: aux.getNextNodes()){
                     if(!repeated.contains(n.getBoard())) {
@@ -116,20 +128,20 @@ public class Algorithms {
         }
     }
 
-    public void aStar(Board board, double limit) {
+    public void aStar(Board board, Heuristic heuristic, double limit) {
         int steps = 0;
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard, 0);
-        double h = this.heuristic.getHeuristic(init.getBoard());
-        if(h >= 1000000000 || h >= limit) {
+        double h = heuristic.getValue(init);
+        if(h >= 1000000000 || (h != 0 && h >= limit))
             return;
-        }
 
         init.setCost(steps + h);
         Queue<Node> nextNodes = new PriorityQueue<Node>();
         nextNodes.add(init);
         HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
 
         while (!nextNodes.isEmpty()) {
             Node currentNode = nextNodes.poll();
@@ -140,7 +152,7 @@ public class Algorithms {
             }
             repeated.add(currentNode.getBoard());
             for(Node childNode : currentNode.getNextNodes()){
-                h = this.heuristic.getHeuristic(childNode.getBoard());
+                h = heuristic.getValue(childNode);
                 childNode.setCost(steps + h);
                 if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
                     nextNodes.add(childNode);
@@ -154,6 +166,49 @@ public class Algorithms {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    public void gg(Board board, Heuristic heuristic) {
+        LinkedList<Board> firstBoard = new LinkedList<Board>();
+        firstBoard.add(board.cloneBoard());
+        Node init = new Node(firstBoard);
+        double h = heuristic.getValue(init);
+        if(h >= 1000000000) {
+            return;
+        }
+
+        init.setCost(h);
+        Queue<Node> nextNodes = new PriorityQueue<Node>();
+        nextNodes.add(init);
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
+
+        while (!nextNodes.isEmpty()) {
+            Node currentNode = nextNodes.poll();
+            if (currentNode.getBoard().hasWon()) {
+                currentNode.printBoards();
+            }
+            repeated.add(currentNode.getBoard());
+            for(Node childNode : currentNode.getNextNodes()){
+                h = heuristic.getValue(childNode);
+                childNode.setCost(h);
+                if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
+                    nextNodes.add(childNode);
+                } else if(nextNodes.contains(childNode)){
+                    for(Node n : nextNodes) {
+                        if(childNode.equals(n)) {
+                            if(childNode.getCost() < n.getCost()){
+                                nextNodes.remove(n);
+                                nextNodes.add(childNode);
+                                break;
+                            }
+                        }
+                    }
+                } else if(repeated.contains(childNode.getBoard())) {
+                    // Me falta ver cuando esta el board en repetidos pero hay menor costo
                 }
             }
         }

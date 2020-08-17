@@ -14,23 +14,34 @@ public class Main {
     private final static String IDDFS = "IDDFS";
     private final static String A_STAR = "A*";
     private final static String IDA_STAR = "IDA*";
+    private final static String GG = "GG";
+    private final static String MANHATTAN = "manhattan";
+    private final static String EUCLIDEAN = "euclidean";
+    private final static String COMBINATION = "combination";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
-        String fileName = "map/config.json";
-        int mapNumber;
-        String algorithm;
+        String fileName;
+        int mapNumber = 1;
+        int limit = 1;
+        int depth = 1;
+        String algorithm = DFS;
+        String heuristic = COMBINATION;
 
-        try {
-            JSONObject data = (JSONObject) parser.parse(new FileReader(fileName));
-            algorithm = (String) data.get("algorithm");
-            mapNumber = Integer.parseInt((String) data.get("map"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error at config file");
-            return;
+        if (args.length > 0) {
+            mapNumber = Integer.parseInt(args[0]);
+            algorithm = args[1];
+            if (IDDFS.equals(algorithm)) {
+                depth = Integer.parseInt(args[2]);
+            } else {
+                heuristic = args[2];
+                if (IDA_STAR.equals(algorithm)) {
+                    limit = Integer.parseInt(args[3]);
+                }
+            }
+
         }
-
+        
         fileName = "map/mapa" + mapNumber + ".json";
 
         try {
@@ -42,10 +53,11 @@ public class Main {
 
             int width = Integer.parseInt((String) data.get("width"));
             int height = Integer.parseInt((String) data.get("height"));
-            int limit = Integer.parseInt((String) data.get("limit"));
-            int depth = Integer.parseInt((String) data.get("depth"));
-            String heuristic = (String) data.get("heuristic");
+            limit = Integer.parseInt((String) data.get("limit"));
+            depth = Integer.parseInt((String) data.get("depth"));
+            heuristic = (String) data.get("heuristic");
 
+            System.out.println("Error at config file");
             if (boxesJSON.size() != winPointsJSON.size()) {
                 System.out.println("There are different amount of boxes than winpoints");
             } else {
@@ -85,7 +97,7 @@ public class Main {
 
                 System.out.println("Algorithm: " + algorithm);
                 System.out.print('\n');
-                System.out.println("Heuristic: " + algorithm);
+                System.out.println("Heuristic: " + heuristic);
                 System.out.print('\n');
                 System.out.println("Initial Map: ");
                 System.out.print('\n');
@@ -100,9 +112,11 @@ public class Main {
                 else if (IDDFS.equals(algorithm))
                     alg.iddfs(board.cloneBoard(), depth);
                 else if (A_STAR.equals(algorithm))
-                    alg.aStar(board.cloneBoard(), 0);
+                    alg.aStar(board.cloneBoard(), new Heuristic(heuristic), 0);
                 else if (IDA_STAR.equals(algorithm))
-                    alg.aStar(board.cloneBoard(), limit);
+                    alg.aStar(board.cloneBoard(), new Heuristic(heuristic), limit);
+                else if (GG.equals(algorithm))
+                    alg.gg(board.cloneBoard(), new Heuristic(heuristic));
 
                 long stopTime = System.nanoTime();
                 double elapsedTimeInSecond = (double) (stopTime - startTime) / 1000000000;

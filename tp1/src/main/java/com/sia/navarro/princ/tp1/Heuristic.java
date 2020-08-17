@@ -4,31 +4,33 @@ import java.util.Arrays;
 
 public class  Heuristic {
     private final static String MANHATTAN = "manhattan";
-    private final static String EUCLIDEA = "euclidea";
-    private String heuristic;
+    private final static String EUCLIDEAN = "euclidean";
+    private String type;
 
-    public Heuristic(String heuristic) {
-        this.heuristic = heuristic;
+    public Heuristic(String type){
+        this.type = type;
     }
 
-    public double getHeuristic(Board b) {
-        if(MANHATTAN.equals(this.heuristic))
-            return manhattan(b);
-        else if(EUCLIDEA.equals(this.heuristic))
-            return euclidean(b);
-        return 0;
+    public double getValue(Node node){
+        if (MANHATTAN.equals(type)){
+            return this.manhattan(node);
+        } else if (EUCLIDEAN.equals(type)){
+            return this.euclidean(node);
+        }
+        return this.combination(node);
     }
 
-    public double getValue(Node node) {
+    private double combination(Node node) {
         if (node.isStuck()){
             return 1000000000;
         }else if (node.hasWon()){
             return 0;
         }
-        return Math.max(this.manhattan(node.getBoard()), this.euclidean(node.getBoard()));
+        return Math.max(this.manhattan(node), this.euclidean(node));
     }
 
-    private double manhattan(Board board) {
+    private double manhattan(Node node) {
+        Board board = node.getBoard();
         Box[] boxes = board.getBoxes();
         Position[] goals = board.getWinPoints();
         double h = 0;
@@ -46,7 +48,8 @@ public class  Heuristic {
         return h;
     }
 
-    private double euclidean(Board board) {
+    private double euclidean(Node node) {
+        Board board = node.getBoard();
         Box[] boxes = board.getBoxes();
         Position[] goals = board.getWinPoints();
         double h = 0;
