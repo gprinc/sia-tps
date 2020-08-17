@@ -14,6 +14,7 @@ public class Main {
     private final static String IDDFS = "IDDFS";
     private final static String A_STAR = "A*";
     private final static String IDA_STAR = "IDA*";
+    private final static String GG = "GG";
     private final static String MANHATTAN = "manhattan";
     private final static String EUCLIDEAN = "euclidean";
     private final static String COMBINATION = "combination";
@@ -111,6 +112,8 @@ public class Main {
                     alg.aStar(board.cloneBoard(), new Heuristic(heuristic));
                 else if (IDA_STAR.equals(algorithm))
                     alg.idaStar(board.cloneBoard(), new Heuristic(heuristic), limit);
+                else if (GG.equals(algorithm))
+                    alg.gg(board.cloneBoard(), new Heuristic(heuristic));
 
                 long stopTime = System.nanoTime();
                 double elapsedTimeInSecond = (double) (stopTime - startTime) / 1000000000;

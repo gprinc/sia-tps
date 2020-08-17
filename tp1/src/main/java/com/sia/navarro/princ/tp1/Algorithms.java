@@ -205,4 +205,47 @@ public class Algorithms {
             }
         }
     }
+
+    public void gg(Board board, Heuristic heuristic) {
+        LinkedList<Board> firstBoard = new LinkedList<Board>();
+        firstBoard.add(board.cloneBoard());
+        Node init = new Node(firstBoard);
+        double h = heuristic.getValue(init);
+        if(h >= 1000000000) {
+            return;
+        }
+
+        init.setCost(h);
+        Queue<Node> nextNodes = new PriorityQueue<Node>();
+        nextNodes.add(init);
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
+
+        while (!nextNodes.isEmpty()) {
+            Node currentNode = nextNodes.poll();
+            if (currentNode.getBoard().hasWon()) {
+                currentNode.printBoards();
+            }
+            repeated.add(currentNode.getBoard());
+            for(Node childNode : currentNode.getNextNodes()){
+                h = heuristic.getValue(childNode);
+                childNode.setCost(h);
+                if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
+                    nextNodes.add(childNode);
+                } else if(nextNodes.contains(childNode)){
+                    for(Node n : nextNodes) {
+                        if(childNode.equals(n)) {
+                            if(childNode.getCost() < n.getCost()){
+                                nextNodes.remove(n);
+                                nextNodes.add(childNode);
+                                break;
+                            }
+                        }
+                    }
+                } else if(repeated.contains(childNode.getBoard())) {
+                    // Me falta ver cuando esta el board en repetidos pero hay menor costo
+                }
+            }
+        }
+    }
 }
