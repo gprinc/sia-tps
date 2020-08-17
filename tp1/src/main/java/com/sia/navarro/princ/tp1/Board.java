@@ -22,13 +22,14 @@ public class Board implements Cloneable {
     private Position[] winPoints;
     private int[][] walls;
     private Position size;
+    private double cost;
 
 
     public Board(Board b) {
-        this(b.getPlayer(), b.getBoxes(), b.getWinPoints(), b.getWalls(), b.getSize());
+        this(b.getPlayer(), b.getBoxes(), b.getWinPoints(), b.getWalls(), b.getSize(), b.getCost());
     }
 
-    public Board(Player player, Box[] boxes, Position[] winPoints, int[][] walls, Position size) {
+    public Board(Player player, Box[] boxes, Position[] winPoints, int[][] walls, Position size, double cost) {
         this.player = new Player(player.getPos());
         this.boxes = new Box[boxes.length];
         for (int j = 0; j < boxes.length; j++) {
@@ -331,8 +332,12 @@ public class Board implements Cloneable {
         return size;
     }
 
+    public double getCost() { return cost; }
+
+    public void setCost(double cost) { this.cost = cost; }
+
     public Board cloneBoard() {
-        Board clone = new Board(this.player, this.boxes, this.winPoints, this.walls, this.size);
+        Board clone = new Board(this.player, this.boxes, this.winPoints, this.walls, this.size, this.cost);
         return clone;
     }
 

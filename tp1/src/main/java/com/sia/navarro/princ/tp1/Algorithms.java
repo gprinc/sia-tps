@@ -5,10 +5,17 @@ import java.util.*;
 public class Algorithms {
     private Stack<Node> dfsStack;
     private Queue<Node> bfsQueue;
+    private Heuristic heuristic;
 
     public Algorithms() {
         this.dfsStack = new Stack<Node>();
         this.bfsQueue = new PriorityQueue<Node>();
+    }
+
+    public Algorithms(String heuristic) {
+        this.dfsStack = new Stack<Node>();
+        this.bfsQueue = new PriorityQueue<Node>();
+        this.heuristic = new Heuristic(heuristic);
     }
 
     public void dfs(Board board) {
@@ -109,91 +116,44 @@ public class Algorithms {
         }
     }
 
-    public void aStar(Board board, Heuristic heuristic) {
+    public void aStar(Board board, double limit) {
+        int steps = 0;
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard, 0);
-        // aca va la heurisitca para el primer nodo y ver si no se puede continuar
-        int h = 1;
-        if(h >= 1000000000) {
+        double h = this.heuristic.getHeuristic(init.getBoard());
+        if(h >= 1000000000 || h >= limit) {
             return;
         }
 
-        init.setCost(init.getCost() + h);
+        init.setCost(steps + h);
         Queue<Node> nextNodes = new PriorityQueue<Node>();
         nextNodes.add(init);
         HashSet<Board> repeated = new HashSet<Board>();
-        repeated.add(board.cloneBoard());
 
         while (!nextNodes.isEmpty()) {
             Node currentNode = nextNodes.poll();
+            steps++;
             if (currentNode.getBoard().hasWon()) {
                 currentNode.printBoards();
+                return;
             }
             repeated.add(currentNode.getBoard());
             for(Node childNode : currentNode.getNextNodes()){
-                // conseguir la heuristica del childNode
-                h = 0;
-                childNode.setCost(childNode.getCost() + h);
+                h = this.heuristic.getHeuristic(childNode.getBoard());
+                childNode.setCost(steps + h);
                 if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
                     nextNodes.add(childNode);
-                } else if(nextNodes.contains(childNode)){
-                    for(Node n : nextNodes) {
-                        if(childNode.equals(n)) {
-                            if(childNode.getCost() < n.getCost()){
+                } else if(nextNodes.contains(childNode)) {
+                    for (Node n : nextNodes) {
+                        if (childNode.equals(n)) {
+                            if (childNode.getCost() < n.getCost()) {
                                 nextNodes.remove(n);
                                 nextNodes.add(childNode);
                                 break;
                             }
                         }
                     }
-                } else if(repeated.contains(childNode.getBoard())) {
-                    // Me falta ver cuando esta el board en repetidos pero hay menor costo
-                }
-            }
-        }
-    }
-
-    public void idaStar(Board board, Heuristic heuristic, int limit) {
-        LinkedList<Board> firstBoard = new LinkedList<Board>();
-        firstBoard.add(board.cloneBoard());
-        Node init = new Node(firstBoard, 0);
-        // aca va la heurisitca para el primer nodo y ver si no se puede continuar
-        int h = 1;
-        if(h >= 1000000000) {
-            return;
-        }
-
-        init.setCost(init.getCost() + h);
-        Queue<Node> nextNodes = new PriorityQueue<Node>();
-        nextNodes.add(init);
-        HashSet<Board> repeated = new HashSet<Board>();
-        repeated.add(board.cloneBoard());
-
-        while (!nextNodes.isEmpty()) {
-            Node currentNode = nextNodes.poll();
-            if (currentNode.getBoard().hasWon()) {
-                currentNode.printBoards();
-            }
-            repeated.add(currentNode.getBoard());
-            for(Node childNode : currentNode.getNextNodes()){
-                // conseguir la heuristica del childNode
-                h = 0;
-                childNode.setCost(childNode.getCost() + h);
-                if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
-                    nextNodes.add(childNode);
-                } else if(nextNodes.contains(childNode)){
-                    for(Node n : nextNodes) {
-                        if(childNode.equals(n)) {
-                            if(childNode.getCost() < n.getCost()){
-                                nextNodes.remove(n);
-                                nextNodes.add(childNode);
-                                break;
-                            }
-                        }
-                    }
-                } else if(repeated.contains(childNode.getBoard())) {
-                    // Me falta ver cuando esta el board en repetidos pero hay menor costo
                 }
             }
         }

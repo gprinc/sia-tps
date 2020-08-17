@@ -44,6 +44,7 @@ public class Main {
             int height = Integer.parseInt((String) data.get("height"));
             int limit = Integer.parseInt((String) data.get("limit"));
             int depth = Integer.parseInt((String) data.get("depth"));
+            String heuristic = (String) data.get("heuristic");
 
             if (boxesJSON.size() != winPointsJSON.size()) {
                 System.out.println("There are different amount of boxes than winpoints");
@@ -78,9 +79,9 @@ public class Main {
                     auxId++;
                 }
 
-                Board board = new Board(new Player(new Position(Integer.parseInt((String) playerJSON.get("x")) ,Integer.parseInt((String) playerJSON.get("y")))), boxes, winPoints, walls, new Position(width, height));
+                Board board = new Board(new Player(new Position(Integer.parseInt((String) playerJSON.get("x")) ,Integer.parseInt((String) playerJSON.get("y")))), boxes, winPoints, walls, new Position(width, height), 0);
 
-                Algorithms alg = new Algorithms();
+                Algorithms alg = new Algorithms(heuristic);
 
                 System.out.println("Algorithm: " + algorithm);
                 System.out.print('\n');
@@ -99,9 +100,9 @@ public class Main {
                 else if (IDDFS.equals(algorithm))
                     alg.iddfs(board.cloneBoard(), depth);
                 else if (A_STAR.equals(algorithm))
-                    alg.aStar(board.cloneBoard(), null);
+                    alg.aStar(board.cloneBoard(), 0);
                 else if (IDA_STAR.equals(algorithm))
-                    alg.idaStar(board.cloneBoard(), null, limit);
+                    alg.aStar(board.cloneBoard(), limit);
 
                 long stopTime = System.nanoTime();
                 double elapsedTimeInSecond = (double) (stopTime - startTime) / 1000000000;

@@ -3,6 +3,21 @@ package com.sia.navarro.princ.tp1;
 import java.util.Arrays;
 
 public class  Heuristic {
+    private final static String MANHATTAN = "manhattan";
+    private final static String EUCLIDEA = "euclidea";
+    private String heuristic;
+
+    public Heuristic(String heuristic) {
+        this.heuristic = heuristic;
+    }
+
+    public double getHeuristic(Board b) {
+        if(MANHATTAN.equals(this.heuristic))
+            return manhattan(b);
+        else if(EUCLIDEA.equals(this.heuristic))
+            return euclidean(b);
+        return 0;
+    }
 
     public double getValue(Node node) {
         if (node.isStuck()){
@@ -13,10 +28,10 @@ public class  Heuristic {
         return Math.max(this.manhattan(node.getBoard()), this.euclidean(node.getBoard()));
     }
 
-    private int manhattan(Board board) {
+    private double manhattan(Board board) {
         Box[] boxes = board.getBoxes();
         Position[] goals = board.getWinPoints();
-        int h = 0;
+        double h = 0;
         int[] array = new int[goals.length];
         int i;
         for (Box b: boxes) {
