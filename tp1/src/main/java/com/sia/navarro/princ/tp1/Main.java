@@ -19,12 +19,16 @@ public class Main {
         JSONParser parser = new JSONParser();
         String fileName = "map/config.json";
         int mapNumber;
+        int limit;
+        int depth;
         String algorithm;
 
         try {
             JSONObject data = (JSONObject) parser.parse(new FileReader(fileName));
             algorithm = (String) data.get("algorithm");
             mapNumber = Integer.parseInt((String) data.get("map"));
+            limit = Integer.parseInt((String) data.get("limit"));
+            depth = Integer.parseInt((String) data.get("depth"));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error at config file");
@@ -42,9 +46,8 @@ public class Main {
 
             int width = Integer.parseInt((String) data.get("width"));
             int height = Integer.parseInt((String) data.get("height"));
-            int limit = Integer.parseInt((String) data.get("limit"));
-            int depth = Integer.parseInt((String) data.get("depth"));
 
+            System.out.println("Error at config file");
             if (boxesJSON.size() != winPointsJSON.size()) {
                 System.out.println("There are different amount of boxes than winpoints");
             } else {

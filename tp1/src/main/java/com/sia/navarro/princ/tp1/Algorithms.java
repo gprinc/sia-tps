@@ -11,6 +11,21 @@ public class Algorithms {
         this.bfsQueue = new PriorityQueue<Node>();
     }
 
+    private void printSolution(Node aux, HashSet<Board> expanded) {
+        System.out.println("Solution Found:");
+        System.out.print('\n');
+        aux.printBoards();
+        System.out.println("Depth: " + aux.getDepth());
+        System.out.print('\n');
+        System.out.println("Cost: " + aux.getCost());
+        System.out.print('\n');
+        System.out.println("Expanded Nodes: " + expanded.size());
+        System.out.print('\n');
+        System.out.println("Border Nodes: " + "ayuda no se como hacerlo");
+        System.out.print('\n');
+        return;
+    }
+
     public void dfs(Board board) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
@@ -25,9 +40,7 @@ public class Algorithms {
             aux = dfsStack.pop();
             hasWon = aux.hasWon();
             if (hasWon) {
-                System.out.println("Solution Found:");
-                System.out.print('\n');
-                aux.printBoards();
+                printSolution(aux, repeated);
                 return;
             } else {
                 for(Node n: aux.getNextNodes()){
@@ -59,9 +72,8 @@ public class Algorithms {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
             if (hasWon) {
-                System.out.println("Solution Found:");
-                System.out.print('\n');
-                aux.printBoards();
+                printSolution(aux, repeated);
+                return;
             } else {
                 for(Node n: aux.getNextNodes()) {
                     if(!repeated.contains(n.getBoard())) {
@@ -91,9 +103,8 @@ public class Algorithms {
             aux = dfsStack.pop();
             hasWon = aux.hasWon();
             if (hasWon) {
-                System.out.println("Solution Found:");
-                System.out.print('\n');
-                aux.printBoards();
+                printSolution(aux, repeated);
+                return;
             } else if (aux.getDepth() <= depth) {
                 for(Node n: aux.getNextNodes()){
                     if(!repeated.contains(n.getBoard())) {
