@@ -14,27 +14,32 @@ public class Main {
     private final static String IDDFS = "IDDFS";
     private final static String A_STAR = "A*";
     private final static String IDA_STAR = "IDA*";
+    private final static String MANHATTAN = "manhattan";
+    private final static String EUCLIDEAN = "euclidean*";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
-        String fileName = "map/config.json";
-        int mapNumber;
-        int limit;
-        int depth;
-        String algorithm;
+        String fileName;
+        int mapNumber = 1;
+        int limit = 1;
+        int depth = 1;
+        String algorithm = MANHATTAN;
+        String heuristic = DFS;
 
-        try {
-            JSONObject data = (JSONObject) parser.parse(new FileReader(fileName));
-            algorithm = (String) data.get("algorithm");
-            mapNumber = Integer.parseInt((String) data.get("map"));
-            limit = Integer.parseInt((String) data.get("limit"));
-            depth = Integer.parseInt((String) data.get("depth"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error at config file");
-            return;
+        if (args.length > 0) {
+            mapNumber = Integer.parseInt(args[0]);
+            algorithm = args[1];
+            if (IDDFS.equals(algorithm)) {
+                depth = Integer.parseInt(args[1]);
+            } else {
+                heuristic = args[1];
+                if (IDA_STAR.equals(algorithm)) {
+                    limit = Integer.parseInt(args[2]);
+                }
+            }
+
         }
-
+        
         fileName = "map/mapa" + mapNumber + ".json";
 
         try {
@@ -87,7 +92,7 @@ public class Main {
 
                 System.out.println("Algorithm: " + algorithm);
                 System.out.print('\n');
-                System.out.println("Heuristic: " + algorithm);
+                System.out.println("Heuristic: " + heuristic);
                 System.out.print('\n');
                 System.out.println("Initial Map: ");
                 System.out.print('\n');
