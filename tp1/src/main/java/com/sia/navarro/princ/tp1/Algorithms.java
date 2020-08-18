@@ -9,7 +9,7 @@ public class Algorithms {
 
     public Algorithms() {
         this.dfsStack = new Stack<Node>();
-        this.bfsQueue = new LinkedList<Node>();
+        this.bfsQueue = new PriorityQueue<>();
     }
 
 
@@ -76,8 +76,13 @@ public class Algorithms {
         HashSet<Board> repeated = new HashSet<Board>();
         repeated.add(board.cloneBoard());
         boolean hasWon = false;
+        bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return o1.getDepth() - o2.getDepth();
+            }
+        });
         bfsQueue.add(init);
-        board.print();
         int frontier = 0;
         Node aux;
 
@@ -91,11 +96,12 @@ public class Algorithms {
                 LinkedList<Node> auxList = aux.getNextNodes();
                 if (auxList.size() == 0) {
                     frontier++;
-                }
-                for(Node n: auxList) {
-                    if(!repeated.contains(n.getBoard())) {
-                        repeated.add(n.getBoard());
-                        bfsQueue.add(n);
+                } else {
+                    for(Node n: auxList) {
+                        if(!repeated.contains(n.getBoard())) {
+                            repeated.add(n.getBoard());
+                            bfsQueue.add(n);
+                        }
                     }
                 }
             }
