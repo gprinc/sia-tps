@@ -9,7 +9,7 @@ public class Algorithms {
 
     public Algorithms() {
         this.dfsStack = new Stack<Node>();
-        this.bfsQueue = new PriorityQueue<Node>();
+        this.bfsQueue = new LinkedList<Node>();
     }
 
 
@@ -148,7 +148,7 @@ public class Algorithms {
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard, 0);
         double h = heuristic.getValue(init);
-        if(h >= 1000000000 || (h != 0 && h >= limit))
+        if(h >= 1000000000 || (limit != 0 && h >= limit))
             return;
 
         init.setCost(steps + h);
