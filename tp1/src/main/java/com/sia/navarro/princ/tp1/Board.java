@@ -24,6 +24,8 @@ public class Board implements Cloneable {
     private Position size;
     private double cost;
 
+    private double totalCost;
+
 
     public Board(Board b) {
         this(b.getPlayer(), b.getBoxes(), b.getWinPoints(), b.getWalls(), b.getSize(), b.getCost());
@@ -335,6 +337,10 @@ public class Board implements Cloneable {
     public double getCost() { return cost; }
 
     public void setCost(double cost) { this.cost = cost; }
+
+    public double getTotalCost() { return totalCost; }
+
+    public void setTotalCost(double totalCost) { this.totalCost = totalCost; }
 
     public Board cloneBoard() {
         Board clone = new Board(this.player, this.boxes, this.winPoints, this.walls, this.size, this.cost);

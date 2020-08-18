@@ -9,7 +9,7 @@ public class Algorithms {
 
     public Algorithms() {
         this.dfsStack = new Stack<Node>();
-        this.bfsQueue = new PriorityQueue<>();
+        this.bfsQueue = new PriorityQueue<Node>();
     }
 
 
@@ -77,7 +77,6 @@ public class Algorithms {
         repeated.add(board.cloneBoard());
         boolean hasWon = false;
         bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
-            @Override
             public int compare(Node o1, Node o2) {
                 return o1.getDepth() - o2.getDepth();
             }
@@ -149,25 +148,25 @@ public class Algorithms {
     }
 
     public void aStar(Board board, Heuristic heuristic, double limit) {
-        int steps = 0;
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard, 0);
         double h = heuristic.getValue(init);
         if(h >= 1000000000 || (limit != 0 && h >= limit))
             return;
-
-        init.setCost(steps + h);
-        Queue<Node> nextNodes = new PriorityQueue<Node>();
+        init.setTotalCost(init.getPathCost() + h);
+        Queue<Node> nextNodes = new PriorityQueue<Node>(11, new Comparator<Node>() {
+            public int compare(Node o1, Node o2) {
+                return (int) o1.getTotalCost() - (int) o2.getTotalCost();
+            }
+        });
         nextNodes.add(init);
         HashSet<Board> repeated = new HashSet<Board>();
-        repeated.add(board.cloneBoard());
         int frontier = 0;
 
         while (!nextNodes.isEmpty()) {
             Node currentNode = nextNodes.poll();
-            steps++;
-            if (currentNode.getBoard().hasWon()) {
+            if (currentNode.hasWon()) {
                 printSolution(currentNode, repeated,frontier + nextNodes.size());
                 return;
             }
@@ -175,19 +174,30 @@ public class Algorithms {
             LinkedList<Node> auxList = currentNode.getNextNodes();
             if (auxList.size() == 0) {
                 frontier++;
-            }
-            for(Node childNode : auxList){
-                h = heuristic.getValue(childNode);
-                childNode.setCost(steps + h);
-                if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
-                    nextNodes.add(childNode);
-                } else if(nextNodes.contains(childNode)) {
-                    for (Node n : nextNodes) {
-                        if (childNode.equals(n)) {
-                            if (childNode.getCost() < n.getCost()) {
-                                nextNodes.remove(n);
-                                nextNodes.add(childNode);
-                                break;
+            } else {
+                for (Node childNode : auxList) {
+                    h = heuristic.getValue(childNode);
+                    if (h < 1000000000 && (limit == 0 ||  h < limit)) {
+                        childNode.setTotalCost(childNode.getPathCost() + h);
+                        if (!repeated.contains(childNode) && !nextNodes.contains(childNode)) {
+                            nextNodes.add(childNode);
+                        } else if (nextNodes.contains(childNode)) {
+                            for (Node n : nextNodes) {
+                                if (childNode.equals(n)) {
+                                    if (childNode.getTotalCost() < n.getTotalCost()) {
+                                        nextNodes.remove(n);
+                                        nextNodes.add(childNode);
+                                        break;
+                                    }
+                                }
+                            }
+                        } else if (repeated.contains(childNode)) {
+                            for (Board b : repeated) {
+                                if (childNode.getBoard().equals(b)) {
+                                    if (childNode.getTotalCost() < b.getTotalCost()) {
+                                        nextNodes.add(childNode);
+                                    }
+                                }
                             }
                         }
                     }
@@ -199,22 +209,23 @@ public class Algorithms {
     public void gg(Board board, Heuristic heuristic) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
-        Node init = new Node(firstBoard);
+        Node init = new Node(firstBoard, 0);
         double h = heuristic.getValue(init);
-        if(h >= 1000000000) {
+        if(h >= 1000000000)
             return;
-        }
-
-        init.setCost(h);
-        Queue<Node> nextNodes = new PriorityQueue<Node>();
+        init.setTotalCost(init.getPathCost() + h);
+        Queue<Node> nextNodes = new PriorityQueue<Node>(11, new Comparator<Node>() {
+            public int compare(Node o1, Node o2) {
+                return (int) o1.getTotalCost() - (int) o2.getTotalCost();
+            }
+        });
         nextNodes.add(init);
         HashSet<Board> repeated = new HashSet<Board>();
-        repeated.add(board.cloneBoard());
         int frontier = 0;
 
         while (!nextNodes.isEmpty()) {
             Node currentNode = nextNodes.poll();
-            if (currentNode.getBoard().hasWon()) {
+            if (currentNode.hasWon()) {
                 printSolution(currentNode, repeated,frontier + nextNodes.size());
                 return;
             }
@@ -225,21 +236,27 @@ public class Algorithms {
             }
             for(Node childNode : auxList){
                 h = heuristic.getValue(childNode);
-                childNode.setCost(h);
+                childNode.setTotalCost(childNode.getPathCost() + h);
                 if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
                     nextNodes.add(childNode);
                 } else if(nextNodes.contains(childNode)){
                     for(Node n : nextNodes) {
                         if(childNode.equals(n)) {
-                            if(childNode.getCost() < n.getCost()){
+                            if(childNode.getTotalCost() < n.getTotalCost()){
                                 nextNodes.remove(n);
                                 nextNodes.add(childNode);
                                 break;
                             }
                         }
                     }
-                } else if(repeated.contains(childNode.getBoard())) {
-                    // Me falta ver cuando esta el board en repetidos pero hay menor costo
+                } else if(repeated.contains(childNode)) {
+                    for(Board b : repeated) {
+                        if(childNode.getBoard().equals(b)) {
+                            if(childNode.getTotalCost() < b.getTotalCost()){
+                                nextNodes.add(childNode);
+                            }
+                        }
+                    }
                 }
             }
         }

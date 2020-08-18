@@ -5,6 +5,8 @@ import java.util.LinkedList;
 public class Node implements Comparable<Node> {
     private LinkedList<Board> boards;
     private double cost;
+    private double pathCost;
+    private double totalCost;
 
 
     public Node(LinkedList<Board> boards) {
@@ -19,6 +21,8 @@ public class Node implements Comparable<Node> {
     public Node(LinkedList<Board> boards, double cost) {
         this.boards = boards;
         this.cost = cost;
+        this.pathCost = cost;
+        this.totalCost = 0;
     }
 
     public void printBoards() {
@@ -44,26 +48,26 @@ public class Node implements Comparable<Node> {
 
         if (auxBoard.movePlayer(Board.UP)) {
             auxBoards.add(new Board(auxBoard));
-            aux.add(new Node(auxBoards));
+            aux.add(new Node(auxBoards, this.pathCost + 1));
             auxBoards = new LinkedList<Board>(this.boards);
             auxBoard = lastBoard.cloneBoard();
         }
         if (auxBoard.movePlayer(Board.DOWN)) {
             auxBoards.add(new Board(auxBoard));
-            aux.add(new Node(auxBoards));
+            aux.add(new Node(auxBoards, this.pathCost + 1));
             auxBoards = new LinkedList<Board>(this.boards);
             auxBoard = lastBoard.cloneBoard();
         }
 
         if (auxBoard.movePlayer(Board.LEFT)) {
             auxBoards.add(new Board(auxBoard));
-            aux.add(new Node(auxBoards));
+            aux.add(new Node(auxBoards, this.pathCost + 1));
             auxBoards = new LinkedList<Board>(this.boards);
             auxBoard = lastBoard.cloneBoard();
         }
         if (auxBoard.movePlayer(Board.RIGHT)) {
             auxBoards.add(new Board(auxBoard));
-            aux.add(new Node(auxBoards));
+            aux.add(new Node(auxBoards, this.pathCost + 1));
         }
         return aux;
     }
@@ -79,13 +83,6 @@ public class Node implements Comparable<Node> {
     public void setCost(double cost) {
         this.cost = cost;
         this.boards.getLast().setCost(cost);
-    }
-
-    public double getTotalCost() {
-        double total = 0;
-        for (Board b: this.boards)
-            total += b.getCost();
-        return total;
     }
 
 
@@ -105,8 +102,23 @@ public class Node implements Comparable<Node> {
     }
 
     public int compareTo(Node n) {
-        Double ownCost = this.cost;
-        Double nCost = n.getCost();
+        Double ownCost = this.totalCost;
+        Double nCost = n.getTotalCost();
         return ownCost.compareTo(nCost);
+    }
+
+
+    public double getPathCost() { return pathCost; }
+
+    public void setPathCost(double pathCost) { this.pathCost = pathCost; }
+
+    public void setTotalCost(double totalCost) { this.totalCost = totalCost; }
+
+    public double getTotalCost() {
+        return this.totalCost;
+        /* double total = 0;
+        for (Board b: this.boards)
+            total += b.getCost();
+        return total; */
     }
 }
