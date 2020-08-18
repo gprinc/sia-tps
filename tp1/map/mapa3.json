@@ -1,6 +1,5 @@
 {
   "id": 3,
-  "algorithm": "DFS",
   "width": "7",
   "height": "3",
   "walls": [

@@ -19,17 +19,17 @@ public class Algorithms {
         this.heuristic = new Heuristic(heuristic);
     }
 
-    private void printSolution(Node aux, HashSet<Board> expanded) {
+    private void printSolution(Node aux, HashSet<Board> expanded, int frontier) {
         System.out.println("Solution Found:");
         System.out.print('\n');
         aux.printBoards();
         System.out.println("Depth: " + aux.getDepth());
         System.out.print('\n');
-        System.out.println("Cost: " + aux.getCost());
+        System.out.println("Cost: " + aux.getTotalCost());
         System.out.print('\n');
         System.out.println("Expanded Nodes: " + expanded.size());
         System.out.print('\n');
-        System.out.println("Border Nodes: " + "ayuda no se como hacerlo");
+        System.out.println("Border Nodes: " + frontier);
         System.out.print('\n');
         return;
     }
@@ -42,16 +42,20 @@ public class Algorithms {
         repeated.add(board.cloneBoard());
         boolean hasWon = false;
         dfsStack.push(init);
-
+        int frontier = 0;
         Node aux;
         while (!dfsStack.empty() && !hasWon) {
             aux = dfsStack.pop();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, repeated);
+                printSolution(aux, repeated, frontier + dfsStack.size());
                 return;
             } else {
-                for(Node n: aux.getNextNodes()){
+                LinkedList<Node> auxList = aux.getNextNodes();
+                if (auxList.size() == 0) {
+                    frontier++;
+                }
+                for(Node n: auxList){
                     if(!repeated.contains(n.getBoard())) {
                         repeated.add(n.getBoard());
                         dfsStack.push(n);
@@ -74,16 +78,21 @@ public class Algorithms {
         boolean hasWon = false;
         bfsQueue.add(init);
         board.print();
-
+        int frontier = 0;
         Node aux;
+
         while (bfsQueue.size() != 0 && !hasWon) {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, repeated);
+                printSolution(aux, repeated, frontier + bfsQueue.size());
                 return;
             } else {
-                for(Node n: aux.getNextNodes()) {
+                LinkedList<Node> auxList = aux.getNextNodes();
+                if (auxList.size() == 0) {
+                    frontier++;
+                }
+                for(Node n: auxList) {
                     if(!repeated.contains(n.getBoard())) {
                         repeated.add(n.getBoard());
                         bfsQueue.add(n);
@@ -105,15 +114,20 @@ public class Algorithms {
         repeated.add(board.cloneBoard());
         boolean hasWon = false;
         dfsStack.add(init);
-
+        int frontier = 0;
         Node aux;
+
         while (dfsStack.size() != 0 && !hasWon) {
             aux = dfsStack.pop();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, repeated);
+                printSolution(aux, repeated,frontier + dfsStack.size());
                 return;
             } else if (aux.getDepth() <= depth) {
+                LinkedList<Node> auxList = aux.getNextNodes();
+                if (auxList.size() == 0) {
+                    frontier++;
+                }
                 for(Node n: aux.getNextNodes()){
                     if(!repeated.contains(n.getBoard())) {
                         repeated.add(n.getBoard());
@@ -142,16 +156,21 @@ public class Algorithms {
         nextNodes.add(init);
         HashSet<Board> repeated = new HashSet<Board>();
         repeated.add(board.cloneBoard());
+        int frontier = 0;
 
         while (!nextNodes.isEmpty()) {
             Node currentNode = nextNodes.poll();
             steps++;
             if (currentNode.getBoard().hasWon()) {
-                currentNode.printBoards();
+                printSolution(currentNode, repeated,frontier + nextNodes.size());
                 return;
             }
             repeated.add(currentNode.getBoard());
-            for(Node childNode : currentNode.getNextNodes()){
+            LinkedList<Node> auxList = currentNode.getNextNodes();
+            if (auxList.size() == 0) {
+                frontier++;
+            }
+            for(Node childNode : auxList){
                 h = heuristic.getValue(childNode);
                 childNode.setCost(steps + h);
                 if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
@@ -185,14 +204,20 @@ public class Algorithms {
         nextNodes.add(init);
         HashSet<Board> repeated = new HashSet<Board>();
         repeated.add(board.cloneBoard());
+        int frontier = 0;
 
         while (!nextNodes.isEmpty()) {
             Node currentNode = nextNodes.poll();
             if (currentNode.getBoard().hasWon()) {
-                currentNode.printBoards();
+                printSolution(currentNode, repeated,frontier + nextNodes.size());
+                return;
             }
             repeated.add(currentNode.getBoard());
-            for(Node childNode : currentNode.getNextNodes()){
+            LinkedList<Node> auxList = currentNode.getNextNodes();
+            if (auxList.size() == 0) {
+                frontier++;
+            }
+            for(Node childNode : auxList){
                 h = heuristic.getValue(childNode);
                 childNode.setCost(h);
                 if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){

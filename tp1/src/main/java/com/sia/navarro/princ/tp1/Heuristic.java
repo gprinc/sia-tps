@@ -23,12 +23,13 @@ public class  Heuristic {
     private double combination(Node node) {
         if (node.isStuck()){
             return 1000000000;
-        }else if (node.hasWon()){
+        } else if (node.hasWon()){
             return 0;
         }
         return Math.max(this.manhattan(node), this.euclidean(node));
     }
 
+    // SUMA DE LOS CATETOS
     private double manhattan(Node node) {
         Board board = node.getBoard();
         Box[] boxes = board.getBoxes();
@@ -48,6 +49,7 @@ public class  Heuristic {
         return h;
     }
 
+    // DIAGONAL
     private double euclidean(Node node) {
         Board board = node.getBoard();
         Box[] boxes = board.getBoxes();

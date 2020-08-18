@@ -15,8 +15,6 @@ public class Main {
     private final static String A_STAR = "A*";
     private final static String IDA_STAR = "IDA*";
     private final static String GG = "GG";
-    private final static String MANHATTAN = "manhattan";
-    private final static String EUCLIDEAN = "euclidean";
     private final static String COMBINATION = "combination";
 
     public static void main(String[] args) {
@@ -33,13 +31,12 @@ public class Main {
             algorithm = args[1];
             if (IDDFS.equals(algorithm)) {
                 depth = Integer.parseInt(args[2]);
-            } else {
+            } else if(IDA_STAR.equals(algorithm) || A_STAR.equals(algorithm) || GG.equals(algorithm)) {
                 heuristic = args[2];
                 if (IDA_STAR.equals(algorithm)) {
                     limit = Integer.parseInt(args[3]);
                 }
             }
-
         }
         
         fileName = "map/mapa" + mapNumber + ".json";
@@ -53,11 +50,7 @@ public class Main {
 
             int width = Integer.parseInt((String) data.get("width"));
             int height = Integer.parseInt((String) data.get("height"));
-            limit = Integer.parseInt((String) data.get("limit"));
-            depth = Integer.parseInt((String) data.get("depth"));
-            heuristic = (String) data.get("heuristic");
 
-            System.out.println("Error at config file");
             if (boxesJSON.size() != winPointsJSON.size()) {
                 System.out.println("There are different amount of boxes than winpoints");
             } else {
@@ -97,8 +90,10 @@ public class Main {
 
                 System.out.println("Algorithm: " + algorithm);
                 System.out.print('\n');
-                System.out.println("Heuristic: " + heuristic);
-                System.out.print('\n');
+                if (!IDDFS.equals(algorithm) && !BFS.equals(algorithm) && !DFS.equals(algorithm)){
+                    System.out.println("Heuristic: " + heuristic);
+                    System.out.print('\n');
+                }
                 System.out.println("Initial Map: ");
                 System.out.print('\n');
                 board.print();
