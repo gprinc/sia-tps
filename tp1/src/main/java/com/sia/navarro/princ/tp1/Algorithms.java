@@ -11,7 +11,7 @@ public class Algorithms {
         this.bfsQueue = new PriorityQueue<Node>();
     }
 
-    private void printSolution(Node aux, HashSet<Board> expanded, int frontier) {
+    private void printSolution(Node aux, int expanded, int frontier) {
         System.out.println("Solution Found:");
         System.out.print('\n');
         aux.printBoards();
@@ -19,7 +19,7 @@ public class Algorithms {
         System.out.print('\n');
         System.out.println("Cost: " + aux.getPathCost());
         System.out.print('\n');
-        System.out.println("Expanded Nodes: " + expanded.size());
+        System.out.println("Expanded Nodes: " + expanded);
         System.out.print('\n');
         System.out.println("Border Nodes: " + frontier);
         System.out.print('\n');
@@ -40,7 +40,7 @@ public class Algorithms {
             aux = dfsStack.pop();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, repeated, frontier + dfsStack.size());
+                printSolution(aux, repeated.size(), frontier + dfsStack.size());
                 return;
             } else {
                 LinkedList<Node> auxList = aux.getNextNodes();
@@ -81,7 +81,7 @@ public class Algorithms {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, repeated, frontier + bfsQueue.size());
+                printSolution(aux, repeated.size(), frontier + bfsQueue.size());
                 return;
             } else {
                 LinkedList<Node> auxList = aux.getNextNodes();
@@ -118,7 +118,7 @@ public class Algorithms {
             aux = dfsStack.pop();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, repeated,frontier + dfsStack.size());
+                printSolution(aux, repeated.size(),frontier + dfsStack.size());
                 return;
             } else if (aux.getDepth() <= depth) {
                 LinkedList<Node> auxList = aux.getNextNodes();
@@ -161,7 +161,7 @@ public class Algorithms {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, new HashSet<Board>(), frontier + bfsQueue.size());
+                printSolution(aux, repeated.size(), frontier + bfsQueue.size());
                 return;
             } else {
                 LinkedList<Node> auxList = aux.getNextNodes();
@@ -209,7 +209,7 @@ public class Algorithms {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, new HashSet<Board>(), frontier + bfsQueue.size());
+                printSolution(aux, repeated.size(), frontier + bfsQueue.size());
                 return;
             } else {
                 LinkedList<Node> auxList = aux.getNextNodes();
@@ -266,7 +266,7 @@ public class Algorithms {
                 aux = bfsQueue.poll();
                 hasWon = aux.hasWon();
                 if (hasWon) {
-                    printSolution(aux, repeated, frontier + bfsQueue.size());
+                    printSolution(aux, repeated.size(), frontier + bfsQueue.size());
                     return;
                 } else {
                     LinkedList<Node> auxList = aux.getNextNodes();
