@@ -150,115 +150,145 @@ public class Algorithms {
     public void aStar(Board board, Heuristic heuristic, double limit) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
-        Node init = new Node(firstBoard, 0);
-        double h = heuristic.getValue(init);
-        if(h >= 1000000000 || (limit != 0 && h >= limit))
-            return;
-        init.setTotalCost(init.getPathCost() + h);
-        Queue<Node> nextNodes = new PriorityQueue<Node>(11, new Comparator<Node>() {
+        Node init = new Node(firstBoard);
+        init.setTotalCost(0);
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
+        boolean hasWon = false;
+        bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
             public int compare(Node o1, Node o2) {
                 return (int) o1.getTotalCost() - (int) o2.getTotalCost();
             }
         });
-        nextNodes.add(init);
-        HashSet<Board> repeated = new HashSet<Board>();
+        bfsQueue.add(init);
         int frontier = 0;
+        Node aux;
+        int h;
 
-        while (!nextNodes.isEmpty()) {
-            Node currentNode = nextNodes.poll();
-            if (currentNode.hasWon()) {
-                printSolution(currentNode, repeated,frontier + nextNodes.size());
+        while (bfsQueue.size() != 0 && !hasWon) {
+            aux = bfsQueue.poll();
+            hasWon = aux.hasWon();
+            if (hasWon) {
+                printSolution(aux, repeated, frontier + bfsQueue.size());
                 return;
-            }
-            repeated.add(currentNode.getBoard());
-            LinkedList<Node> auxList = currentNode.getNextNodes();
-            if (auxList.size() == 0) {
-                frontier++;
             } else {
-                for (Node childNode : auxList) {
-                    h = heuristic.getValue(childNode);
-                    if (h < 1000000000 && (limit == 0 ||  h < limit)) {
-                        childNode.setTotalCost(childNode.getPathCost() + h);
-                        if (!repeated.contains(childNode) && !nextNodes.contains(childNode)) {
-                            nextNodes.add(childNode);
-                        } else if (nextNodes.contains(childNode)) {
-                            for (Node n : nextNodes) {
-                                if (childNode.equals(n)) {
-                                    if (childNode.getTotalCost() < n.getTotalCost()) {
-                                        nextNodes.remove(n);
-                                        nextNodes.add(childNode);
-                                        break;
-                                    }
-                                }
-                            }
-                        } else if (repeated.contains(childNode)) {
-                            for (Board b : repeated) {
-                                if (childNode.getBoard().equals(b)) {
-                                    if (childNode.getTotalCost() < b.getTotalCost()) {
-                                        nextNodes.add(childNode);
-                                    }
-                                }
+                LinkedList<Node> auxList = aux.getNextNodes();
+                if (auxList.size() == 0) {
+                    frontier++;
+                } else {
+                    for(Node n: auxList) {
+                        h = (int) heuristic.getValue(n);
+                        if (h < 1000000000) {
+                            n.setTotalCost(n.getPathCost() + h);
+                            if(!repeated.contains(n.getBoard())) {
+                                repeated.add(n.getBoard());
+                                bfsQueue.add(new Node(n));
                             }
                         }
                     }
                 }
             }
         }
+
+        if (!hasWon) {
+            System.out.println("No solution found");
+        }
+
     }
 
     public void gg(Board board, Heuristic heuristic) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
-        Node init = new Node(firstBoard, 0);
-        double h = heuristic.getValue(init);
-        if(h >= 1000000000)
-            return;
-        init.setTotalCost(init.getPathCost() + h);
-        Queue<Node> nextNodes = new PriorityQueue<Node>(11, new Comparator<Node>() {
+        Node init = new Node(firstBoard);
+        init.setTotalCost(0);
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
+        boolean hasWon = false;
+        bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
             public int compare(Node o1, Node o2) {
                 return (int) o1.getTotalCost() - (int) o2.getTotalCost();
             }
         });
-        nextNodes.add(init);
-        HashSet<Board> repeated = new HashSet<Board>();
+        bfsQueue.add(init);
         int frontier = 0;
+        Node aux;
+        int h;
 
-        while (!nextNodes.isEmpty()) {
-            Node currentNode = nextNodes.poll();
-            if (currentNode.hasWon()) {
-                printSolution(currentNode, repeated,frontier + nextNodes.size());
+        while (bfsQueue.size() != 0 && !hasWon) {
+            aux = bfsQueue.poll();
+            hasWon = aux.hasWon();
+            if (hasWon) {
+                printSolution(aux, repeated, frontier + bfsQueue.size());
                 return;
-            }
-            repeated.add(currentNode.getBoard());
-            LinkedList<Node> auxList = currentNode.getNextNodes();
-            if (auxList.size() == 0) {
-                frontier++;
-            }
-            for(Node childNode : auxList){
-                h = heuristic.getValue(childNode);
-                childNode.setTotalCost(childNode.getPathCost() + h);
-                if(!repeated.contains(childNode) && !nextNodes.contains(childNode)){
-                    nextNodes.add(childNode);
-                } else if(nextNodes.contains(childNode)){
-                    for(Node n : nextNodes) {
-                        if(childNode.equals(n)) {
-                            if(childNode.getTotalCost() < n.getTotalCost()){
-                                nextNodes.remove(n);
-                                nextNodes.add(childNode);
-                                break;
-                            }
-                        }
-                    }
-                } else if(repeated.contains(childNode)) {
-                    for(Board b : repeated) {
-                        if(childNode.getBoard().equals(b)) {
-                            if(childNode.getTotalCost() < b.getTotalCost()){
-                                nextNodes.add(childNode);
+            } else {
+                LinkedList<Node> auxList = aux.getNextNodes();
+                if (auxList.size() == 0) {
+                    frontier++;
+                } else {
+                    for(Node n: auxList) {
+                        h = (int) heuristic.getValue(n);
+                        if (h < 1000000000) {
+                            n.setTotalCost(h);
+                            if(!repeated.contains(n.getBoard())) {
+                                repeated.add(n.getBoard());
+                                bfsQueue.add(n);
                             }
                         }
                     }
                 }
             }
         }
+
+        if (!hasWon) {
+            System.out.println("No solution found");
+        }
     }
+
+    public void solveIDAStar(Board board, Heuristic heuristic, int limit) {
+        LinkedList<Board> firstBoard = new LinkedList<Board>();
+        firstBoard.add(board.cloneBoard());
+        Node init = new Node(firstBoard);
+        HashSet<Node> repeated = new HashSet<Node>();
+        repeated.add(init);
+
+        boolean hasWon = false;
+        bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
+            public int compare(Node o1, Node o2) {
+                return (int) o1.getTotalCost() - (int) o2.getTotalCost();
+            }
+        });
+        bfsQueue.add(init);
+        int frontier = 0;
+        Node aux;
+        int h;
+        while (bfsQueue.size() != 0 && !hasWon) {
+            aux = bfsQueue.poll();
+            hasWon = aux.hasWon();
+            if (hasWon) {
+                printSolution(aux, new HashSet<Board>(), frontier + bfsQueue.size());
+                return;
+            } else {
+                LinkedList<Node> auxList = aux.getNextNodes();
+                if (auxList.size() == 0) {
+                    frontier++;
+                } else {
+                    for(Node n: auxList) {
+                        h = (int) heuristic.getValue(n);
+                        n.setTotalCost(n.getPathCost() + h);
+                        if (h < 1000000000 || n.getTotalCost() < limit) {
+                            if(!repeated.contains(n)) {
+                                repeated.add(n);
+                                bfsQueue.add(n);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!hasWon) {
+            System.out.println("No solution found");
+        }
+    }
+
 }

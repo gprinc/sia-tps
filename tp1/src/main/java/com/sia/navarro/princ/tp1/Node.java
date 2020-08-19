@@ -2,12 +2,15 @@ package com.sia.navarro.princ.tp1;
 
 import java.util.LinkedList;
 
-public class Node implements Comparable<Node> {
+public class Node {
     private LinkedList<Board> boards;
     private double cost;
     private double pathCost;
     private double totalCost;
 
+    public Node(Node n) {
+        this((LinkedList<Board>) n.getBoards().clone(), n.getPathCost());
+    }
 
     public Node(LinkedList<Board> boards) {
         this.boards = boards;
@@ -85,6 +88,15 @@ public class Node implements Comparable<Node> {
         this.boards.getLast().setCost(cost);
     }
 
+    public boolean hasBoard(Board b) {
+        boolean asdf = false;
+        for (Board board: this.boards) {
+            asdf = board.equals(b);
+            if (asdf)
+                return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -92,19 +104,8 @@ public class Node implements Comparable<Node> {
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
         if(node.getBoards().size() != this.boards.size()) return false;
-        boolean areEquals = false;
-        for (Board b: node.getBoards()) {
-            areEquals = this.boards.contains((Board) b);
-            if (!areEquals)
-                break;
-        }
-        return areEquals;
-    }
-
-    public int compareTo(Node n) {
-        Double ownCost = this.totalCost;
-        Double nCost = n.getTotalCost();
-        return ownCost.compareTo(nCost);
+        // TODO fix this
+        return this.boards.getLast().equals(node.getBoard()) && this.totalCost == node.getTotalCost();
     }
 
 
@@ -116,9 +117,5 @@ public class Node implements Comparable<Node> {
 
     public double getTotalCost() {
         return this.totalCost;
-        /* double total = 0;
-        for (Board b: this.boards)
-            total += b.getCost();
-        return total; */
     }
 }

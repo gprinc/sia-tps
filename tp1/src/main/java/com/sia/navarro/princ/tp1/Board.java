@@ -120,6 +120,8 @@ public class Board implements Cloneable {
             }
         }
 
+        // TODO fix this
+        /*
         if (x > 0) {
             if ((this.walls[x-1][y] == 1 &&  this.walls[x][y+1] == 1) || ( y>0 && this.walls[x-1][y] == 1 &&  this.walls[x][y-1] == 1)) {
                 return true;
@@ -191,6 +193,7 @@ public class Board implements Cloneable {
                 }
             }
         }
+        */
         return false;
     }
 

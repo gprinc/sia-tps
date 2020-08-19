@@ -32,6 +32,8 @@ public class  Heuristic {
     // SUMA DE LOS CATETOS
     private double manhattan(Node node) {
         Board board = node.getBoard();
+        if(board.isStuck())
+            return 1000000000;
         Box[] boxes = board.getBoxes();
         Position[] goals = board.getWinPoints();
         double h = 0;
@@ -46,7 +48,7 @@ public class  Heuristic {
             Arrays.sort(array);
             h = h + array[0];
         }
-        return h;
+        return h / boxes.length;
     }
 
     // DIAGONAL
@@ -66,6 +68,6 @@ public class  Heuristic {
             Arrays.sort(array);
             h = h + array[0];
         }
-        return h;
+        return h / boxes.length;
     }
 }
