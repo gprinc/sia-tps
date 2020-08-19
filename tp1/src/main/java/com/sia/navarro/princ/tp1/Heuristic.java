@@ -102,24 +102,24 @@ public class  Heuristic {
         b[0] = new Box(box);
         Position[] g = new Position[1];
         g[0] = goal;
-        Board bb = new Board(board.getPlayer(), b, g, board.getWalls(), board.getSize(), board.getCost());
-        return this.aStar(bb);
+        SimpleGame bb = new SimpleGame( new Player(box), goal, board.getWalls(), board.getSize(), board.getCost());
+        return this.bfs(bb);
     }
 
-    private int bfs(Board board) {
-        LinkedList<Board> firstBoard = new LinkedList<Board>();
+    private int bfs(SimpleGame board) {
+        LinkedList<SimpleGame> firstBoard = new LinkedList<SimpleGame>();
         firstBoard.add(board.cloneBoard());
-        Node init = new Node(firstBoard);
-        HashSet<Board> repeated = new HashSet<Board>();
+        SimpleGameNode init = new SimpleGameNode(firstBoard);
+        HashSet<SimpleGame> repeated = new HashSet<SimpleGame>();
         repeated.add(board.cloneBoard());
         boolean hasWon = false;
-        Queue<Node> bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
-            public int compare(Node o1, Node o2) {
+        Queue<SimpleGameNode> bfsQueue = new PriorityQueue<SimpleGameNode>(11, new Comparator<SimpleGameNode>() {
+            public int compare(SimpleGameNode o1, SimpleGameNode o2) {
                 return o1.getDepth() - o2.getDepth();
             }
         });
         bfsQueue.add(init);
-        Node aux;
+        SimpleGameNode aux;
 
         while (bfsQueue.size() != 0 && !hasWon) {
             aux = bfsQueue.poll();
@@ -127,10 +127,10 @@ public class  Heuristic {
             if (hasWon) {
                 return aux.getDepth();
             } else {
-                LinkedList<Node> auxList = aux.getNextNodes();
+                LinkedList<SimpleGameNode> auxList = aux.getNextNodes();
                 if (auxList.size() == 0) {
                 } else {
-                    for(Node n: auxList) {
+                    for(SimpleGameNode n: auxList) {
                         if(!repeated.contains(n.getBoard())) {
                             repeated.add(n.getBoard());
                             bfsQueue.add(n);
