@@ -99,6 +99,11 @@ public class Board implements Cloneable {
     private boolean isBoxStucked(Position pos, Position original, int i) {
         int x = pos.getX();
         int y = pos.getY();
+
+        if (isInVictoryPoint(pos)) {
+            return false;
+        }
+
         if (i > 1){
             if(pos.getY() == original.getY() && pos.getX() == original.getX()){
                 return true;

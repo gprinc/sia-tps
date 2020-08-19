@@ -1,6 +1,7 @@
 package com.sia.navarro.princ.tp1;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Node {
     private LinkedList<Board> boards;
@@ -10,6 +11,7 @@ public class Node {
 
     public Node(Node n) {
         this((LinkedList<Board>) n.getBoards().clone(), n.getPathCost());
+        totalCost = n.getTotalCost();
     }
 
     public Node(LinkedList<Board> boards) {
@@ -103,11 +105,14 @@ public class Node {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-        if(node.getBoards().size() != this.boards.size()) return false;
         // TODO fix this
-        return this.boards.getLast().equals(node.getBoard()) && this.totalCost == node.getTotalCost();
+        return this.boards.getLast().equals(node.getBoard()) && this.getPathCost() == node.getPathCost();
     }
 
+    @Override
+    public int hashCode() {
+        return (int) Math.pow(Objects.hash(pathCost), getBoard().hashCode());
+    }
 
     public double getPathCost() { return pathCost; }
 
