@@ -38,6 +38,7 @@ public class Main {
                 if (IDA_STAR.equals(algorithm)) {
                     if (args.length < 3) {
                         System.out.println("You didn't set a limit");
+                        return;
                     } else {
                         limit = Integer.parseInt(args[3]);
                         if (args.length > 4 && Integer.parseInt(args[4]) > 0)

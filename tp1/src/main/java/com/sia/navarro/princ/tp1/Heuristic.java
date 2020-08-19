@@ -37,11 +37,14 @@ public class  Heuristic {
             return 1000000000;
         Box[] boxes = board.getBoxes();
         Player player = board.getPlayer();
-        int h = 0;
+        int h = 100000000;
+        int aux;
         for (Box b: boxes) {
-            h = h + this.manhattan(b.getPos(),player.getPos());
+            aux = this.manhattan(b.getPos(),player.getPos());
+            if (h > aux)
+                h = aux;
         }
-        return h / boxes.length;
+        return h;
     }
 
     private int boxesToGoals(Node node){

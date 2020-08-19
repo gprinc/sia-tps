@@ -144,8 +144,8 @@ public class Algorithms {
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
         init.setTotalCost(0);
-        HashSet<Node> repeated = new HashSet<Node>();
-        repeated.add(new Node(firstBoard));
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
         boolean hasWon = false;
         bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
             public int compare(Node o1, Node o2) {
@@ -156,6 +156,7 @@ public class Algorithms {
         int frontier = 0;
         Node aux;
         int h;
+        Iterator<Board> it;
 
         while (bfsQueue.size() != 0 && !hasWon) {
             aux = bfsQueue.poll();
@@ -172,9 +173,20 @@ public class Algorithms {
                         h = (int) heuristic.getValue(n);
                         if (h < 1000000000) {
                             n.setTotalCost(n.getPathCost() + h);
-                            if(!repeated.contains(n)) {
-                                repeated.add(new Node(n));
+                            if(!repeated.contains(n.getBoard())) {
+                                repeated.add(n.getBoard());
                                 bfsQueue.add(new Node(n));
+                            } else {
+                                it = repeated.iterator();
+                                while (it.hasNext()) {
+                                    Board auxB = it.next();
+                                    if(n.getBoard().equals(auxB) && n.getTotalCost() < auxB.getCost()) {
+                                        repeated.remove(auxB);
+                                        repeated.add(n.getBoard());
+                                        bfsQueue.add(new Node(n));
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -192,8 +204,8 @@ public class Algorithms {
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
         init.setTotalCost(0);
-        HashSet<Node> repeated = new HashSet<Node>();
-        repeated.add(new Node(firstBoard));
+        HashSet<Board> repeated = new HashSet<Board>();
+        repeated.add(board.cloneBoard());
         boolean hasWon = false;
         bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
             public int compare(Node o1, Node o2) {
@@ -204,6 +216,7 @@ public class Algorithms {
         int frontier = 0;
         Node aux;
         int h;
+        Iterator<Board> it;
 
         while (bfsQueue.size() != 0 && !hasWon) {
             aux = bfsQueue.poll();
@@ -221,8 +234,19 @@ public class Algorithms {
                         if (h < 1000000000) {
                             n.setTotalCost(h);
                             if(!repeated.contains(n)) {
-                                repeated.add(n);
+                                repeated.add(n.getBoard());
                                 bfsQueue.add(n);
+                            } else {
+                                it = repeated.iterator();
+                                while (it.hasNext()) {
+                                    Board auxB = it.next();
+                                    if(n.getBoard().equals(auxB) && n.getTotalCost() < auxB.getCost()) {
+                                        repeated.remove(auxB);
+                                        repeated.add(n.getBoard());
+                                        bfsQueue.add(new Node(n));
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -261,6 +285,7 @@ public class Algorithms {
             bfsQueue.add(init);
             int frontier = 0;
             Node aux;
+            Iterator<Board> it;
 
             while (bfsQueue.size() != 0 && !hasWon) {
                 aux = bfsQueue.poll();
@@ -280,6 +305,17 @@ public class Algorithms {
                                 if(!repeated.contains(n.getBoard())) {
                                     repeated.add(n.getBoard());
                                     bfsQueue.add(new Node(n));
+                                } else {
+                                    it = repeated.iterator();
+                                    while (it.hasNext()) {
+                                        Board auxB = it.next();
+                                        if(n.getBoard().equals(auxB) && n.getTotalCost() < auxB.getCost()) {
+                                            repeated.remove(auxB);
+                                            repeated.add(n.getBoard());
+                                            bfsQueue.add(new Node(n));
+                                            break;
+                                        }
+                                    }
                                 }
                             } else if (h < 1000000000 && auxLimit < (int) (n.getPathCost() + h)) {
                                 auxLimit = (int) (n.getPathCost() + h);

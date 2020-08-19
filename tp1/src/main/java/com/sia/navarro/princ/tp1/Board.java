@@ -40,6 +40,7 @@ public class Board implements Cloneable {
         this.winPoints = winPoints;
         this.walls = walls;
         this.size = size;
+        this.cost = 0;
     }
 
     private boolean isInVictoryPoint(Position pos) {
@@ -342,10 +343,6 @@ public class Board implements Cloneable {
     public double getCost() { return cost; }
 
     public void setCost(double cost) { this.cost = cost; }
-
-    public double getTotalCost() { return totalCost; }
-
-    public void setTotalCost(double totalCost) { this.totalCost = totalCost; }
 
     public Board cloneBoard() {
         Board clone = new Board(this.player, this.boxes, this.winPoints, this.walls, this.size, this.cost);

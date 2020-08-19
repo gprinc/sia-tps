@@ -105,20 +105,24 @@ public class Node {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-        // TODO fix this
         return this.boards.getLast().equals(node.getBoard()) && this.getPathCost() == node.getPathCost();
     }
 
     @Override
     public int hashCode() {
-        return (int) Math.pow(Objects.hash(pathCost), getBoard().hashCode());
+        final int prime = 31;
+        int hash = (int) Math.pow(prime, this.totalCost);
+        return (int) Math.pow(2, getBoard().hashCode()) * hash;
     }
 
     public double getPathCost() { return pathCost; }
 
     public void setPathCost(double pathCost) { this.pathCost = pathCost; }
 
-    public void setTotalCost(double totalCost) { this.totalCost = totalCost; }
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
+        this.boards.getLast().setCost(totalCost);
+    }
 
     public double getTotalCost() {
         return this.totalCost;
