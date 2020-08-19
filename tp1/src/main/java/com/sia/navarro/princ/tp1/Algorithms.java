@@ -168,7 +168,6 @@ public class Algorithms {
         while (bfsQueue.size() != 0 && !hasWon) {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
-            // System.out.println(aux.getTotalCost());
             if (hasWon) {
                 printSolution(aux, new HashSet<Board>(), frontier + bfsQueue.size());
                 return;
@@ -201,8 +200,8 @@ public class Algorithms {
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
         init.setTotalCost(0);
-        HashSet<Board> repeated = new HashSet<Board>();
-        repeated.add(board.cloneBoard());
+        HashSet<Node> repeated = new HashSet<Node>();
+        repeated.add(new Node(firstBoard));
         boolean hasWon = false;
         bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
             public int compare(Node o1, Node o2) {
@@ -218,7 +217,7 @@ public class Algorithms {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
             if (hasWon) {
-                printSolution(aux, repeated, frontier + bfsQueue.size());
+                printSolution(aux, new HashSet<Board>(), frontier + bfsQueue.size());
                 return;
             } else {
                 LinkedList<Node> auxList = aux.getNextNodes();
@@ -229,8 +228,8 @@ public class Algorithms {
                         h = (int) heuristic.getValue(n);
                         if (h < 1000000000) {
                             n.setTotalCost(h);
-                            if(!repeated.contains(n.getBoard())) {
-                                repeated.add(n.getBoard());
+                            if(!repeated.contains(n)) {
+                                repeated.add(n);
                                 bfsQueue.add(n);
                             }
                         }
@@ -277,8 +276,8 @@ public class Algorithms {
                         n.setTotalCost(n.getPathCost() + h);
                         if (h < 1000000000 || n.getTotalCost() < limit) {
                             if(!repeated.contains(n)) {
-                                repeated.add(n);
-                                bfsQueue.add(n);
+                                repeated.add(new Node(n));
+                                bfsQueue.add(new Node(n));
                             }
                         }
                     }
