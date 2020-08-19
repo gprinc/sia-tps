@@ -36,9 +36,13 @@ public class Main {
             } else if(IDA_STAR.equals(algorithm) || A_STAR.equals(algorithm) || GG.equals(algorithm)) {
                 heuristic = args[2];
                 if (IDA_STAR.equals(algorithm)) {
-                    limit = Integer.parseInt(args[3]);
-                    if (args.length > 4 && Integer.parseInt(args[4]) > 0)
-                        iterations = Integer.parseInt(args[4]);
+                    if (args.length < 3) {
+                        System.out.println("You didn't set a limit");
+                    } else {
+                        limit = Integer.parseInt(args[3]);
+                        if (args.length > 4 && Integer.parseInt(args[4]) > 0)
+                            iterations = Integer.parseInt(args[4]);
+                    }
                 }
             }
         }

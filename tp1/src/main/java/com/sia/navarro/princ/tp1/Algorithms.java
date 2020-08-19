@@ -281,7 +281,7 @@ public class Algorithms {
                                     repeated.add(n.getBoard());
                                     bfsQueue.add(new Node(n));
                                 }
-                            } else if (h < 1000000000 && auxLimit > (int) (n.getPathCost() + h)) {
+                            } else if (h < 1000000000 && auxLimit < (int) (n.getPathCost() + h)) {
                                 auxLimit = (int) (n.getPathCost() + h);
                             }
                         }
@@ -291,6 +291,7 @@ public class Algorithms {
 
             repeated.clear();
             currentLimit = auxLimit;
+
         }
 
         if (!hasWon) {
