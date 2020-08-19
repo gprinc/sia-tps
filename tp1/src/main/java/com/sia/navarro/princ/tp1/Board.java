@@ -99,8 +99,7 @@ public class Board implements Cloneable {
     private boolean isBoxStucked(Position pos, Position original, int i) {
         int x = pos.getX();
         int y = pos.getY();
-
-        if (i != 1){
+        if (i > 1){
             if(pos.getY() == original.getY() && pos.getX() == original.getX()){
                 return true;
             }
@@ -120,8 +119,6 @@ public class Board implements Cloneable {
             }
         }
 
-        // TODO fix this
-        /*
         if (x > 0) {
             if ((this.walls[x-1][y] == 1 &&  this.walls[x][y+1] == 1) || ( y>0 && this.walls[x-1][y] == 1 &&  this.walls[x][y-1] == 1)) {
                 return true;
@@ -130,7 +127,7 @@ public class Board implements Cloneable {
             if (this.walls[x-1][y] == 1) {
                 for (Box b : boxes) {
                     if (b.getPos().getX() == x && b.getPos().getY() == y + 1) {
-                        return isBoxStucked(b.getPos(), original, i++);
+                        return isBoxStucked(b.getPos(), original, i + 1);
                     }
                 }
             }
@@ -138,7 +135,7 @@ public class Board implements Cloneable {
             if (this.walls[x][y+1] == 1) {
                 for (Box b : boxes) {
                     if (b.getPos().getX() == x - 1 && b.getPos().getY() == y) {
-                        return isBoxStucked(b.getPos(), original, i++);
+                        return isBoxStucked(b.getPos(), original, i + 1);
                     }
                 }
             }
@@ -147,14 +144,14 @@ public class Board implements Cloneable {
                 if (this.walls[x-1][y] == 1) {
                     for (Box b : boxes) {
                         if (b.getPos().getX() == x && b.getPos().getY() == y-1) {
-                            return isBoxStucked(b.getPos(), original, i++);
+                            return isBoxStucked(b.getPos(), original, i + 1);
                         }
                     }
                 }
                 if (this.walls[x][y-1] == 1) {
                     for (Box b : boxes) {
                         if (b.getPos().getX() == x - 1 && b.getPos().getY() == y) {
-                            return isBoxStucked(b.getPos(), original, i++);
+                            return isBoxStucked(b.getPos(), original, i + 1);
                         }
                     }
                 }
@@ -164,7 +161,7 @@ public class Board implements Cloneable {
         if (this.walls[x][y+1] == 1) {
             for (Box b : boxes) {
                 if (b.getPos().getX() == x + 1 && b.getPos().getY() == y) {
-                    return isBoxStucked(b.getPos(), original, i++);
+                    return isBoxStucked(b.getPos(), original, i + 1);
                 }
             }
         }
@@ -172,7 +169,7 @@ public class Board implements Cloneable {
         if (this.walls[x+1][y] == 1) {
             for (Box b : boxes) {
                 if (b.getPos().getX() == x && b.getPos().getY() == y+1) {
-                    return isBoxStucked(b.getPos(), original, i++);
+                    return isBoxStucked(b.getPos(), original, i + 1);
                 }
             }
         }
@@ -181,25 +178,25 @@ public class Board implements Cloneable {
             if (this.walls[x+1][y] == 1) {
                 for (Box b : boxes) {
                     if (b.getPos().getX() == x && b.getPos().getY() == y-1) {
-                        return isBoxStucked(b.getPos(), original, i++);
+                        return isBoxStucked(b.getPos(), original, i + 1);
                     }
                 }
             }
             if (this.walls[x][y-1] == 1) {
                 for (Box b : boxes) {
                     if (b.getPos().getX() == x + 1 && b.getPos().getY() == y) {
-                        return isBoxStucked(b.getPos(), original, i++);
+                        return isBoxStucked(b.getPos(), original, i + 1);
                     }
                 }
             }
         }
-        */
+        
         return false;
     }
 
     public boolean isStuck() {
         for (int i = 0; i < this.boxes.length; i++) {
-            if (isBoxStucked(this.boxes[i].getPos(),this.boxes[i].getPos(), 1)) {
+            if (isBoxStucked(this.boxes[i].getPos(), this.boxes[i].getPos(), 1)) {
                 return true;
             }
         }

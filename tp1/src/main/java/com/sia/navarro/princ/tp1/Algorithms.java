@@ -46,6 +46,8 @@ public class Algorithms {
         Node aux;
         while (!dfsStack.empty() && !hasWon) {
             aux = dfsStack.pop();
+            aux.getBoard().print();
+            aux.isStuck();
             hasWon = aux.hasWon();
             if (hasWon) {
                 printSolution(aux, repeated, frontier + dfsStack.size());
@@ -88,6 +90,7 @@ public class Algorithms {
         while (bfsQueue.size() != 0 && !hasWon) {
             aux = bfsQueue.poll();
             hasWon = aux.hasWon();
+            aux.getBoard().print();
             if (hasWon) {
                 printSolution(aux, repeated, frontier + bfsQueue.size());
                 return;
