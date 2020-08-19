@@ -103,7 +103,7 @@ public class  Heuristic {
         Position[] g = new Position[1];
         g[0] = goal;
         Board bb = new Board(board.getPlayer(), b, g, board.getWalls(), board.getSize(), board.getCost());
-        return this.bfs(bb);
+        return this.aStar(bb);
     }
 
     private int bfs(Board board) {
