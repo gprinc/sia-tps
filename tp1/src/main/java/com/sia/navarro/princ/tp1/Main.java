@@ -86,7 +86,7 @@ public class Main {
 
                 Board board = new Board(new Player(new Position(Integer.parseInt((String) playerJSON.get("x")) ,Integer.parseInt((String) playerJSON.get("y")))), boxes, winPoints, walls, new Position(width, height), 0);
 
-                Algorithms alg = new Algorithms(heuristic);
+                Algorithms alg = new Algorithms();
 
                 System.out.println("Algorithm: " + algorithm);
                 System.out.print('\n');

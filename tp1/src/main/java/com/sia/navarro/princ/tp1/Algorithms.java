@@ -5,18 +5,10 @@ import java.util.*;
 public class Algorithms {
     private Stack<Node> dfsStack;
     private Queue<Node> bfsQueue;
-    private Heuristic heuristic;
 
     public Algorithms() {
         this.dfsStack = new Stack<Node>();
         this.bfsQueue = new PriorityQueue<Node>();
-    }
-
-
-    public Algorithms(String heuristic) {
-        this.dfsStack = new Stack<Node>();
-        this.bfsQueue = new PriorityQueue<Node>();
-        this.heuristic = new Heuristic(heuristic);
     }
 
     private void printSolution(Node aux, HashSet<Board> expanded, int frontier) {
