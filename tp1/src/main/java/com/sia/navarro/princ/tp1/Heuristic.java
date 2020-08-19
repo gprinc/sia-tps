@@ -12,21 +12,23 @@ public class  Heuristic {
     }
 
     public double getValue(Node node){
+        /*
         if (MANHATTAN.equals(type)){
             return this.manhattan(node);
         } else if (EUCLIDEAN.equals(type)){
             return this.euclidean(node);
         }
+        */
         return this.combination(node);
     }
 
     private double combination(Node node) {
         if (node.isStuck()){
             return 1000000000;
-        } else if (node.hasWon()){
+        } else {
             return 0;
         }
-        return Math.max(this.manhattan(node), this.euclidean(node));
+        // return Math.max(this.manhattan(node), this.euclidean(node));
     }
 
     // SUMA DE LOS CATETOS
