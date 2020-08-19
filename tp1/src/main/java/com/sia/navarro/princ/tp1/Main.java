@@ -16,6 +16,7 @@ public class Main {
     private final static String IDA_STAR = "IDA*";
     private final static String GG = "GG";
     private final static String COMBINATION = "combination";
+    private final static int DEFAULT_ITERATIONS = 10;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -25,6 +26,7 @@ public class Main {
         int depth = 1;
         String algorithm = DFS;
         String heuristic = COMBINATION;
+        int iterations = DEFAULT_ITERATIONS;
 
         if (args.length > 0) {
             mapNumber = Integer.parseInt(args[0]);
@@ -35,6 +37,8 @@ public class Main {
                 heuristic = args[2];
                 if (IDA_STAR.equals(algorithm)) {
                     limit = Integer.parseInt(args[3]);
+                    if (args.length > 4 && Integer.parseInt(args[4]) > 0)
+                        iterations = Integer.parseInt(args[4]);
                 }
             }
         }
@@ -109,7 +113,7 @@ public class Main {
                 else if (A_STAR.equals(algorithm))
                     alg.aStar(board.cloneBoard(), new Heuristic(heuristic));
                 else if (IDA_STAR.equals(algorithm))
-                    alg.idaStar(board.cloneBoard(), new Heuristic(heuristic), limit);
+                    alg.idaStar(board.cloneBoard(), new Heuristic(heuristic), limit, iterations);
                 else if (GG.equals(algorithm))
                     alg.gg(board.cloneBoard(), new Heuristic(heuristic));
 
