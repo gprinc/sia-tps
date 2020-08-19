@@ -107,9 +107,9 @@ public class Main {
                 else if (IDDFS.equals(algorithm))
                     alg.iddfs(board.cloneBoard(), depth);
                 else if (A_STAR.equals(algorithm))
-                    alg.aStar(board.cloneBoard(), new Heuristic(heuristic), 0);
+                    alg.aStar(board.cloneBoard(), new Heuristic(heuristic));
                 else if (IDA_STAR.equals(algorithm))
-                    alg.aStar(board.cloneBoard(), new Heuristic(heuristic), limit);
+                    alg.idaStar(board.cloneBoard(), new Heuristic(heuristic), limit);
                 else if (GG.equals(algorithm))
                     alg.gg(board.cloneBoard(), new Heuristic(heuristic));
 

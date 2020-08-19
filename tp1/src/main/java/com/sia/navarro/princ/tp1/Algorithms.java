@@ -147,7 +147,7 @@ public class Algorithms {
         }
     }
 
-    public void aStar(Board board, Heuristic heuristic, double limit) {
+    public void aStar(Board board, Heuristic heuristic) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
@@ -193,7 +193,6 @@ public class Algorithms {
         if (!hasWon) {
             System.out.println("No solution found");
         }
-
     }
 
     public void gg(Board board, Heuristic heuristic) {
@@ -244,7 +243,7 @@ public class Algorithms {
         }
     }
 
-    public void solveIDAStar(Board board, Heuristic heuristic, int limit) {
+    public void idaStar(Board board, Heuristic heuristic, int limit) {
         LinkedList<Board> firstBoard = new LinkedList<Board>();
         firstBoard.add(board.cloneBoard());
         Node init = new Node(firstBoard);
