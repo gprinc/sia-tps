@@ -33,33 +33,33 @@ public class Main {
             String heuristic = DEFAULT_HEURISTIC;
             int iterations = DEFAULT_ITERATIONS;
 
-            if (data.get("map") != null)
+            if (data.get("map").toString() != null)
                 mapNumber = (String) data.get("map");
             else {
                 System.out.println("Map must be a valid string number");
                 return;
             }
-            if (data.get("algorithm") != null) {
+            if (data.get("algorithm").toString() != null) {
                 algorithm = (String) data.get("algorithm");
                 if (IDDFS.equals(algorithm)) {
-                    if (data.get("depth") != null)
+                    if (data.get("depth").toString() != null)
                         depth = Integer.parseInt((String) data.get("depth"));
                     else {
                         System.out.println("If you want to use IDDFS, you must set a depth value");
                         return;
                     }
                 } else if(IDA_STAR.equals(algorithm) || A_STAR.equals(algorithm) || GG.equals(algorithm)) {
-                    if (data.get("heuristic") != null)
+                    if (data.get("heuristic").toString() != null)
                         heuristic = (String) data.get("heuristic");
                     else {
-                        System.out.println("Heuristics must be either ");
+                        System.out.println("Heuristics must be either pb, bg, bgw");
                         return;
                     }
                     if (IDA_STAR.equals(algorithm)) {
-                        if (data.get("limit") != null && data.get("iterations") != null) {
+                        if (data.get("limit").toString() != null)
                             limit = Integer.parseInt((String) data.get("limit"));
+                        if (data.get("iterations").toString() != null)
                             iterations = Integer.parseInt((String) data.get("iterations"));
-                        }
                     }
                 }
             } else {
