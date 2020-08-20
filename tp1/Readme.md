@@ -20,9 +20,12 @@ They are all string values.
  
  - `heuristic`: you can select which heuristic to use for `A*`, `IDA*` and `GG`. The possible values are `bg`, `pb`, `bgw`. The default value is bg.
  
- `bg`'s heuristic ...
- `pb`'s heuristic ...
- `bgw`'s heuristic ...
+ `bg`'s heuristic are the shortests' paths average between boxes and goals.
+ 
+ `pb`'s heuristic is the shortest path between the player and boxes using manhattan.
+ 
+ `bgw`'s heuristic are the shortests' paths average between boxes and goals using BFS.
+ 
 
 # Run
 
