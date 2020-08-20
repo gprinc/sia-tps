@@ -18,19 +18,9 @@ public class  Heuristic {
         } else if (BG.equals(type)){
             return this.boxesToGoals(node);
         } else if (BGW.equals(type)){
-            System.out.println("H");
             return this.boxesToGoalsWalls(node);
         }
-        return this.combination(node);
-    }
-
-    private double combination(Node node) {
-        if (node.isStuck()){
-            return 1000000000;
-        } else {
-            return 0;
-        }
-        // return Math.max(this.playerToBoxes(node), this.boxesToGoals(node));
+        return this.playerToBoxes(node);
     }
 
     private int manhattan(Position pos1, Position pos2){
@@ -146,63 +136,4 @@ public class  Heuristic {
         return 0;
     }
 
-    private int aStar(Board board) {
-        LinkedList<Board> firstBoard = new LinkedList<Board>();
-        firstBoard.add(board.cloneBoard());
-        Node init = new Node(firstBoard);
-        init.setTotalCost(0);
-        HashSet<Board> repeated = new HashSet<Board>();
-        repeated.add(board.cloneBoard());
-        boolean hasWon = false;
-        Queue<Node> bfsQueue = new PriorityQueue<Node>(11, new Comparator<Node>() {
-            public int compare(Node o1, Node o2) {
-                return (int) o1.getTotalCost() - (int) o2.getTotalCost();
-            }
-        });
-        bfsQueue.add(init);
-        int frontier = 0;
-        Node aux;
-        int h;
-        Iterator<Board> it;
-
-        while (bfsQueue.size() != 0 && !hasWon) {
-            aux = bfsQueue.poll();
-            hasWon = aux.hasWon();
-            if (hasWon) {
-                return aux.getDepth();
-            } else {
-                LinkedList<Node> auxList = aux.getNextNodes();
-                if (auxList.size() == 0) {
-                    frontier++;
-                } else {
-                    for(Node n: auxList) {
-                        h = playerToBoxes(n);
-                        if (h < 1000000000) {
-                            n.setTotalCost(n.getPathCost() + h);
-                            if(!repeated.contains(n.getBoard())) {
-                                repeated.add(n.getBoard());
-                                bfsQueue.add(new Node(n));
-                            } else {
-                                it = repeated.iterator();
-                                while (it.hasNext()) {
-                                    Board auxB = it.next();
-                                    if(n.getBoard().equals(auxB) && n.getTotalCost() < auxB.getCost()) {
-                                        repeated.remove(auxB);
-                                        repeated.add(n.getBoard());
-                                        bfsQueue.add(new Node(n));
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!hasWon) {
-            return 1000000000;
-        }
-        return 0;
-    }
 }
