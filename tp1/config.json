@@ -1,0 +1,8 @@
+{
+  "map": "5",
+  "algorithm": "GG",
+  "heuristic": "bgw",
+  "depth": "100",
+  "limit": "100000",
+  "iterations": "10000"
+}
