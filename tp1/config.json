@@ -1,0 +1,8 @@
+{
+  "map": "1",
+  "algorithm": "BFS",
+  "heuristic": null,
+  "depth": null,
+  "limit": null,
+  "iterations": null
+}

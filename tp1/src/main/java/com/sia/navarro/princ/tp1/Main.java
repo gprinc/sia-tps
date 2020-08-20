@@ -15,43 +15,61 @@ public class Main {
     private final static String A_STAR = "A*";
     private final static String IDA_STAR = "IDA*";
     private final static String GG = "GG";
-    private final static String COMBINATION = "combination";
-    private final static int DEFAULT_ITERATIONS = 10;
+    private final static int DEFAULT_ITERATIONS = 100;
+    private final static int DEFAULT_LIMIT = 100;
+    private final static int DEFAULT_DEPTH = 100;
+    private final static String DEFAULT_HEURISTIC = "bg";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
         String fileName;
-        int mapNumber = 1;
-        int limit = 1;
-        int depth = 1;
-        String algorithm = DFS;
-        String heuristic = COMBINATION;
-        int iterations = DEFAULT_ITERATIONS;
-
-        if (args.length > 0) {
-            mapNumber = Integer.parseInt(args[0]);
-            algorithm = args[1];
-            if (IDDFS.equals(algorithm)) {
-                depth = Integer.parseInt(args[2]);
-            } else if(IDA_STAR.equals(algorithm) || A_STAR.equals(algorithm) || GG.equals(algorithm)) {
-                heuristic = args[2];
-                if (IDA_STAR.equals(algorithm)) {
-                    if (args.length < 3) {
-                        System.out.println("You didn't set a limit");
-                        return;
-                    } else {
-                        limit = Integer.parseInt(args[3]);
-                        if (args.length > 4 && Integer.parseInt(args[4]) > 0)
-                            iterations = Integer.parseInt(args[4]);
-                    }
-                }
-            }
-        }
-        
-        fileName = "map/mapa" + mapNumber + ".json";
 
         try {
-            JSONObject data = (JSONObject) parser.parse(new FileReader(fileName));
+            JSONObject data = (JSONObject) parser.parse(new FileReader("config.json"));
+            String mapNumber;
+            int limit = DEFAULT_LIMIT;
+            int depth = DEFAULT_DEPTH;
+            String algorithm = BFS;
+            String heuristic = DEFAULT_HEURISTIC;
+            int iterations = DEFAULT_ITERATIONS;
+
+            if (data.get("map") != null)
+                mapNumber = (String) data.get("map");
+            else {
+                System.out.println("Map must be a valid string number");
+                return;
+            }
+            if (data.get("algorithm") != null) {
+                algorithm = (String) data.get("algorithm");
+                if (IDDFS.equals(algorithm)) {
+                    if (data.get("depth") != null)
+                        depth = Integer.parseInt((String) data.get("depth"));
+                    else {
+                        System.out.println("If you want to use IDDFS, you must set a depth value");
+                        return;
+                    }
+                } else if(IDA_STAR.equals(algorithm) || A_STAR.equals(algorithm) || GG.equals(algorithm)) {
+                    if (data.get("heuristic") != null)
+                        heuristic = (String) data.get("heuristic");
+                    else {
+                        System.out.println("Heuristics must be either ");
+                        return;
+                    }
+                    if (IDA_STAR.equals(algorithm)) {
+                        if (data.get("limit") != null && data.get("iterations") != null) {
+                            limit = Integer.parseInt((String) data.get("limit"));
+                            iterations = Integer.parseInt((String) data.get("iterations"));
+                        }
+                    }
+                }
+            } else {
+                System.out.println("Algorithm must be either BFS, DFS, IDDFS, A*, IDA* or GG");
+                return;
+            }
+
+            fileName = "map/mapa" + mapNumber + ".json";
+
+            data = (JSONObject) parser.parse(new FileReader(fileName));
             JSONArray boxesJSON = (JSONArray) data.get("boxes");
             JSONArray winPointsJSON = (JSONArray) data.get("winPoints");
             JSONArray wallsJSON = (JSONArray) data.get("walls");
