@@ -76,23 +76,6 @@ public class SimpleGameNode {
 
     public LinkedList<SimpleGame> getBoards() { return boards; }
 
-    public double getCost() { return this.cost; }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-        this.boards.getLast().setCost(cost);
-    }
-
-    public boolean hasBoard(Board b) {
-        boolean asdf = false;
-        for (SimpleGame board: this.boards) {
-            asdf = board.equals(b);
-            if (asdf)
-                return true;
-        }
-        return false;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,13 +92,6 @@ public class SimpleGameNode {
     }
 
     public double getPathCost() { return pathCost; }
-
-    public void setPathCost(double pathCost) { this.pathCost = pathCost; }
-
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-        this.boards.getLast().setCost(totalCost);
-    }
 
     public double getTotalCost() {
         return this.totalCost;

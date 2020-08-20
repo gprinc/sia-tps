@@ -18,6 +18,7 @@ public class  Heuristic {
         } else if (BG.equals(type)){
             return this.boxesToGoals(node);
         } else if (BGW.equals(type)){
+            System.out.println("H");
             return this.boxesToGoalsWalls(node);
         }
         return this.combination(node);
@@ -85,7 +86,7 @@ public class  Heuristic {
         for (Box b: boxes) {
             for (Position g : goals) {
                 i = movesToGoal(node, b.getPos(), g);
-                if (i < haux){
+                if (i < haux && i != 0){
                     haux = i;
                 }
             }
@@ -131,7 +132,7 @@ public class  Heuristic {
                 if (auxList.size() == 0) {
                 } else {
                     for(SimpleGameNode n: auxList) {
-                        if(!repeated.contains(n.getBoard())) {
+                        if(!n.isStuck() && !repeated.contains(n.getBoard())) {
                             repeated.add(n.getBoard());
                             bfsQueue.add(n);
                         }

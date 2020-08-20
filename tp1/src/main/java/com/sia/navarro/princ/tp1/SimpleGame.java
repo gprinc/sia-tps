@@ -7,11 +7,6 @@ public class SimpleGame implements Cloneable {
     public static final char LEFT = 'a';
     public static final char RIGHT = 'd';
 
-    private static final char wallChar = '#';
-    private static final char winPointChar = '.';
-    private static final char boxChar = '$';
-    private static final char playerChar = '@';
-
     private Player player;
     private Position winPoints;
     private int[][] walls;
@@ -39,31 +34,21 @@ public class SimpleGame implements Cloneable {
     public boolean isStucked() {
         int x = player.getPos().getX();
         int y = player.getPos().getY();
-
         if (isInVictoryPoint()) {
             return false;
         }
-
         if ( (this.walls[x+1][y] == 1 &&  this.walls[x][y+1] == 1) || ( y>0 && this.walls[x+1][y] == 1 &&  this.walls[x][y-1] == 1)) {
             return true;
         }
-
-
         if (x > 0) {
             if ((this.walls[x-1][y] == 1 &&  this.walls[x][y+1] == 1) || ( y>0 && this.walls[x-1][y] == 1 &&  this.walls[x][y-1] == 1)) {
                 return true;
             }
         }
-
-        
         return false;
     }
 
     private boolean move(int x, int y) {
-        Position aux;
-
-        boolean hasMoved = false;
-
         if (this.walls[x][y] == 1){
             return false;
         }
