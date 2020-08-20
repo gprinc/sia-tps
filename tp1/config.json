@@ -1,7 +1,7 @@
 {
   "map": "5",
-  "algorithm": "GG",
-  "heuristic": "bgw",
+  "algorithm": "IDA*",
+  "heuristic": "bg",
   "depth": "100",
   "limit": "100000",
   "iterations": "10000"

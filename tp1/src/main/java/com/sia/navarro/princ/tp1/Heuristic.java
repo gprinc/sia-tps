@@ -55,7 +55,7 @@ public class  Heuristic {
         for (Box b: boxes) {
             for (Position g : goals) {
                 i = manhattan(b.getPos(),g);
-                if (i < haux && i != 0){
+                if (i < haux){
                     haux = i;
                 }
             }
