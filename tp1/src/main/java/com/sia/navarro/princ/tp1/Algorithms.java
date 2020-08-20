@@ -113,6 +113,7 @@ public class Algorithms {
         dfsStack.add(init);
         int frontier = 0;
         Node aux;
+        Iterator<Board> it;
 
         while (dfsStack.size() != 0 && !hasWon) {
             aux = dfsStack.pop();
@@ -125,10 +126,22 @@ public class Algorithms {
                 if (auxList.size() == 0) {
                     frontier++;
                 }
-                for(Node n: aux.getNextNodes()){
+                for(Node n: auxList){
+                    n.setTotalCost(n.getDepth());
                     if(!repeated.contains(n.getBoard())) {
                         repeated.add(n.getBoard());
                         dfsStack.push(n);
+                    } else {
+                        it = repeated.iterator();
+                        while (it.hasNext()) {
+                            Board auxB = it.next();
+                            if(n.getBoard().equals(auxB) && n.getDepth() < auxB.getCost()) {
+                                repeated.remove(auxB);
+                                repeated.add(n.getBoard());
+                                dfsStack.push(n);
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -233,7 +246,7 @@ public class Algorithms {
                         h = (int) heuristic.getValue(n);
                         if (h < 1000000000) {
                             n.setTotalCost(h);
-                            if(!repeated.contains(n)) {
+                            if(!repeated.contains(n.getBoard())) {
                                 repeated.add(n.getBoard());
                                 bfsQueue.add(n);
                             } else {
