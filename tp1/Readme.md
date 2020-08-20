@@ -16,6 +16,8 @@ They are all string values.
  
  - `limit`: if you use the `IDA*` algorithm, you may set its maximum limit. The default value is 100.
  
+  - `iterations`: if you use the `IDA*` algorithm, you may set its maximum amount of iterations. The default value is 100.
+ 
  - `heuristic`: you can select which heuristic to use for `A*`, `IDA*` and `GG`. The possible values are `bg`, `pb`, `bgw`. The default value is bg.
  
  `bg`'s heuristic ...
