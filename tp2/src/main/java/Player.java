@@ -56,4 +56,8 @@ public class Player {
         return (this.Endurance() + this.Expertise()) * this.Life() * this.DEM();
     }
 
+    public double performance () {
+        return 0;
+    }
+
 }

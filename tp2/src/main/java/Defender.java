@@ -4,6 +4,7 @@ public class Defender extends Player {
         super(height, chest, gloves, helmet, weapon, boots);
     }
 
+    @Override
     public double performance () {
         return 0.3 * this.Atack() + 0.8 * this.Defense();
     }
