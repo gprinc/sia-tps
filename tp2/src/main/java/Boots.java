@@ -1,5 +1,5 @@
 public class Boots extends Item{
-    public Boots(int strength, int agility, int expertise, int endurance, int life, int id) {
+    public Boots(double strength, double agility, double expertise, double endurance, double life, double id) {
         super(strength,agility,expertise,endurance,life,id);
     }
 }

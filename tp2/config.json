@@ -1,8 +1,7 @@
 {
-  "map": "5",
-  "algorithm": "IDA*",
-  "heuristic": "bg",
-  "depth": "100",
-  "limit": "100000",
-  "iterations": "10000"
+  "population": "100",
+  "selection": "Roulette",
+  "mutation": "asdf",
+  "iterations": "10000",
+  "class": "archer"
 }

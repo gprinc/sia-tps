@@ -1,12 +1,12 @@
 public class Item {
-    private int Strength;
-    private int Agility;
-    private int Expertise;
-    private int Endurance;
-    private int Life;
-    private int id;
+    private double Strength;
+    private double Agility;
+    private double Expertise;
+    private double Endurance;
+    private double Life;
+    private double id;
 
-    public Item(int strength, int agility, int expertise, int endurance, int life, int id) {
+    public Item(double strength, double agility, double expertise, double endurance, double life, double id) {
         this.Strength = strength;
         this.Agility = agility;
         this.Expertise = expertise;
@@ -15,27 +15,27 @@ public class Item {
         this.id = id;
     }
 
-    public int getStrength() {
+    public double getStrength() {
         return Strength;
     }
 
-    public int getAgility() {
+    public double getAgility() {
         return Agility;
     }
 
-    public int getExpertise() {
+    public double getExpertise() {
         return Expertise;
     }
 
-    public int getEndurance() {
+    public double getEndurance() {
         return Endurance;
     }
 
-    public int getLife() {
+    public double getLife() {
         return Life;
     }
 
-    public int getId() {
+    public double getId() {
         return id;
     }
 }
