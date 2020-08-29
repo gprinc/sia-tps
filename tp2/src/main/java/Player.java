@@ -60,4 +60,27 @@ public class Player {
         return 0;
     }
 
+    public double getHeight() {
+        return height;
+    }
+
+    public Chest getChest() {
+        return chest;
+    }
+
+    public Helmet getHelmet() {
+        return helmet;
+    }
+
+    public Gloves getGloves() {
+        return gloves;
+    }
+
+    public Boots getBoots() {
+        return boots;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
 }
