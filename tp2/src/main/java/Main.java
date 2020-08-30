@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,6 +23,11 @@ public class Main {
             ArrayList<Item> helmetList = TSVReader.getItemList("fulldata/cascos.tsv");
             ArrayList<Item> glovesList = TSVReader.getItemList("fulldata/guantes.tsv");
             ArrayList<Item> chestList = TSVReader.getItemList("fulldata/pecheras.tsv");
+
+            LinkedList<Player> pop = Population.generatePopulation(bootList,weaponsList,helmetList,glovesList,chestList, population);
+
+            Player[] aux = Selection.elite((Player[]) pop.toArray(),100);
+
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -3,9 +3,7 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class Selection {
-
-
-    public Player[] elite(Player[] players, int k){
+    public static Player[] elite(Player[] players, int k){
         Player[] aux = new Player[k];
         double total = 0;
 
@@ -36,7 +34,7 @@ public class Selection {
         return aux;
     }
 
-    public Player[] roulette(Player[] players, int k){
+    public static Player[] roulette(Player[] players, int k){
         Player[] aux = new Player[k];
         double total = 0;
         double[] relative = new double[aux.length];
@@ -52,7 +50,6 @@ public class Selection {
         for (int i = 1; i < accumulated.length; i++) {
             accumulated[i] = relative[i] + accumulated[i-1];
         }
-
         for (int i = 0; i < k; i++) {
             double random = Math.random();
             for (int j = 1; j < accumulated.length; j++) {
@@ -61,11 +58,10 @@ public class Selection {
                 }
             }
         }
-
         return aux;
     }
 
-    public Player[] universal(Player[] players, int k){
+    public static Player[] universal(Player[] players, int k){
         Player[] aux = new Player[k];
         double total = 0;
         double[] relative = new double[aux.length];
@@ -95,7 +91,7 @@ public class Selection {
         return aux;
     }
 
-    public Player[] ranking(Player[] players, int k){
+    public static Player[] ranking(Player[] players, int k){
         Player[] aux = new Player[k];
         double total = 0;
         double[] relative = new double[aux.length];
