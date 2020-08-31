@@ -24,10 +24,31 @@ public class Main {
             ArrayList<Item> glovesList = TSVReader.getItemList("fulldata/guantes.tsv");
             ArrayList<Item> chestList = TSVReader.getItemList("fulldata/pecheras.tsv");
 
-            LinkedList<Player> pop = Population.generatePopulation(bootList,weaponsList,helmetList,glovesList,chestList, population);
+            LinkedList<Player> pop = Population.generatePopulation(bootList,weaponsList,helmetList,glovesList,chestList, population,"warrior");
+            Player[] aux = new Player[pop.size()];
 
-            Player[] aux = Selection.elite((Player[]) pop.toArray(),100);
+            for (int i = 0; i < 4; i++) {
+                System.out.println(pop.size());
+                switch(i) {
+                    case 0:
+                        aux = Selection.elite(pop.toArray(aux),10);
+                        System.out.println(aux.length);
+                        break;
+                    case 1:
+                        aux = Selection.roulette(pop.toArray(aux),10);
+                        System.out.println(aux.length);
+                        break;
+                    case 2:
+                        aux = Selection.universal(pop.toArray(aux),10);
+                        System.out.println(aux.length);
+                        break;
+                    case 3:
+                        aux = Selection.ranking(pop.toArray(aux),10);
+                        System.out.println(aux.length);
+                        break;
+                }
 
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

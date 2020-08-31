@@ -11,12 +11,12 @@ public class Population {
         this.sons = sons;
     }
 
-    public static LinkedList<Player> generatePopulation (ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, int size) {
+    public static LinkedList<Player> generatePopulation (ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, int size, String type) {
         LinkedList<Player> population = new LinkedList<Player>();
 
         for (int i = 0; i < size; i++) {
             Random rand = new Random();
-            Player aux = new Player(1.3 + (2.0 - 1.3) * rand.nextDouble(),(Chest) chestList.get(rand.nextInt((chestList.size()) + 1)),(Gloves) glovesList.get(rand.nextInt((glovesList.size()) + 1)),(Helmet) helmetList.get(rand.nextInt((helmetList.size()) + 1)),(Weapon) weaponsList.get(rand.nextInt((weaponsList.size()) + 1)),(Boots) bootList.get(rand.nextInt((bootList.size()) + 1)));
+            Player aux = new Player(1.3 + (2.0 - 1.3) * rand.nextDouble(),chestList.get(rand.nextInt((chestList.size()) + 1)),glovesList.get(rand.nextInt((glovesList.size()) + 1)),helmetList.get(rand.nextInt((helmetList.size()) + 1)),weaponsList.get(rand.nextInt((weaponsList.size()) + 1)),bootList.get(rand.nextInt((bootList.size()) + 1)),type);
             population.add(aux);
         }
 

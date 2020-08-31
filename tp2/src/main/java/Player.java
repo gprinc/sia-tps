@@ -1,18 +1,20 @@
 public class Player {
     private double height;
-    private Chest chest;
-    private Gloves gloves;
-    private Helmet helmet;
-    private Weapon weapon;
-    private Boots boots;
+    private Item chest;
+    private Item gloves;
+    private Item helmet;
+    private Item weapon;
+    private Item boots;
+    private String type;
 
-    public Player(double height, Chest chest, Gloves gloves, Helmet helmet, Weapon weapon, Boots boots) {
+    public Player(double height, Item chest, Item gloves, Item helmet, Item weapon, Item boots, String type) {
         this.height = height;
         this.chest = chest;
         this.gloves = gloves;
         this.helmet = helmet;
         this.weapon = weapon;
         this.boots = boots;
+        this.type = type;
     }
 
     public double ATM(){
@@ -57,6 +59,16 @@ public class Player {
     }
 
     public double performance () {
+        switch(type) {
+            case "warrior":
+                return 0.6 * this.Atack() + 0.6 * this.Defense();
+            case "archer":
+                return 0.9 * this.Atack() + 0.1 * this.Defense();
+            case "defender":
+                return 0.3 * this.Atack() + 0.8 * this.Defense();
+            case "infiltrate":
+                return 0.8 * this.Atack() + 0.3 * this.Defense();
+        }
         return 0;
     }
 
@@ -64,23 +76,27 @@ public class Player {
         return height;
     }
 
-    public Chest getChest() {
+    public Item getChest() {
         return chest;
     }
 
-    public Helmet getHelmet() {
+    public Item getHelmet() {
         return helmet;
     }
 
-    public Gloves getGloves() {
+    public Item getGloves() {
         return gloves;
     }
 
-    public Boots getBoots() {
+    public Item getBoots() {
         return boots;
     }
 
-    public Weapon getWeapon() {
+    public Item getWeapon() {
         return weapon;
+    }
+
+    public String getType() {
+        return type;
     }
 }
