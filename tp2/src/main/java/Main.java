@@ -27,7 +27,7 @@ public class Main {
             LinkedList<Player> pop = Population.generatePopulation(bootList,weaponsList,helmetList,glovesList,chestList, population,"warrior");
             Player[] aux = new Player[pop.size()];
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 7; i++) {
                 System.out.println(pop.size());
                 switch(i) {
                     case 0:
@@ -44,6 +44,18 @@ public class Main {
                         break;
                     case 3:
                         aux = Selection.ranking(pop.toArray(aux),10);
+                        System.out.println(aux.length);
+                        break;
+                    case 4:
+                        aux = Selection.boltzmann(pop.toArray(aux),10,Population.temperature(10,0,100000,100));
+                        System.out.println(aux.length);
+                        break;
+                    case 5:
+                        aux = Selection.dTournament(pop.toArray(aux),10);
+                        System.out.println(aux.length);
+                        break;
+                    case 6:
+                        aux = Selection.pTournament(pop.toArray(aux),10);
                         System.out.println(aux.length);
                         break;
                 }

@@ -22,4 +22,8 @@ public class Population {
 
         return  population;
     }
+
+    public static double temperature(int k,double t, double tc, double t0) {
+        return tc + (t0-tc) * Math.exp((-k)*t);
+    }
 }
