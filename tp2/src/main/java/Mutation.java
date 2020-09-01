@@ -14,7 +14,7 @@ public class Mutation {
         int j;
         switch (i){
             case 0:
-                return new Player(random.nextDouble(), player.getChest(), player.getGloves(), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
+                return new Player(1.3 + (2.0 - 1.3) * random.nextDouble(), player.getChest(), player.getGloves(), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
             case 1:
                 j = chestList.indexOf(player.getChest()) + DELTA;
                 if(j > chestList.size()){
@@ -49,13 +49,63 @@ public class Mutation {
         return player;
     }
 
-    /*//Se selecciona una cantidad m de genes para mutar, con probabilidad Pm
+    //Se selecciona una cantidad m de genes para mutar, con probabilidad Pm
     public Player limitedMultigene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, int m, double pm){
         if(m == 0){
             return player;
         }
+        Player playerAux = new Player(player.getHeight(), player.getChest(), player.getGloves(), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
+        for (int i = 0 ; i < m ; i++){
+            mutate(playerAux, bootList, weaponsList,helmetList,glovesList, chestList, pm, i);
+        }
+        return playerAux;
+    }
 
-    }*/
+    private void mutate(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm, int i){
+        if(random.nextDouble() > pm){
+            return ;
+        }
+        int j;
+        switch (i){
+            case 0:
+                player.setHeight(1.3 + (2.0 - 1.3) * random.nextDouble());
+                break;
+            case 1:
+                j = chestList.indexOf(player.getChest()) + DELTA;
+                if(j > chestList.size()){
+                    j = 0;
+                }
+                player.setChest((Chest) chestList.get(j));
+                break;
+            case 2:
+                j = glovesList.indexOf(player.getGloves()) + DELTA;
+                if (j > glovesList.size()){
+                    j = 0;
+                }
+                player.setGloves((Gloves) glovesList.get(j));
+                break;
+            case 3:
+                j = helmetList.indexOf(player.getHelmet()) + DELTA;
+                if(j > helmetList.size()){
+                    j = 0;
+                }
+                player.setHelmet((Helmet) helmetList.get(j));
+                break;
+            case 4:
+                j = weaponsList.indexOf(player.getWeapon()) + DELTA;
+                if(j > weaponsList.size()){
+                    j = 0;
+                }
+                player.setWeapon((Weapon) weaponsList.get(j));
+                break;
+            case 5:
+                j = bootList.indexOf(player.getBoots()) + DELTA;
+                if(j > bootList.size()){
+                    j = 0;
+                }
+                player.setBoots((Boots) bootList.get(j));
+        }
+    }
 
     //Cada gen tiene una probabilidad Pm de ser mutado
     public Player uniformMultigene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm){
@@ -66,7 +116,7 @@ public class Mutation {
         int jw = weaponsList.indexOf(player.getWeapon());
         int jb = bootList.indexOf(player.getBoots());
         if(random.nextDouble() <= pm){
-            height = random.nextDouble();
+            height = 1.3 + (2.0 - 1.3) * random.nextDouble();
         }
         if(random.nextDouble() <= pm){
             jc = jc + DELTA;
@@ -126,6 +176,6 @@ public class Mutation {
         if(jb > bootList.size()){
             jb = 0;
         }
-        return new Player(random.nextDouble(), chestList.get(jc), glovesList.get(jg), helmetList.get(jh), weaponsList.get(jw), bootList.get(jb), player.getType());
+        return new Player(1.3 + (2.0 - 1.3) * random.nextDouble(), chestList.get(jc), glovesList.get(jg), helmetList.get(jh), weaponsList.get(jw), bootList.get(jb), player.getType());
     }
 }

@@ -99,4 +99,28 @@ public class Player {
     public String getType() {
         return type;
     }
+
+    public void setBoots(Item boots) {
+        this.boots = boots;
+    }
+
+    public void setChest(Item chest) {
+        this.chest = chest;
+    }
+
+    public void setGloves(Item gloves) {
+        this.gloves = gloves;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setHelmet(Item helmet) {
+        this.helmet = helmet;
+    }
+
+    public void setWeapon(Item weapon) {
+        this.weapon = weapon;
+    }
 }
