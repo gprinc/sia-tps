@@ -129,7 +129,20 @@ public class Population {
     }
 
     public void mate () {
-        this.sons = this.parents;
+        switch(this.selectionType[1]) {
+            case "onePoint":
+                sons = Mate.onePoint(selected, this);
+                break;
+            case "twoPoints":
+                sons = Mate.twoPoints();
+                break;
+            case "anular":
+                sons = Mate.anular();
+                break;
+            case "uniform":
+                sons = Mate.uniform();
+                break;
+        }
     }
 
     public void mutate () {
