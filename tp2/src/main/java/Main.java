@@ -18,11 +18,11 @@ public class Main {
             int iterations = Integer.parseInt((String) data.get("iterations"));
             Population population = new Population(TSVReader.getItemList("fulldata/botas.tsv"),TSVReader.getItemList("fulldata/armas.tsv"),TSVReader.getItemList("fulldata/cascos.tsv"),TSVReader.getItemList("fulldata/guantes.tsv"),TSVReader.getItemList("fulldata/pecheras.tsv"));
 
-            population.init(populationSize,"warrior",10,0.5, "elite", "universal",100,100000);
+            population.init(populationSize,"warrior",10,0.5, "elite", "ranking",100,100000);
 
             do {
-                population.mate();
                 population.selection();
+                population.mate();
                 population.mutate();
 
             } while ( population.hasTerminated() );

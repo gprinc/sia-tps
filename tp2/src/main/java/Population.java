@@ -5,6 +5,7 @@ import java.util.Random;
 public class Population {
     private LinkedList<Player> parents;
     private LinkedList<Player> sons;
+    private LinkedList<Player> selected;
     private ArrayList<Item> bootList;
     private ArrayList<Item> weaponsList;
     private ArrayList<Item> helmetList;
@@ -47,88 +48,88 @@ public class Population {
 
 
     public void selection () {
-        this.sons = new LinkedList<Player>();
+        this.selected = new LinkedList<Player>();
         int size = (int) Math.floor(k*selectionValue);
         if (k % 2 != 0) {
             size +=1;
         }
 
         Player[] aux = new Player[size];
-        Player[] sonsAux = new Player[this.sons.size()];
+        Player[] selectedList = this.parents.toArray(new Player[this.parents.size()]);
 
         switch(this.selectionType[0]) {
             case "elite":
-                aux = Selection.elite(sons.toArray(sonsAux),size);
+                aux = Selection.elite(selectedList,size);
                 System.out.println(aux.length);
                 break;
             case "roulette":
-                aux = Selection.roulette(sons.toArray(sonsAux),size);
+                aux = Selection.roulette(selectedList,size);
                 System.out.println(aux.length);
                 break;
             case "universal":
-                aux = Selection.universal(sons.toArray(sonsAux),size);
+                aux = Selection.universal(selectedList,size);
                 System.out.println(aux.length);
                 break;
             case "ranking":
-                aux = Selection.ranking(sons.toArray(sonsAux),size);
+                aux = Selection.ranking(selectedList,size);
                 System.out.println(aux.length);
                 break;
             case "boltzmann":
-                aux = Selection.boltzmann(sons.toArray(sonsAux),size,this.temperature());
+                aux = Selection.boltzmann(selectedList,size,this.temperature());
                 System.out.println(aux.length);
                 break;
             case "dTournament":
-                aux = Selection.dTournament(sons.toArray(sonsAux),size);
+                aux = Selection.dTournament(selectedList,size);
                 System.out.println(aux.length);
                 break;
             case "pTournament":
-                aux = Selection.pTournament(sons.toArray(sonsAux),size);
+                aux = Selection.pTournament(selectedList,size);
                 break;
         }
 
         for (Player p : aux ){
-            this.sons.add(p);
+            this.selected.add(p);
         }
 
         aux = new Player[k -size];
 
         switch(this.selectionType[1]) {
             case "elite":
-                aux = Selection.elite(sons.toArray(sonsAux),k - size);
+                aux = Selection.elite(selectedList,k - size);
                 System.out.println(aux.length);
                 break;
             case "roulette":
-                aux = Selection.roulette(sons.toArray(sonsAux),k - size);
+                aux = Selection.roulette(selectedList,k - size);
                 System.out.println(aux.length);
                 break;
             case "universal":
-                aux = Selection.universal(sons.toArray(sonsAux),k - size);
+                aux = Selection.universal(selectedList,k - size);
                 System.out.println(aux.length);
                 break;
             case "ranking":
-                aux = Selection.ranking(sons.toArray(sonsAux),k - size);
-                System.out.println(aux.length);
+                System.out.println(selectedList.length);
+                aux = Selection.ranking(selectedList,k - size);
                 break;
             case "boltzmann":
-                aux = Selection.boltzmann(sons.toArray(sonsAux),k - size,this.temperature());
+                aux = Selection.boltzmann(selectedList,k - size,this.temperature());
                 System.out.println(aux.length);
                 break;
             case "dTournament":
-                aux = Selection.dTournament(sons.toArray(sonsAux),k - size);
+                aux = Selection.dTournament(selectedList,k - size);
                 System.out.println(aux.length);
                 break;
             case "pTournament":
-                aux = Selection.pTournament(sons.toArray(sonsAux),k - size);
+                aux = Selection.pTournament(selectedList,k - size);
                 break;
         }
 
         for (Player p : aux ){
-            this.sons.add(p);
+            this.selected.add(p);
         }
     }
 
     public void mate () {
-
+        this.sons = this.parents;
     }
 
     public void mutate () {
@@ -142,5 +143,19 @@ public class Population {
 
     public boolean hasTerminated () {
         return true;
+    }
+
+    private Item getItem(double id, ArrayList<Item> items){
+        for (Item i : items) {
+            if (i.getId() == id) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public Player generate(double[] gens) {
+        Player aux = new Player(gens[0], this.getItem(gens[1], this.chestList), this.getItem(gens[2], this.glovesList), this.getItem(gens[3], this.helmetList), this.getItem(gens[4], this.weaponsList),this.getItem(gens[5], this.bootList), this.type);
+        return aux;
     }
 }

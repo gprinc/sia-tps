@@ -123,4 +123,15 @@ public class Player {
     public void setWeapon(Item weapon) {
         this.weapon = weapon;
     }
+
+    public double[] getGens() {
+        double[] aux = new double[6];
+        aux[0] = this.height;
+        aux[1] = this.chest.getId();
+        aux[2] = this.gloves.getId();
+        aux[3] = this.helmet.getId();
+        aux[4] = this.weapon.getId();
+        aux[5] = this.boots.getId();
+        return aux;
+    }
 }
