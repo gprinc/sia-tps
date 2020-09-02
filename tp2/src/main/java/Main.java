@@ -14,53 +14,18 @@ public class Main {
 
         try {
             JSONObject data = (JSONObject) parser.parse(new FileReader("config.json"));
-            int population = Integer.parseInt((String) data.get("population"));
+            int populationSize = Integer.parseInt((String) data.get("population"));
             int iterations = Integer.parseInt((String) data.get("iterations"));
+            Population population = new Population(TSVReader.getItemList("fulldata/botas.tsv"),TSVReader.getItemList("fulldata/armas.tsv"),TSVReader.getItemList("fulldata/cascos.tsv"),TSVReader.getItemList("fulldata/guantes.tsv"),TSVReader.getItemList("fulldata/pecheras.tsv"));
 
+            population.init(populationSize,"warrior",10,0.5, "elite", "universal",100,100000);
 
-            ArrayList<Item> bootList = TSVReader.getItemList("fulldata/botas.tsv");
-            ArrayList<Item> weaponsList = TSVReader.getItemList("fulldata/armas.tsv");
-            ArrayList<Item> helmetList = TSVReader.getItemList("fulldata/cascos.tsv");
-            ArrayList<Item> glovesList = TSVReader.getItemList("fulldata/guantes.tsv");
-            ArrayList<Item> chestList = TSVReader.getItemList("fulldata/pecheras.tsv");
+            do {
+                population.mate();
+                population.selection();
+                population.mutate();
 
-            LinkedList<Player> pop = Population.generatePopulation(bootList,weaponsList,helmetList,glovesList,chestList, population,"warrior");
-            Player[] aux = new Player[pop.size()];
-
-            for (int i = 0; i < 7; i++) {
-                System.out.println(pop.size());
-                switch(i) {
-                    case 0:
-                        aux = Selection.elite(pop.toArray(aux),10);
-                        System.out.println(aux.length);
-                        break;
-                    case 1:
-                        aux = Selection.roulette(pop.toArray(aux),10);
-                        System.out.println(aux.length);
-                        break;
-                    case 2:
-                        aux = Selection.universal(pop.toArray(aux),10);
-                        System.out.println(aux.length);
-                        break;
-                    case 3:
-                        aux = Selection.ranking(pop.toArray(aux),10);
-                        System.out.println(aux.length);
-                        break;
-                    case 4:
-                        aux = Selection.boltzmann(pop.toArray(aux),10,Population.temperature(10,0,100000,100));
-                        System.out.println(aux.length);
-                        break;
-                    case 5:
-                        aux = Selection.dTournament(pop.toArray(aux),10);
-                        System.out.println(aux.length);
-                        break;
-                    case 6:
-                        aux = Selection.pTournament(pop.toArray(aux),10);
-                        System.out.println(aux.length);
-                        break;
-                }
-
-            }
+            } while ( population.hasTerminated() );
 
         } catch (Exception e) {
             e.printStackTrace();
