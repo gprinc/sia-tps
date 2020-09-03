@@ -49,6 +49,7 @@ public class Mutation {
         return player;
     }
 
+    // TODO
     /*//Se selecciona una cantidad m de genes para mutar, con probabilidad Pm
     public Player limitedMultigene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, int m, double pm){
         if(m == 0){

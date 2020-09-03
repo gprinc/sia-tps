@@ -3,5 +3,9 @@
   "selection": "Roulette",
   "mutation": "asdf",
   "iterations": "10000",
-  "class": "archer"
+  "class": "warrior",
+  "method1": "Elite",
+  "method2": "Roulette",
+  "method3": "Elite",
+  "method4": "Roulette"
 }
