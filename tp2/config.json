@@ -1,7 +1,9 @@
 {
   "population": "100",
   "selection": "Roulette",
-  "mutation": "asdf",
+  "mutation": "gene",
+  "pm": "0.5",
+  "limitm": "6",
   "iterations": "10000",
   "class": "warrior",
   "method1": "Elite",

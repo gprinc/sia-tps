@@ -2,11 +2,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Mutation {
-    private Random random = new Random();
     private final static int DELTA = 2;
 
     //Se altera un solo gen con una probabilidad Pm
-    public Player gene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm){
+    public static Player gene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm){
+        Random random = new Random();
         if(random.nextDouble() > pm){
             return player;
         }
@@ -48,13 +48,14 @@ public class Mutation {
         }
         return player;
     }
-    
-    // TODO
-    //Se selecciona una cantidad m de genes para mutar, con probabilidad Pm
 
-    public Player limitedMultigene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, int m, double pm){
+    //Se selecciona una cantidad m de genes para mutar, con probabilidad Pm
+    public static Player limitedMultigene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, int m, double pm){
         if(m == 0){
             return player;
+        }
+        if(m > 6){
+            m = 6;
         }
         Player playerAux = new Player(player.getHeight(), player.getChest(), player.getGloves(), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
         for (int i = 0 ; i < m ; i++){
@@ -63,7 +64,8 @@ public class Mutation {
         return playerAux;
     }
 
-    private void mutate(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm, int i){
+    private static void mutate(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm, int i){
+        Random random = new Random();
         if(random.nextDouble() > pm){
             return ;
         }
@@ -110,7 +112,8 @@ public class Mutation {
     }
 
     //Cada gen tiene una probabilidad Pm de ser mutado
-    public Player uniformMultigene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm){
+    public static Player uniformMultigene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm){
+        Random random = new Random();
         double height = player.getHeight();
         int jc = chestList.indexOf(player.getChest());
         int jg = glovesList.indexOf(player.getGloves());
@@ -154,7 +157,8 @@ public class Mutation {
     }
 
     //Con una probabilidad Pm se mutan todos los genes del individuo
-    public Player complete(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm){
+    public static Player complete(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm){
+        Random random = new Random();
         if(random.nextDouble() > pm){
             return player;
         }

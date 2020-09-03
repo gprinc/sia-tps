@@ -19,6 +19,9 @@ public class Population {
     private double temperature = 0;
     private int t0 = 0;
     private int tc = 0;
+    private String mutation;
+    private double pm = 0.5;
+    private int limitm = 6;
 
     public Population(ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList) {
         this.bootList = bootList;
@@ -28,7 +31,7 @@ public class Population {
         this.chestList = chestList;
     }
 
-    public void init (int size, String type, int k, double selectionValue, String selectionType0,String selectionType1, int t0,int tc) {
+    public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm) {
         this.populationSize = size;
         this.type = type;
         this.k = k;
@@ -36,8 +39,11 @@ public class Population {
         this.parents = new LinkedList<Player>();
         this.selectionType[0] = selectionType0;
         this.selectionType[1] = selectionType1;
-        this.t0= t0;
+        this.t0 = t0;
         this.tc = tc;
+        this.mutation = mutation;
+        this.pm = pm;
+        this.limitm = limitm;
 
         for (int i = 0; i < size; i++) {
             Random rand = new Random();
@@ -146,7 +152,29 @@ public class Population {
     }
 
     public void mutate () {
-
+        LinkedList<Player> sonsAux = new LinkedList<Player>();
+        switch (this.mutation) {
+            case "gene":
+                for (Player p: sons) {
+                    sonsAux.add(Mutation.gene(p, bootList, weaponsList, helmetList, glovesList, chestList, pm));
+                }
+                break;
+            case "limitedMultigene":
+                for (Player p: sons) {
+                    sonsAux.add(Mutation.limitedMultigene(p, bootList, weaponsList, helmetList, glovesList, chestList, limitm, pm));
+                }
+                break;
+            case "uniformMultigene":
+                for (Player p: sons) {
+                    sonsAux.add(Mutation.uniformMultigene(p, bootList, weaponsList, helmetList, glovesList, chestList, pm));
+                }
+                break;
+            case "complete":
+                for (Player p: sons) {
+                    sonsAux.add(Mutation.complete(p, bootList, weaponsList, helmetList, glovesList, chestList, pm));
+                }
+        }
+        sons = sonsAux;
     }
 
     private double temperature() {
