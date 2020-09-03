@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="324bb463-a25e-49ec-a301-4105683b6699" name="Default Changelist" comment="" />
+    <list default="true" id="324bb463-a25e-49ec-a301-4105683b6699" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Mate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Mutation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mutation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Population.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Population.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +29,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1gsYAu14I7cSlx9GK8qAw2dM91B" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -37,22 +46,20 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="tp2" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="tp2" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -72,7 +79,9 @@
       <option name="presentableId" value="Default" />
       <updated>1598744349593</updated>
       <workItem from="1598744354520" duration="3167000" />
-      <workItem from="1598904634009" duration="5227000" />
+      <workItem from="1598904634009" duration="5962000" />
+      <workItem from="1599045813694" duration="2038000" />
+      <workItem from="1599085047300" duration="3980000" />
     </task>
     <servers />
   </component>
@@ -84,21 +93,29 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="766" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598905198540" />
-    <state width="1878" height="249" key="GridCell.Tab.0.bottom" timestamp="1598909772514">
+    <state width="1878" height="249" key="GridCell.Tab.0.bottom" timestamp="1599085976405">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="249" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598909772514" />
-    <state width="1878" height="249" key="GridCell.Tab.0.center" timestamp="1598909772514">
+    <state width="1878" height="249" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599085976405" />
+    <state width="1878" height="249" key="GridCell.Tab.0.center" timestamp="1599085976405">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="249" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598909772514" />
-    <state width="1878" height="249" key="GridCell.Tab.0.left" timestamp="1598909772514">
+    <state width="1878" height="249" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599085976405" />
+    <state width="1878" height="249" key="GridCell.Tab.0.left" timestamp="1599085976405">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="249" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598909772514" />
-    <state width="1878" height="249" key="GridCell.Tab.0.right" timestamp="1598909772514">
+    <state width="1878" height="249" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599085976405" />
+    <state width="1878" height="249" key="GridCell.Tab.0.right" timestamp="1599085976405">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="249" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598909772514" />
+    <state width="1878" height="249" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599085976405" />
+    <state x="670" y="252" width="579" height="534" key="find.popup" timestamp="1599087058348">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="670" y="252" width="579" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599087058348" />
+    <state x="623" y="226" width="672" height="678" key="search.everywhere.popup" timestamp="1599046887339">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="226" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599046887339" />
   </component>
 </project>

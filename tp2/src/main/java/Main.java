@@ -15,100 +15,22 @@ public class Main {
 
         try {
             JSONObject data = (JSONObject) parser.parse(new FileReader("config.json"));
-            int population = Integer.parseInt((String) data.get("population"));
+            int populationSize = Integer.parseInt((String) data.get("population"));
             int iterations = Integer.parseInt((String) data.get("iterations"));
+
             String dndClass = (String) data.get("class");
             if (dndClass.equals(null))
                 dndClass = DEFAULT_DND_CLASS;
+            Population population = new Population(TSVReader.getItemList("fulldata/botas.tsv"),TSVReader.getItemList("fulldata/armas.tsv"),TSVReader.getItemList("fulldata/cascos.tsv"),TSVReader.getItemList("fulldata/guantes.tsv"),TSVReader.getItemList("fulldata/pecheras.tsv"));
 
+            population.init(populationSize,"warrior",10,0.5, "elite", "ranking",100,100000);
 
-            ArrayList<Item> bootList = TSVReader.getItemList("fulldata/botas.tsv");
-            ArrayList<Item> weaponsList = TSVReader.getItemList("fulldata/armas.tsv");
-            ArrayList<Item> helmetList = TSVReader.getItemList("fulldata/cascos.tsv");
-            ArrayList<Item> glovesList = TSVReader.getItemList("fulldata/guantes.tsv");
-            ArrayList<Item> chestList = TSVReader.getItemList("fulldata/pecheras.tsv");
+            do {
+                population.selection();
+                population.mate();
+                population.mutate();
 
-            LinkedList<Player> pop = Population.generatePopulation(bootList,weaponsList,helmetList,glovesList,chestList, population,dndClass);
-            Player[] aux = new Player[pop.size()];
-            double test = 0;
-
-            for (int i = 0; i < 7; i++) {
-                System.out.println(pop.size());
-                test = 0;
-                switch(i) {
-                    case 0:
-                        aux = Selection.elite(pop.toArray(aux),10);
-
-                        for (Player p: aux) {
-                            if (p!= null)
-                                test += p.performance();
-                        }
-                        System.out.println(test/aux.length);
-                        System.out.println(aux.length);
-                        System.out.print('\n');
-                        break;
-                    case 1:
-                        aux = Selection.roulette(pop.toArray(aux),10);
-                        for (Player p: aux) {
-                            if (p!= null)
-                                test += p.performance();
-                        }
-                        System.out.println(test/aux.length);
-                        System.out.println(aux.length);
-                        System.out.print('\n');
-                        break;
-                    case 2:
-                        aux = Selection.universal(pop.toArray(aux),10);
-                        for (Player p: aux) {
-                            if (p!= null)
-                                test += p.performance();
-                        }
-                        System.out.println(test/aux.length);
-                        System.out.println(aux.length);
-                        System.out.print('\n');
-                        break;
-                    case 3:
-                        aux = Selection.ranking(pop.toArray(aux),10);
-                        for (Player p: aux) {
-                            if (p!= null)
-                                test += p.performance();
-                        }
-                        System.out.println(test/aux.length);
-                        System.out.println(aux.length);
-                        System.out.print('\n');
-                        break;
-                    case 4:
-                        aux = Selection.boltzmann(pop.toArray(aux),10,Population.temperature(10,0,100000,100));
-                        for (Player p: aux) {
-                            if (p!= null)
-                                test += p.performance();
-                        }
-                        System.out.println(test/aux.length);
-                        System.out.println(aux.length);
-                        System.out.print('\n');
-                        break;
-                    case 5:
-                        aux = Selection.dTournament(pop.toArray(aux),10);
-                        for (Player p: aux) {
-                            if (p!= null)
-                                test += p.performance();
-                        }
-                        System.out.println(test/aux.length);
-                        System.out.println(aux.length);
-                        System.out.print('\n');
-                        break;
-                    case 6:
-                        aux = Selection.pTournament(pop.toArray(aux),10);
-                        for (Player p: aux) {
-                            if (p!= null)
-                                test += p.performance();
-                        }
-                        System.out.println(test/aux.length);
-                        System.out.println(aux.length);
-                        break;
-                }
-
-            }
+            } while ( population.hasTerminated() );
 
         } catch (Exception e) {
             e.printStackTrace();
