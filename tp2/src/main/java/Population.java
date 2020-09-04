@@ -134,7 +134,7 @@ public class Population {
                 this.sons = Mate.twoPoints(this.selected, this);
                 break;
             case "anular":
-                this.sons = Mate.anular();
+                this.sons = Mate.anular(this.selected, this);
                 break;
             case "uniform":
                 this.sons = Mate.uniform(this.selected, this);
