@@ -18,33 +18,33 @@ public class Mutation {
             case 1:
                 j = chestList.indexOf(player.getChest()) + DELTA;
                 if(j > chestList.size()){
-                    j = 0;
+                    j -= chestList.size();
                 }
-                return new Player(player.getHeight(), (Chest) chestList.get(j), player.getGloves(), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
+                return new Player(player.getHeight(), chestList.get(j), player.getGloves(), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
             case 2:
                 j = glovesList.indexOf(player.getGloves()) + DELTA;
                 if (j > glovesList.size()){
-                    j = 0;
+                    j -= glovesList.size();
                 }
-                return new Player(player.getHeight(), player.getChest(), (Gloves) glovesList.get(j), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
+                return new Player(player.getHeight(), player.getChest(), glovesList.get(j), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
             case 3:
                 j = helmetList.indexOf(player.getHelmet()) + DELTA;
                 if(j > helmetList.size()){
-                    j = 0;
+                    j -= helmetList.size();
                 }
-                return new Player(player.getHeight(), player.getChest(), player.getGloves(), (Helmet) helmetList.get(j), player.getWeapon(), player.getBoots(), player.getType());
+                return new Player(player.getHeight(), player.getChest(), player.getGloves(), helmetList.get(j), player.getWeapon(), player.getBoots(), player.getType());
             case 4:
                 j = weaponsList.indexOf(player.getWeapon()) + DELTA;
                 if(j > weaponsList.size()){
-                    j = 0;
+                    j -= weaponsList.size();
                 }
-                return new Player(player.getHeight(), player.getChest(), player.getGloves(), player.getHelmet(), (Weapon) weaponsList.get(j), player.getBoots(), player.getType());
+                return new Player(player.getHeight(), player.getChest(), player.getGloves(), player.getHelmet(), weaponsList.get(j), player.getBoots(), player.getType());
             case 5:
                 j = bootList.indexOf(player.getBoots()) + DELTA;
                 if(j > bootList.size()){
-                    j = 0;
+                    j -= bootList.size();
                 }
-                return new Player(player.getHeight(), player.getChest(), player.getGloves(), player.getHelmet(), player.getWeapon(), (Boots) bootList.get(j), player.getType());
+                return new Player(player.getHeight(), player.getChest(), player.getGloves(), player.getHelmet(), player.getWeapon(), bootList.get(j), player.getType());
         }
         return player;
     }
@@ -77,37 +77,37 @@ public class Mutation {
             case 1:
                 j = chestList.indexOf(player.getChest()) + DELTA;
                 if(j > chestList.size()){
-                    j = 0;
+                    j -= chestList.size();
                 }
-                player.setChest((Chest) chestList.get(j));
+                player.setChest(chestList.get(j));
                 break;
             case 2:
                 j = glovesList.indexOf(player.getGloves()) + DELTA;
                 if (j > glovesList.size()){
-                    j = 0;
+                    j -= glovesList.size();
                 }
-                player.setGloves((Gloves) glovesList.get(j));
+                player.setGloves(glovesList.get(j));
                 break;
             case 3:
                 j = helmetList.indexOf(player.getHelmet()) + DELTA;
                 if(j > helmetList.size()){
-                    j = 0;
+                    j -= helmetList.size();
                 }
-                player.setHelmet((Helmet) helmetList.get(j));
+                player.setHelmet(helmetList.get(j));
                 break;
             case 4:
                 j = weaponsList.indexOf(player.getWeapon()) + DELTA;
                 if(j > weaponsList.size()){
-                    j = 0;
+                    j -= weaponsList.size();
                 }
-                player.setWeapon((Weapon) weaponsList.get(j));
+                player.setWeapon(weaponsList.get(j));
                 break;
             case 5:
                 j = bootList.indexOf(player.getBoots()) + DELTA;
                 if(j > bootList.size()){
-                    j = 0;
+                    j -= bootList.size();
                 }
-                player.setBoots((Boots) bootList.get(j));
+                player.setBoots(bootList.get(j));
         }
     }
 
@@ -126,31 +126,31 @@ public class Mutation {
         if(random.nextDouble() <= pm){
             jc = jc + DELTA;
             if(jc > chestList.size()){
-                jc = 0;
+                jc = jc - chestList.size();
             }
         }
         if(random.nextDouble()<= pm){
             jg = jg + DELTA;
             if (jg > glovesList.size()){
-                jg = 0;
+                jg = jg - glovesList.size();
             }
         }
         if(random.nextDouble()<= pm){
             jh = jh + DELTA;
             if(jh > helmetList.size()){
-                jh = 0;
+                jh = jh - helmetList.size();
             }
         }
         if(random.nextDouble()<= pm){
             jw = jw + DELTA;
             if(jw > weaponsList.size()){
-                jw = 0;
+                jw = jw - weaponsList.size();
             }
         }
         if(random.nextDouble()<= pm){
             jb = jb + DELTA;
             if(jb > bootList.size()){
-                jb = 0;
+                jb = jw - bootList.size();
             }
         }
         return new Player(height, chestList.get(jc), glovesList.get(jg), helmetList.get(jh),weaponsList.get(jw), bootList.get(jb), player.getType());
@@ -164,23 +164,23 @@ public class Mutation {
         }
         int jc = chestList.indexOf(player.getChest()) + DELTA;
         if(jc > chestList.size()){
-            jc = 0;
+            jc -= chestList.size();
         }
         int jg = glovesList.indexOf(player.getGloves()) + DELTA;
         if (jg > glovesList.size()){
-            jg = 0;
+            jg -= glovesList.size();
         }
         int jh = helmetList.indexOf(player.getHelmet()) + DELTA;
         if(jh > helmetList.size()){
-            jh = 0;
+            jh -= helmetList.size();
         }
         int jw = weaponsList.indexOf(player.getWeapon()) + DELTA;
         if(jw > weaponsList.size()){
-            jw = 0;
+            jw -= weaponsList.size();
         }
         int jb = bootList.indexOf(player.getBoots()) + DELTA;
         if(jb > bootList.size()){
-            jb = 0;
+            jb -= bootList.size();
         }
         return new Player(1.3 + (2.0 - 1.3) * random.nextDouble(), chestList.get(jc), glovesList.get(jg), helmetList.get(jh), weaponsList.get(jw), bootList.get(jb), player.getType());
     }

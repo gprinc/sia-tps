@@ -16,18 +16,18 @@ public class Mate {
         double[] son1 = new double[6];
 
         if (selected.size() % 2 == 0) {
-            for (int i = 0; i < aux.size() - 1; i++) {
+            for (int i = 0; i < aux.size() - 2; i++) {
                 gens0 = selected.get(i).getGens();
                 gens1 = selected.get(i+1).getGens();
 
                 for (int j = 0; j < 6; j++) {
-                    if (i < random) {
-                        son0[i]= gens0[i];
-                        son1[i]= gens1[i];
+                    if (j < random) {
+                        son0[j]= gens0[j];
+                        son1[j]= gens1[j];
                     }
                     else  {
-                        son0[i]= gens1[i];
-                        son1[i]= gens0[i];
+                        son0[j]= gens1[j];
+                        son1[j]= gens0[j];
                     }
                 }
 
@@ -35,7 +35,7 @@ public class Mate {
                 sons.add(p.generate(son1));
             }
         } else {
-            for (int i = 0; i < aux.size() - 2; i++) {
+            for (int i = 0; i < aux.size() - 3; i++) {
                 gens0 = selected.get(i).getGens();
                 gens1 = selected.get(i+1).getGens();
 
@@ -67,6 +67,8 @@ public class Mate {
                     son1[j]= gens0[j];
                 }
             }
+            sons.add(p.generate(son0));
+            sons.add(p.generate(son1));
         }
 
         return sons;

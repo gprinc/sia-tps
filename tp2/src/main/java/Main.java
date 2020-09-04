@@ -31,14 +31,17 @@ public class Main {
             double pm = Double.parseDouble((String) data.get("pm"));
             int limitm = Integer.parseInt((String) data.get("limitm"));
 
-            population.init(populationSize,"warrior",10,0.5, "elite", "ranking",100,100000, mutation, pm, limitm);
-
+            population.init(populationSize,"warrior",10,0.5, "elite", "ranking",100,100000, mutation, pm, limitm, "onePoint");
             do {
+
                 population.selection();
                 population.mate();
                 population.mutate();
+                population.nextGen();
+                population.graphData();
 
-            } while ( population.hasTerminated() );
+
+            } while ( !population.hasTerminated() );
 
         } catch (Exception e) {
             e.printStackTrace();
