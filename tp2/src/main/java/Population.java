@@ -131,7 +131,7 @@ public class Population {
                 this.sons = Mate.onePoint(this.selected, this);
                 break;
             case "twoPoints":
-                this.sons = Mate.twoPoints();
+                this.sons = Mate.twoPoints(this.selected, this);
                 break;
             case "anular":
                 this.sons = Mate.anular();

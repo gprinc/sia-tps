@@ -31,7 +31,7 @@ public class Main {
             double pm = Double.parseDouble((String) data.get("pm"));
             int limitm = Integer.parseInt((String) data.get("limitm"));
 
-            population.init(populationSize,"warrior",10,0.5, "elite", "ranking",100,100000, mutation, pm, limitm, "onePoint");
+            population.init(populationSize,"warrior",10,0.5, "elite", "ranking",100,100000, mutation, pm, limitm, "twoPoints");
             do {
 
                 population.selection();

@@ -101,34 +101,35 @@ public class Selection {
             }
         });
 
+        LinkedList<Player> auxList = new LinkedList<Player>();
+
         for (Player p : players) {
             listAux.add(p);
         }
 
+        for (Player p : listAux) {
+            auxList.add(p);
+        }
 
-        double[] relative = new double[aux.length];
-        double[] accumulated = new double[aux.length];
+        double[] relative = new double[players.length];
         int total = players.length;
 
         for (int i = 0; i < relative.length; i++) {
             relative[i] = (double) (total - i)/total;
         }
 
-        listAux.toArray(aux);
+        Player[] orderPlayer = new Player[listAux.size()];
+        listAux.toArray(orderPlayer);
 
-        accumulated[0] = relative[0];
-
-        for (int i = 1; i < accumulated.length; i++) {
-            accumulated[i] = relative[i] + accumulated[i-1];
-        }
         for (int i = 0; i < k; i++) {
             double random = Math.random();
-            for (int j = 1; j < accumulated.length; j++) {
-                if (accumulated[j] > random) {
-                    aux[i] = players[j-1];
+            for (int j = 0; j < relative.length; j++) {
+                if (relative[j] >= random) {
+                    aux[i] = auxList.get(j);
                 }
             }
         }
+
         return aux;
     }
 
