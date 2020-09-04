@@ -16,9 +16,13 @@ public class Population {
     private int k = 0;
     private double selectionValue = 0;
     private String[] selectionType = new String[2];
+    private String matingType = "onePoint";
     private double temperature = 0;
     private int t0 = 0;
     private int tc = 0;
+    private String mutation;
+    private double pm = 0.5;
+    private int limitm = 6;
 
     public Population(ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList) {
         this.bootList = bootList;
@@ -28,7 +32,8 @@ public class Population {
         this.chestList = chestList;
     }
 
-    public void init (int size, String type, int k, double selectionValue, String selectionType0,String selectionType1, int t0,int tc) {
+    public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm, String
+            matingType) {
         this.populationSize = size;
         this.type = type;
         this.k = k;
@@ -36,8 +41,12 @@ public class Population {
         this.parents = new LinkedList<Player>();
         this.selectionType[0] = selectionType0;
         this.selectionType[1] = selectionType1;
-        this.t0= t0;
+        this.t0 = t0;
         this.tc = tc;
+        this.mutation = mutation;
+        this.pm = pm;
+        this.limitm = limitm;
+        this.matingType = matingType;
 
         for (int i = 0; i < size; i++) {
             Random rand = new Random();
@@ -60,27 +69,21 @@ public class Population {
         switch(this.selectionType[0]) {
             case "elite":
                 aux = Selection.elite(selectedList,size);
-                System.out.println(aux.length);
                 break;
             case "roulette":
                 aux = Selection.roulette(selectedList,size);
-                System.out.println(aux.length);
                 break;
             case "universal":
                 aux = Selection.universal(selectedList,size);
-                System.out.println(aux.length);
                 break;
             case "ranking":
                 aux = Selection.ranking(selectedList,size);
-                System.out.println(aux.length);
                 break;
             case "boltzmann":
                 aux = Selection.boltzmann(selectedList,size,this.temperature());
-                System.out.println(aux.length);
                 break;
             case "dTournament":
                 aux = Selection.dTournament(selectedList,size);
-                System.out.println(aux.length);
                 break;
             case "pTournament":
                 aux = Selection.pTournament(selectedList,size);
@@ -91,32 +94,26 @@ public class Population {
             this.selected.add(p);
         }
 
-        aux = new Player[k -size];
+        aux = new Player[k - size];
 
         switch(this.selectionType[1]) {
             case "elite":
                 aux = Selection.elite(selectedList,k - size);
-                System.out.println(aux.length);
                 break;
             case "roulette":
                 aux = Selection.roulette(selectedList,k - size);
-                System.out.println(aux.length);
                 break;
             case "universal":
                 aux = Selection.universal(selectedList,k - size);
-                System.out.println(aux.length);
                 break;
             case "ranking":
-                System.out.println(selectedList.length);
                 aux = Selection.ranking(selectedList,k - size);
                 break;
             case "boltzmann":
-                aux = Selection.boltzmann(selectedList,k - size,this.temperature());
-                System.out.println(aux.length);
+                aux = Selection.boltzmann(selectedList,k - size, this.temperature());
                 break;
             case "dTournament":
                 aux = Selection.dTournament(selectedList,k - size);
-                System.out.println(aux.length);
                 break;
             case "pTournament":
                 aux = Selection.pTournament(selectedList,k - size);
@@ -129,24 +126,47 @@ public class Population {
     }
 
     public void mate () {
-        switch(this.selectionType[1]) {
+        switch(this.matingType) {
             case "onePoint":
-                sons = Mate.onePoint(selected, this);
+                this.sons = Mate.onePoint(this.selected, this);
                 break;
             case "twoPoints":
-                sons = Mate.twoPoints();
+                this.sons = Mate.twoPoints();
                 break;
             case "anular":
-                sons = Mate.anular();
+                this.sons = Mate.anular();
                 break;
             case "uniform":
-                sons = Mate.uniform();
+                this.sons = Mate.uniform();
                 break;
         }
+        System.out.println(this.sons);
     }
 
     public void mutate () {
-
+        LinkedList<Player> sonsAux = new LinkedList<Player>();
+        switch (this.mutation) {
+            case "gene":
+                for (Player p: this.sons) {
+                    sonsAux.add(Mutation.gene(p, bootList, weaponsList, helmetList, glovesList, chestList, pm));
+                }
+                break;
+            case "limitedMultigene":
+                for (Player p: this.sons) {
+                    sonsAux.add(Mutation.limitedMultigene(p, bootList, weaponsList, helmetList, glovesList, chestList, limitm, pm));
+                }
+                break;
+            case "uniformMultigene":
+                for (Player p: this.sons) {
+                    sonsAux.add(Mutation.uniformMultigene(p, bootList, weaponsList, helmetList, glovesList, chestList, pm));
+                }
+                break;
+            case "complete":
+                for (Player p: this.sons) {
+                    sonsAux.add(Mutation.complete(p, bootList, weaponsList, helmetList, glovesList, chestList, pm));
+                }
+        }
+        this.sons = sonsAux;
     }
 
     private double temperature() {
@@ -155,7 +175,7 @@ public class Population {
     }
 
     public boolean hasTerminated () {
-        return true;
+        return false;
     }
 
     private Item getItem(double id, ArrayList<Item> items){
@@ -171,4 +191,24 @@ public class Population {
         Player aux = new Player(gens[0], this.getItem(gens[1], this.chestList), this.getItem(gens[2], this.glovesList), this.getItem(gens[3], this.helmetList), this.getItem(gens[4], this.weaponsList),this.getItem(gens[5], this.bootList), this.type);
         return aux;
     }
+
+    public void nextGen () {
+        this.parents = this.sons;
+    }
+
+    public void graphData () {
+        Player aux = this.parents.get(0);
+
+        double average = 0;
+        for (Player p : this.parents ) {
+            average += p.performance();
+            if (p.performance() < aux.performance()) {
+                aux = p;
+            }
+        }
+        System.out.println("Fitness minimo : " + aux.performance());
+        System.out.println("Fitness promedio : " + (average / this.parents.size()));
+        // System.out.println("Genetic Diversity : " + aux.performance());
+    }
+
 }

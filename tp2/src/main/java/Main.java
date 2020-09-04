@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 public class Main {
     private final static int DEFAULT_ITERATIONS = 100;
     private final static String DEFAULT_DND_CLASS = "warrior";
+    private final static String DEFAULT_MUTATION = "gene";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -23,14 +24,24 @@ public class Main {
                 dndClass = DEFAULT_DND_CLASS;
             Population population = new Population(TSVReader.getItemList("fulldata/botas.tsv"),TSVReader.getItemList("fulldata/armas.tsv"),TSVReader.getItemList("fulldata/cascos.tsv"),TSVReader.getItemList("fulldata/guantes.tsv"),TSVReader.getItemList("fulldata/pecheras.tsv"));
 
-            population.init(populationSize,"warrior",10,0.5, "elite", "ranking",100,100000);
+            String mutation = (String) data.get("mutation");
+            if (mutation.equals(null))
+                mutation = DEFAULT_MUTATION;
 
+            double pm = Double.parseDouble((String) data.get("pm"));
+            int limitm = Integer.parseInt((String) data.get("limitm"));
+
+            population.init(populationSize,"warrior",10,0.5, "elite", "ranking",100,100000, mutation, pm, limitm, "onePoint");
             do {
+
                 population.selection();
                 population.mate();
                 population.mutate();
+                population.nextGen();
+                population.graphData();
 
-            } while ( population.hasTerminated() );
+
+            } while ( !population.hasTerminated() );
 
         } catch (Exception e) {
             e.printStackTrace();
