@@ -1,3 +1,5 @@
+import com.github.sh0nk.matplotlib4j.Plot;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -23,6 +25,9 @@ public class Population {
     private String mutation;
     private double pm = 0.5;
     private int limitm = 6;
+    private Plot plt;
+    private String implementation;
+    private int m;
 
     public Population(ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList) {
         this.bootList = bootList;
@@ -30,10 +35,11 @@ public class Population {
         this.helmetList = helmetList;
         this.glovesList = glovesList;
         this.chestList = chestList;
+        this.plt = Plot.create();
     }
 
     public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm, String
-            matingType) {
+            matingType, String implementation, int m) {
         this.populationSize = size;
         this.type = type;
         this.k = k;
@@ -47,6 +53,8 @@ public class Population {
         this.pm = pm;
         this.limitm = limitm;
         this.matingType = matingType;
+        this.implementation = implementation;
+        this.m = m;
 
         for (int i = 0; i < size; i++) {
             Random rand = new Random();
@@ -83,7 +91,7 @@ public class Population {
                 aux = Selection.boltzmann(selectedList,size,this.temperature());
                 break;
             case "dTournament":
-                aux = Selection.dTournament(selectedList,size);
+                aux = Selection.dTournament(selectedList,size, this.m);
                 break;
             case "pTournament":
                 aux = Selection.pTournament(selectedList,size);
@@ -113,7 +121,7 @@ public class Population {
                 aux = Selection.boltzmann(selectedList,k - size, this.temperature());
                 break;
             case "dTournament":
-                aux = Selection.dTournament(selectedList,k - size);
+                aux = Selection.dTournament(selectedList,k - size, this.m);
                 break;
             case "pTournament":
                 aux = Selection.pTournament(selectedList,k - size);
@@ -208,6 +216,8 @@ public class Population {
         }
         System.out.println("Fitness minimo : " + aux.performance());
         System.out.println("Fitness promedio : " + (average / this.parents.size()));
+
+
         // System.out.println("Genetic Diversity : " + aux.performance());
     }
 
