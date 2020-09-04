@@ -137,7 +137,7 @@ public class Population {
                 this.sons = Mate.anular();
                 break;
             case "uniform":
-                this.sons = Mate.uniform();
+                this.sons = Mate.uniform(this.selected, this);
                 break;
         }
         System.out.println(this.sons);
