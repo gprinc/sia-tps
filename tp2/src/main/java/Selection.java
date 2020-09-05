@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Selection {
+
     public static Player[] elite(Player[] players, int k){
         Player[] aux = new Player[k];
         int aux2 = 0;
@@ -112,20 +113,24 @@ public class Selection {
         }
 
         double[] relative = new double[players.length];
-        int total = players.length;
+        double[] accumulated = new double[players.length];
 
         for (int i = 0; i < relative.length; i++) {
-            relative[i] = (double) (total - i)/total;
+            relative[i] = (double) (players.length - i) / players.length;
         }
 
-        Player[] orderPlayer = new Player[listAux.size()];
-        listAux.toArray(orderPlayer);
+        accumulated[0] = relative[0];
+
+        for (int i = 1; i < accumulated.length; i++) {
+            accumulated[i] = relative[i] + accumulated[i-1];
+        }
 
         for (int i = 0; i < k; i++) {
             double random = Math.random();
-            for (int j = 0; j < relative.length; j++) {
-                if (relative[j] >= random) {
+            for (int j = 0; j < accumulated.length; j++) {
+                if (accumulated[j] >= random) {
                     aux[i] = auxList.get(j);
+                    break;
                 }
             }
         }
