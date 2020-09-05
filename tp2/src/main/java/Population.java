@@ -1,5 +1,7 @@
 import com.github.sh0nk.matplotlib4j.Plot;
+import com.github.sh0nk.matplotlib4j.PythonExecutionException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -29,6 +31,15 @@ public class Population {
     private String implementation;
     private int m;
     private String impSel;
+    private String cut;
+    private int generations;
+    private int time;
+    private double accepted;
+    private int iterations;
+    private long start;
+
+    private LinkedList<Double> avgFitness;
+    private LinkedList<Double> lowerFitness;
 
     public Population(ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList) {
         this.bootList = bootList;
@@ -37,10 +48,12 @@ public class Population {
         this.glovesList = glovesList;
         this.chestList = chestList;
         this.plt = Plot.create();
+        this.avgFitness = new LinkedList<Double>();
+        this.lowerFitness = new LinkedList<Double>();
     }
 
     public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm, String
-            matingType, String implementation, int m, String impSel) {
+            matingType, String implementation, int m, String impSel, String cut, int generations, int time, double accepted) {
         this.populationSize = size;
         this.type = type;
         this.k = k;
@@ -57,6 +70,11 @@ public class Population {
         this.implementation = implementation;
         this.m = m;
         this.impSel = impSel;
+        this.cut = cut;
+        this.generations = generations;
+        this.time = time;
+        this.accepted = accepted;
+        this.start = System.nanoTime();
 
         for (int i = 0; i < size; i++) {
             Random rand = new Random();
@@ -208,7 +226,27 @@ public class Population {
     }
 
     public boolean hasTerminated () {
-        return false;
+        switch (this.cut) {
+            case "generations":
+                return this.generations == this.iterations;
+            case "time":
+                long now = System.nanoTime();
+                double elapsedTimeInSecond = (double) (now - this.start) / 1000000000;
+                return elapsedTimeInSecond == this.time;
+            case "accepted":
+                Player aux = null;
+                for (Player p: this.parents) {
+                    if (aux == null)
+                        aux = p;
+                    else if (aux.performance() >= this.accepted)
+                        return true;
+                    else if (aux.performance() < p.performance())
+                        aux = p;
+                }
+                return false;
+            default:
+                return false;
+        }
     }
 
     private Item getItem(double id, ArrayList<Item> items){
@@ -225,7 +263,7 @@ public class Population {
         return aux;
     }
 
-    public void graphData () {
+    public void graphData() {
         Player aux = this.parents.get(0);
 
         double average = 0;
@@ -235,11 +273,30 @@ public class Population {
                 aux = p;
             }
         }
-        System.out.println("Fitness minimo : " + aux.performance());
-        System.out.println("Fitness promedio : " + (average / this.parents.size()));
-
+        // System.out.println("Fitness minimo : " + aux.performance());
+        // System.out.println("Fitness promedio : " + (average / this.parents.size()));
+        this.avgFitness.add(average / this.parents.size());
+        this.lowerFitness.add(aux.performance());
 
         // System.out.println("Genetic Diversity : " + aux.performance());
+    }
+
+    public void plotData() throws IOException, PythonExecutionException {
+        Plot pltAvg = Plot.create();
+        Plot pltMin = Plot.create();
+        pltAvg.plot().add(this.avgFitness);
+        pltAvg.xlabel("Iteration");
+        pltAvg.ylabel("Fitness");
+        pltAvg.title("Average Fitness");
+        pltAvg.legend();
+        pltAvg.show();
+
+        pltMin.plot().add(this.lowerFitness);
+        pltMin.xlabel("Iteration");
+        pltMin.ylabel("Fitness");
+        pltMin.title("Lower Fitness");
+        pltMin.legend();
+        pltMin.show();
     }
 
 }

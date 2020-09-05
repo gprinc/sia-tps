@@ -3,7 +3,6 @@
   "mutation": "gene",
   "pm": "0.5",
   "limitm": "6",
-  "iterations": "10000",
   "class": "warrior",
   "method1": "elite",
   "method2": "roulette",
@@ -17,5 +16,11 @@
   "tc": "100000",
   "implementation": "fillAll",
   "m": "5",
-  "impSel": "elite"
+  "impSel": "elite",
+  "cut": "generations",
+  "generations": "10000",
+  "time": "1000000000",
+  "accepted": "20.0",
+  "structure": null,
+  "content": null
 }

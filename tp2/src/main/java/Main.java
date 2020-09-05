@@ -10,6 +10,7 @@ public class Main {
     private final static int DEFAULT_ITERATIONS = 100;
     private final static String DEFAULT_DND_CLASS = "warrior";
     private final static String DEFAULT_MUTATION = "gene";
+    private final static String DEFAULT_CUT = "generations";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -17,7 +18,6 @@ public class Main {
         try {
             JSONObject data = (JSONObject) parser.parse(new FileReader("config.json"));
             int populationSize = Integer.parseInt((String) data.get("population"));
-            int iterations = Integer.parseInt((String) data.get("iterations"));
             double a = Double.parseDouble((String) data.get("a"));
             double b = Double.parseDouble((String) data.get("b"));
             String method1 = (String) data.get("method1");
@@ -31,6 +31,13 @@ public class Main {
             String implementation = (String) data.get("implementation");
             int m = Integer.parseInt((String) data.get("m"));
             String impSel = (String) data.get("impSel");
+            int generations = Integer.parseInt((String) data.get("generations"));
+            int time = Integer.parseInt((String) data.get("time"));
+            double accepted = Double.parseDouble((String) data.get("accepted"));
+
+            String cut = (String) data.get("cut");;
+            if (cut.equals(null))
+                cut = DEFAULT_CUT;
 
             String dndClass = (String) data.get("class");
             if (dndClass.equals(null))
@@ -44,7 +51,7 @@ public class Main {
             double pm = Double.parseDouble((String) data.get("pm"));
             int limitm = Integer.parseInt((String) data.get("limitm"));
 
-            population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, impSel);
+            population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, impSel, cut, generations, time,accepted);
 
             do {
                 population.selection();
@@ -54,6 +61,7 @@ public class Main {
                 population.graphData();
             } while (!population.hasTerminated());
 
+            population.plotData();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error in TP2");
