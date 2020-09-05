@@ -28,6 +28,7 @@ public class Population {
     private Plot plt;
     private String implementation;
     private int m;
+    private String impSel;
 
     public Population(ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList) {
         this.bootList = bootList;
@@ -39,7 +40,7 @@ public class Population {
     }
 
     public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm, String
-            matingType, String implementation, int m) {
+            matingType, String implementation, int m, String impSel) {
         this.populationSize = size;
         this.type = type;
         this.k = k;
@@ -55,6 +56,7 @@ public class Population {
         this.matingType = matingType;
         this.implementation = implementation;
         this.m = m;
+        this.impSel = impSel;
 
         for (int i = 0; i < size; i++) {
             Random rand = new Random();
@@ -177,7 +179,30 @@ public class Population {
         this.sons = sonsAux;
     }
 
-    private double temperature() {
+    public void implementation () {
+        LinkedList<Player> newGen = new LinkedList<>();
+        Player[] aux = new Player[this.parents.size()];
+        Player[] current = new Player[this.parents.size()];
+        current = this.parents.toArray(current);
+        Player[] sons = new Player[this.sons.size()];
+        sons = this.sons.toArray(sons);
+
+        switch (this.implementation){
+            case "fillAll":
+                aux = Implementation.fillAll(current, sons, impSel, this.temperature(), this.m);
+                break;
+            case "fillParent":
+                aux = Implementation.fillParent(current, sons, impSel, this.temperature(), this.m);
+        }
+
+        for (Player p : aux ){
+            newGen.add(p);
+        }
+
+        this.parents = newGen;
+    }
+
+    private double temperature () {
         this.temperature = this.tc + (this.t0 - this.tc) * Math.exp((-1 * (1.3806488 * Math.pow(10,-16))) * this.temperature);
         return this.temperature;
     }
@@ -198,10 +223,6 @@ public class Population {
     public Player generate(double[] gens) {
         Player aux = new Player(gens[0], this.getItem(gens[1], this.chestList), this.getItem(gens[2], this.glovesList), this.getItem(gens[3], this.helmetList), this.getItem(gens[4], this.weaponsList),this.getItem(gens[5], this.bootList), this.type);
         return aux;
-    }
-
-    public void nextGen () {
-        this.parents = this.sons;
     }
 
     public void graphData () {

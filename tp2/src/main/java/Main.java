@@ -30,6 +30,7 @@ public class Main {
             int tc = Integer.parseInt((String) data.get("tc"));
             String implementation = (String) data.get("implementation");
             int m = Integer.parseInt((String) data.get("m"));
+            String impSel = (String) data.get("impSel");
 
             String dndClass = (String) data.get("class");
             if (dndClass.equals(null))
@@ -43,13 +44,13 @@ public class Main {
             double pm = Double.parseDouble((String) data.get("pm"));
             int limitm = Integer.parseInt((String) data.get("limitm"));
 
-            population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m);
+            population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, impSel);
 
             do {
                 population.selection();
                 population.mate();
                 population.mutate();
-                population.nextGen();
+                population.implementation();
                 population.graphData();
             } while (!population.hasTerminated());
 

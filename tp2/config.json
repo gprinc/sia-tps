@@ -15,6 +15,7 @@
   "k": "10",
   "t0": "100",
   "tc": "100000",
-  "implementation": "fill-all",
-  "m": "5"
+  "implementation": "fillAll",
+  "m": "5",
+  "impSel": "elite"
 }
