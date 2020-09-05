@@ -116,9 +116,9 @@ public class Selection {
         double[] accumulated = new double[players.length];
 
         double total = (players.length * (players.length + 1)) / 2.0; // la formula para tener el total de al sumatoria de los numeros de 0 a N
-        
+
         for (int i = 0; i < relative.length; i++) {
-            relative[i] = (double) i / total;
+            relative[i] = (double) ( i + 1 ) / total;
         }
 
         accumulated[0] = relative[0];
