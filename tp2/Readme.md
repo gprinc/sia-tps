@@ -59,15 +59,13 @@ The possible selection methods are `elite`, `roulette`, `universal`, `ranking`, 
 
 - `cut`: the way that the algorithm will cut. Its possible values are `generations`, `time`, `accepted`, `structure` and `content`. By default will be `generations`.
 
-- `generations`: the amount of generations that will have to pass to cut.
+- `generations`: the amount of generations that will have to pass to cut. It's also used with `structure` to set the generations' amount to wait until cut. The dault value is 10.
 
 - `time`: the amount of seconds to cut.
 
 - `accepted`: the minimum accepted value to cut.
 
-- `structure`: the percentage of change that is required to reset `structureIterations`.
-
-- `structureIterations`: the generations to wait until cut if `structure` condition isn't fulfill.
+- `structure`: the percentage of change that is required to check if it's needed to cut until `generations` amount.
 
 -  `content`: the generations to wait until cut if max value doesn't change.
 
@@ -97,7 +95,6 @@ Example:
   "time": "1000000000",
   "accepted": "20.0",
   "structure": "0.5",
-  "strcutureIterations": "10",
   "content": "10"
 }
 ``` 
