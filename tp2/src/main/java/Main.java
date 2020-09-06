@@ -47,7 +47,8 @@ public class Main {
                 System.out.println("t0 must be lower than tc");
                 return;
             }
-            
+            double pm = InitializerJson.givePercentageWithDef((String) data.get("pm"), 0.5);
+
             String method1 = InitializerJson.giveSelectionMethod((String) data.get("method1"));
             String method2 = InitializerJson.giveSelectionMethod((String) data.get("method2"));
             String method3 = InitializerJson.giveSelectionMethod((String) data.get("method3"));
@@ -61,9 +62,7 @@ public class Main {
             double accepted = InitializerJson.giveDouble((String) data.get("accepted"), 20.0);
             int content = InitializerJson.giveInt((String) data.get("content"), 5);
             double structure = InitializerJson.giveDouble((String) data.get("structure"), 0.5);
-
             int m = InitializerJson.giveInt((String) data.get("m"), 1);
-            double pm = InitializerJson.giveDouble((String) data.get("pm"), 0.5);
             int limitm = InitializerJson.giveInt((String) data.get("limitm"), 1);
 
             Population population = new Population(TSVReader.getItemList("fulldata/botas.tsv"),TSVReader.getItemList("fulldata/armas.tsv"),TSVReader.getItemList("fulldata/cascos.tsv"),TSVReader.getItemList("fulldata/guantes.tsv"),TSVReader.getItemList("fulldata/pecheras.tsv"));

@@ -94,4 +94,10 @@ public class InitializerJson {
             return def;
         return Double.parseDouble(s);
     }
+
+    public static double givePercentageWithDef(String stringValue, double def){
+        if (stringValue == null || Double.parseDouble(stringValue) < 0 || Double.parseDouble(stringValue) > 1)
+            return def;
+        return Double.parseDouble(stringValue);
+    }
 }
