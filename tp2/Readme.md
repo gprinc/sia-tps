@@ -61,13 +61,13 @@ The possible selection methods are `elite`, `roulette`, `universal`, `ranking`, 
 
 - `generations`: the amount of generations that will have to pass to cut. It's also used with `structure` to set the generations' amount to wait until cut. The dault value is 10.
 
-- `time`: the amount of seconds to cut.
+- `time`: the amount of seconds to cut. The default is 1000000 seconds.
 
-- `accepted`: the minimum accepted value to cut.
+- `accepted`: the minimum accepted value to cut. The default is 20.0.
 
-- `structure`: the percentage of change that is required to check if it's needed to cut until `generations` amount.
+- `structure`: the percentage of change that is required to check if it's needed to cut until `generations` amount. The default value is 0.5.
 
--  `content`: the generations to wait until cut if max value doesn't change.
+-  `content`: the generations to wait until cut if max value doesn't change. The default is 5.
 
 Example: 
 
