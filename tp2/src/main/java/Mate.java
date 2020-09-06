@@ -19,7 +19,7 @@ public class Mate {
         if (selected.size() % 2 == 0) {
             for (int i = 0; i < selected.size() - 1; i++) {
                 gens0 = selected.get(i).getGens();
-                gens1 = selected.get(i++).getGens();
+                gens1 = selected.get(++i).getGens();
 
                 for (int j = 0; j < 6; j++) {
                     if (j < random) {
@@ -38,7 +38,7 @@ public class Mate {
         } else {
             for (int i = 0; i < selected.size() - 2; i++) {
                 gens0 = selected.get(i).getGens();
-                gens1 = selected.get(i++).getGens();
+                gens1 = selected.get(++i).getGens();
 
                 for (int j = 0; j < 6; j++) {
                     if (j < random) {
@@ -101,7 +101,7 @@ public class Mate {
         if (selected.size() % 2 == 0) {
             for (int i = 0; i < selected.size() - 1; i++) {
                 gens0 = selected.get(i).getGens();
-                gens1 = selected.get(i++).getGens();
+                gens1 = selected.get(++i).getGens();
 
                 for (int j = 0; j < 6; j++) {
                     if (j <= max && j >= min ) {
@@ -120,7 +120,7 @@ public class Mate {
         } else {
             for (int i = 0; i < aux.size() - 2; i++) {
                 gens0 = selected.get(i).getGens();
-                gens1 = selected.get(i++).getGens();
+                gens1 = selected.get(++i).getGens();
 
                 for (int j = 0; j < 6; j++) {
                     if (j <= max && j >= min ) {
@@ -172,7 +172,7 @@ public class Mate {
         if (selected.size() % 2 == 0) {
             for (int i = 0; i < aux.size() - 1; i++) {
                 gens0 = selected.get(i).getGens();
-                gens1 = selected.get(i++).getGens();
+                gens1 = selected.get(++i).getGens();
 
                 if (pivot + len < 6) {
                     for (int j = 0; j < 6; j++) {
@@ -204,7 +204,7 @@ public class Mate {
         } else {
             for (int i = 0; i < aux.size() - 2; i++) {
                 gens0 = selected.get(i).getGens();
-                gens1 = selected.get(i++).getGens();
+                gens1 = selected.get(++i).getGens();
 
                 if (pivot + len < 6) {
                     for (int j = 0; j < 6; j++) {
@@ -277,10 +277,11 @@ public class Mate {
         double[] son0 = new double[6];
         double[] son1 = new double[6];
 
-        if (selected.size() % 2 == 0) {
-            for (int i = 0; i < selected.size() - 1; i++) {
-                gens0 = selected.get(i).getGens();
-                gens1 = selected.get(i++).getGens();
+        if (aux.size() % 2 == 0) {
+            for (int i = 0; i < aux.size() - 1; i++) {
+                gens0 = aux.get(i).getGens();
+                gens1 = aux.get(i+1).getGens();
+                i++;
 
                 for (int j = 0; j < 6; j++) {
                     if ( Math.random() < 0.5) {
@@ -293,13 +294,15 @@ public class Mate {
                     }
                 }
 
+
                 sons.add(p.generate(son0));
                 sons.add(p.generate(son1));
             }
         } else {
             for (int i = 0; i < aux.size() - 2; i++) {
-                gens0 = selected.get(i).getGens();
-                gens1 = selected.get(i++).getGens();
+                gens0 = aux.get(i).getGens();
+                gens1 = aux.get(i+1).getGens();
+                i++;
 
                 for (int j = 0; j < 6; j++) {
                     if (Math.random() < 0.5 ) {
@@ -316,8 +319,8 @@ public class Mate {
                 sons.add(p.generate(son1));
             }
 
-            gens0 = selected.get(1).getGens();
-            gens1 = selected.get(aux.size()).getGens();
+            gens0 = aux.get(1).getGens();
+            gens1 = aux.get(aux.size()).getGens();
 
             for (int j = 0; j < 6; j++) {
                 if (Math.random() < 0.5) {

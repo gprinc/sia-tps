@@ -23,7 +23,7 @@ public class Selection {
         }
 
         for (int i = 0; i < k; i++)
-            aux[i] = relative.poll();
+            aux[i] =  new Player(relative.poll());
 
         return aux;
     }
@@ -52,7 +52,7 @@ public class Selection {
             double random = Math.random();
             for (int j = 0; j < accumulated.length; j++) {
                 if (accumulated[j] >= random) {
-                    aux[i] = players[j];
+                    aux[i] =  new Player(players[j]);
                     break;
                 }
             }
@@ -84,7 +84,7 @@ public class Selection {
             double r = (random + i)/k;
             for (int j = 1; j < accumulated.length; j++) {
                 if (accumulated[j] > r) {
-                    aux[i] = players[j-1];
+                    aux[i] =  new Player(players[j-1]);
                     break;
                 }
             }
@@ -131,7 +131,7 @@ public class Selection {
             double random = Math.random();
             for (int j = 0; j < accumulated.length; j++) {
                 if (accumulated[j] >= random) {
-                    aux[i] = auxList.get(j);
+                    aux[i] =  new Player(auxList.get(j));
                     break;
                 }
             }
@@ -164,7 +164,7 @@ public class Selection {
             double random = Math.random();
             for (int j = 1; j < accumulated.length; j++) {
                 if (accumulated[j] > random) {
-                    aux[i] = players[j-1];
+                    aux[i] =  new Player(players[j-1]);
                     break;
                 }
             }
@@ -187,7 +187,7 @@ public class Selection {
                 if(auxP.performance() < auxPlayers.get(j).performance())
                     auxP = auxPlayers.get(j);
             }
-            aux[i] = auxP;
+            aux[i] =  new Player(auxP);
         }
 
         return aux;
@@ -218,7 +218,7 @@ public class Selection {
                 else
                     auxPlayer = players[player2];
             }
-            aux[i] = auxPlayer;
+            aux[i] =  new Player(auxPlayer);
         }
         return aux;
     }

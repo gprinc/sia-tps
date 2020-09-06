@@ -7,6 +7,10 @@ public class Player {
     private Item boots;
     private String type;
 
+    public Player(Player p) {
+        this(p.getHeight(), p.getChest(), p.getGloves(), p.getHelmet(), p.getWeapon(), p.getBoots(), p.getType());
+    }
+
     public Player(double height, Item chest, Item gloves, Item helmet, Item weapon, Item boots, String type) {
         this.height = height;
         this.chest = chest;

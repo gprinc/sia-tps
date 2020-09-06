@@ -45,7 +45,7 @@ public class Implementation {
         }
 
         for (int j = 0; j < size; j++) {
-            aux[j] = aux2[j];
+            aux[j] =  new Player(aux2[j]);
         }
 
         aux2 = new Player[current.length - size];
@@ -74,7 +74,7 @@ public class Implementation {
         }
 
         for (int j = 0; j < current.length - size; j++) {
-            aux[size + j] = aux2[j];
+            aux[size + j] =  new Player(aux2[j]);
         }
 
         return aux;
@@ -112,7 +112,7 @@ public class Implementation {
             }
 
             for (int j = 0; j < size; j++) {
-                aux[j] = aux2[j];
+                aux[j] = new Player(aux2[j]);
             }
 
             aux2 = new Player[sons.length - size];
@@ -140,7 +140,7 @@ public class Implementation {
                     aux2 = Selection.pTournament(sons, sons.length - size);
             }
             for (int i = 0; i < sons.length - size; i++) {
-                aux[size +i] = aux2[i];
+                aux[size + i] =  new Player(aux2[i]);
             }
         } else {
             int size = (int) Math.floor((current.length - sons.length) * b);
@@ -172,7 +172,7 @@ public class Implementation {
             }
 
             for (int j = 0; j < size; j++) {
-                aux[j] = aux2[j];
+                aux[j] =  new Player(aux2[j]);
             }
 
             int auxLength = (current.length - sons.length) - size;
@@ -201,12 +201,12 @@ public class Implementation {
                     aux2 = Selection.pTournament(current, auxLength);
             }
             for (int i = 0; i < auxLength; i++) {
-                aux[size + i] = aux2[i];
+                aux[size + i] =  new Player(aux2[i]);
             }
 
             int j = 0;
             for (Player p: sons) {
-                aux[auxLength + size + j] = p;
+                aux[auxLength + size + j] =  new Player(p);
                 j++;
             }
         }
