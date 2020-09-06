@@ -30,11 +30,11 @@ public class Main {
             int tc = Integer.parseInt((String) data.get("tc"));
             String implementation = (String) data.get("implementation");
             int m = Integer.parseInt((String) data.get("m"));
-            String impSel = (String) data.get("impSel");
             int generations = Integer.parseInt((String) data.get("generations"));
             int time = Integer.parseInt((String) data.get("time"));
             double accepted = Double.parseDouble((String) data.get("accepted"));
             int content = Integer.parseInt((String) data.get("content"));
+            int structure = Integer.parseInt((String) data.get("structure"));
 
             String cut = (String) data.get("cut");;
             if (cut.equals(null))
@@ -54,7 +54,7 @@ public class Main {
             double pm = Double.parseDouble((String) data.get("pm"));
             int limitm = Integer.parseInt((String) data.get("limitm"));
 
-            population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, impSel, cut, generations, time, accepted, content, b, method3, method4);
+            population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, cut, generations, time, accepted, structure, content, b, method3, method4);
 
             do {
                 population.selection();

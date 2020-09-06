@@ -16,11 +16,10 @@
   "tc": "100000",
   "implementation": "fillParent",
   "m": "5",
-  "impSel": "elite",
   "cut": "generations",
-  "generations": "50",
+  "generations": "1",
   "time": "1000000000",
   "accepted": "20.0",
-  "structure": null,
+  "structure": "10",
   "content": "10"
 }

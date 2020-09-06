@@ -43,8 +43,11 @@ public class Population {
     private int iterations;
     private long start;
     private int content;
+    private int structure;
+    private int structureIterations;
     private int contentIteration;
     private double previousMaxFitness;
+    private LinkedList<Player> prevPopulation;
 
     private LinkedList<Double> avgFitness;
     private LinkedList<Double> lowerFitness;
@@ -59,10 +62,12 @@ public class Population {
         this.plt = Plot.create();
         this.avgFitness = new LinkedList<Double>();
         this.lowerFitness = new LinkedList<Double>();
+        this.geneticDiversity = new LinkedList<Integer>();
+        this.prevPopulation = new LinkedList<Player>();
     }
 
     public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm, String
-            matingType, String implementation, int m, String impSel, String cut, int generations, int time, double accepted, int content, double selectionValue2, String selectionType2, String selectionType3) {
+            matingType, String implementation, int m, String cut, int generations, int time, double accepted, int structure, int content, double selectionValue2, String selectionType2, String selectionType3) {
         this.populationSize = size;
         this.type = type;
         this.k = k;
@@ -81,7 +86,6 @@ public class Population {
         this.matingType = matingType;
         this.implementation = implementation;
         this.m = m;
-        this.impSel = impSel;
         this.cut = cut;
         this.generations = generations;
         this.time = time;
@@ -91,6 +95,9 @@ public class Population {
         this.iterations = 0;
         this.contentIteration = 0;
         this.previousMaxFitness = 0;
+        this.structure = structure;
+        this.structureIterations = 0;
+
 
         for (int i = 0; i < size; i++) {
             Random rand = new Random();
@@ -256,8 +263,6 @@ public class Population {
 
     public boolean hasTerminated () {
         switch (this.cut) {
-            case "generations":
-                return this.generations == this.iterations;
             case "time":
                 long now = System.nanoTime();
                 double elapsedTimeInSecond = (double) (now - this.start) / 1000000000;
@@ -271,6 +276,22 @@ public class Population {
                         return true;
                     else if (aux.performance() < p.performance())
                         aux = p;
+                }
+                return false;
+            case "structure":
+                if (this.generations == this.structureIterations)
+                    return true;
+                if (this.prevPopulation.size() == 0)
+                    this.prevPopulation = new LinkedList<Player>((LinkedList<Player>) this.parents.clone());
+                else {
+                    LinkedList<Player> auxStructure = new LinkedList<Player>((LinkedList<Player>)this.parents.clone());
+                    auxStructure.removeAll(this.prevPopulation);
+                    if (auxStructure.size()/this.prevPopulation.size() < this.structure)
+                        this.structureIterations++;
+                    else {
+                        this.prevPopulation = new LinkedList<Player>((LinkedList<Player>) this.parents.clone());
+                        this.structureIterations = 0;
+                    }
                 }
                 return false;
             case "content":
@@ -287,7 +308,7 @@ public class Population {
                 this.previousMaxFitness = auxMax;
                 return false;
             default:
-                return false;
+                return this.generations == this.iterations;
         }
     }
 
@@ -328,13 +349,13 @@ public class Population {
             gloves.add(p.getGloves());
             helmet.add(p.getHelmet());
             weapon.add(p.getWeapon());
-            height.add(p.getHeight());
+            height.add(new Double(p.getHeight()));
         }
         System.out.println(aux2.performance());
 
         this.avgFitness.add(average / this.parents.size());
         this.lowerFitness.add(aux.performance());
-        // this.geneticDiversity.add(boots.size() + chest.size() + gloves.size() + helmet.size() + weapon.size() + height.size());
+        this.geneticDiversity.add(boots.size() + chest.size() + gloves.size() + helmet.size() + weapon.size() + height.size());
 
     }
 
@@ -343,12 +364,12 @@ public class Population {
         Plot pltMin = Plot.create();
         Plot pltGenes = Plot.create();
 
-        /* pltAvg.plot().add(this.avgFitness);
+        pltAvg.plot().add(this.avgFitness);
         pltAvg.xlabel("Iteration");
         pltAvg.ylabel("Fitness");
         pltAvg.title("Average Fitness");
         pltAvg.legend();
-        pltAvg.show();*/
+        pltAvg.show();
 
         pltMin.plot().add(this.lowerFitness);
         pltMin.xlabel("Iteration");
@@ -357,12 +378,12 @@ public class Population {
         pltMin.legend();
         pltMin.show();
 
-        /*pltGenes.plot().add(this.geneticDiversity);
+        pltGenes.plot().add(this.geneticDiversity);
         pltGenes.xlabel("Iteration");
         pltGenes.ylabel("Genes amount");
         pltGenes.title("Genetic Diversity");
         pltGenes.legend();
-        pltGenes.show();*/
+        pltGenes.show();
     }
 
 }
