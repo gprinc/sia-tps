@@ -143,7 +143,7 @@ public class Implementation {
                 aux[size +i] = aux2[i];
             }
         } else {
-            int size = (int) Math.floor(current.length - sons.length * b);
+            int size = (int) Math.floor((current.length - sons.length) * b);
             if ((current.length - sons.length) % 2 != 0)
                 size++;
             Player[] aux2 = new Player[size];

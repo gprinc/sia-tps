@@ -57,16 +57,9 @@ public class Main {
             population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, impSel, cut, generations, time, accepted, content, b, method3, method4);
 
             do {
-                System.out.println("Selection");
                 population.selection();
-
-                System.out.println("Mate");
                 population.mate();
-
-                System.out.println("Mutate");
                 population.mutate();
-
-                System.out.println("Implementation");
                 population.implementation();
 
                 population.graphData();

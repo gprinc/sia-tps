@@ -140,7 +140,6 @@ public class Population {
         for (Player p : aux ){
             this.selected.add(p);
         }
-        
         aux = new Player[k - size];
 
         switch(this.selectionType[1]) {
@@ -187,7 +186,6 @@ public class Population {
                 this.sons = Mate.uniform(this.selected, this);
                 break;
         }
-        System.out.println(this.sons);
     }
 
     public void mutate () {
@@ -309,6 +307,7 @@ public class Population {
 
     public void graphData() {
         Player aux = this.parents.get(0);
+        Player aux2 = this.parents.get(0);
         HashSet<Item> boots = new HashSet<Item>();
         HashSet<Item> chest = new HashSet<Item>();
         HashSet<Item> gloves = new HashSet<Item>();
@@ -322,6 +321,8 @@ public class Population {
             if (p.performance() < aux.performance()) {
                 aux = p;
             }
+            if (p.performance() > aux2.performance())
+                aux2 = p;
             boots.add(p.getBoots());
             chest.add(p.getChest());
             gloves.add(p.getGloves());
@@ -329,13 +330,11 @@ public class Population {
             weapon.add(p.getWeapon());
             height.add(p.getHeight());
         }
+        System.out.println(aux2.performance());
 
-        System.out.println(average / this.parents.size());
-        System.out.println(aux.performance());
-        System.out.print('\n');
         this.avgFitness.add(average / this.parents.size());
         this.lowerFitness.add(aux.performance());
-        this.geneticDiversity.add(boots.size() + chest.size() + gloves.size() + helmet.size() + weapon.size() + height.size());
+        // this.geneticDiversity.add(boots.size() + chest.size() + gloves.size() + helmet.size() + weapon.size() + height.size());
 
     }
 
@@ -344,12 +343,12 @@ public class Population {
         Plot pltMin = Plot.create();
         Plot pltGenes = Plot.create();
 
-        pltAvg.plot().add(this.avgFitness);
+        /* pltAvg.plot().add(this.avgFitness);
         pltAvg.xlabel("Iteration");
         pltAvg.ylabel("Fitness");
         pltAvg.title("Average Fitness");
         pltAvg.legend();
-        pltAvg.show();
+        pltAvg.show();*/
 
         pltMin.plot().add(this.lowerFitness);
         pltMin.xlabel("Iteration");
@@ -358,12 +357,12 @@ public class Population {
         pltMin.legend();
         pltMin.show();
 
-        pltGenes.plot().add(this.geneticDiversity);
+        /*pltGenes.plot().add(this.geneticDiversity);
         pltGenes.xlabel("Iteration");
         pltGenes.ylabel("Genes amount");
         pltGenes.title("Genetic Diversity");
         pltGenes.legend();
-        pltGenes.show();
+        pltGenes.show();*/
     }
 
 }

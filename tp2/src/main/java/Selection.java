@@ -13,7 +13,7 @@ public class Selection {
             }
         });
 
-        while (aux2 <= k) {
+        while (aux2 < k) {
             for (Player p : players) {
                 if (aux2 == k)
                     break;
