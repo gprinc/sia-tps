@@ -20,19 +20,19 @@ They are all *string* values.
 
 Let's first remember that we have to provide 2 selection methods for the selection and two other for the implementation.
 
-The possible selection methods are `elite`, `roulette`, `universal`, `ranking`, `boltzmann`, `dTournament` and `pTournament`.
+The possible selection methods are `elite`, `roulette`, `universal`, `ranking`, `boltzmann`, `dTournament` and `pTournament`. The default method is `roulette`.
 
 - `a`: percentage amount of k for the selection. It must be a value between 0.0 and 1.0. By default will be 0.5.
 
 - `b`: percentage amount of k for the implementation. It must be a value between 0.0 and 1.0. By default will be 0.5.
 
-- `method1`: [REQUIRED] The selection method that will be implemented for the selection with size a * k.
+- `method1`: The selection method that will be implemented for the selection with size a * k.
 
-- `method2`: [REQUIRED] The selection method that will be implemented for the selection with size (1 - a) * k.
+- `method2`: The selection method that will be implemented for the selection with size (1 - a) * k.
 
--  `method3`: [REQUIRED] The selection method that will be implemented for the implementation with size b * k.
+-  `method3`: The selection method that will be implemented for the implementation with size b * k.
 
-- `method4`: [REQUIRED] The selection method that will be implemented for the implementation with size (1 - b) * k.
+- `method4`: The selection method that will be implemented for the implementation with size (1 - b) * k.
 
 
 ## Mating
@@ -61,13 +61,13 @@ The possible selection methods are `elite`, `roulette`, `universal`, `ranking`, 
 
 - `generations`: the amount of generations that will have to pass to cut. It's also used with `structure` to set the generations' amount to wait until cut. The dault value is 10.
 
-- `time`: the amount of seconds to cut.
+- `time`: the amount of seconds to cut. The default is 1000000 seconds.
 
-- `accepted`: the minimum accepted value to cut.
+- `accepted`: the minimum accepted value to cut. The default is 20.0.
 
-- `structure`: the percentage of change that is required to check if it's needed to cut until `generations` amount.
+- `structure`: the percentage of change that is required to check if it's needed to cut until `generations` amount. The default value is 0.5.
 
--  `content`: the generations to wait until cut if max value doesn't change.
+-  `content`: the generations to wait until cut if max value doesn't change. The default is 5.
 
 Example: 
 
