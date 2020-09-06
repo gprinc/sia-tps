@@ -34,6 +34,7 @@ public class Main {
             int generations = Integer.parseInt((String) data.get("generations"));
             int time = Integer.parseInt((String) data.get("time"));
             double accepted = Double.parseDouble((String) data.get("accepted"));
+            int content = Integer.parseInt((String) data.get("content"));
 
             String cut = (String) data.get("cut");;
             if (cut.equals(null))
@@ -44,6 +45,8 @@ public class Main {
                 dndClass = DEFAULT_DND_CLASS;
             Population population = new Population(TSVReader.getItemList("fulldata/botas.tsv"),TSVReader.getItemList("fulldata/armas.tsv"),TSVReader.getItemList("fulldata/cascos.tsv"),TSVReader.getItemList("fulldata/guantes.tsv"),TSVReader.getItemList("fulldata/pecheras.tsv"));
 
+            System.out.println("Finalización de carga de archivos");
+
             String mutation = (String) data.get("mutation");
             if (mutation.equals(null))
                 mutation = DEFAULT_MUTATION;
@@ -51,13 +54,21 @@ public class Main {
             double pm = Double.parseDouble((String) data.get("pm"));
             int limitm = Integer.parseInt((String) data.get("limitm"));
 
-            population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, impSel, cut, generations, time,accepted);
+            population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, impSel, cut, generations, time, accepted, content, b, method3, method4);
 
             do {
+                System.out.println("Selection");
                 population.selection();
+
+                System.out.println("Mate");
                 population.mate();
+
+                System.out.println("Mutate");
                 population.mutate();
+
+                System.out.println("Implementation");
                 population.implementation();
+
                 population.graphData();
             } while (!population.hasTerminated());
 

@@ -1,8 +1,12 @@
 public class Implementation {
 
-    public static Player[] fillAll(Player[] current, Player[] sons, String selection, double temperature, int m){
+    public static Player[] fillAll(Player[] current, Player[] sons, double temperature0, double temperature1, int m, double b, String selection0, String selection1){
         Player[] aux = new Player[current.length];
         Player[] all = new Player[current.length + sons.length];
+
+        int size = (int) Math.floor(current.length * b);
+        if (current.length % 2 != 0)
+            size++;
 
         int i = 0;
         for (Player p: current) {
@@ -15,91 +19,195 @@ public class Implementation {
             i++;
         }
 
-        switch(selection) {
+        Player[] aux2 = new Player[size];
+
+        switch(selection0) {
             case "elite":
-                aux = Selection.elite(all, current.length);
+                aux2 = Selection.elite(all, size);
                 break;
             case "roulette":
-                aux = Selection.roulette(all, current.length);
+                aux2 = Selection.roulette(all, size);
                 break;
             case "universal":
-                aux = Selection.universal(all, current.length);
+                aux2 = Selection.universal(all, size);
                 break;
             case "ranking":
-                aux = Selection.ranking(all, current.length);
+                aux2 = Selection.ranking(all, size);
                 break;
             case "boltzmann":
-                aux = Selection.boltzmann(all, current.length, temperature);
+                aux2 = Selection.boltzmann(all, size, temperature0);
                 break;
             case "dTournament":
-                aux = Selection.dTournament(all, current.length, m);
+                aux2 = Selection.dTournament(all, size, m);
                 break;
             case "pTournament":
-                aux = Selection.pTournament(all, current.length);
+                aux2 = Selection.pTournament(all, size);
+        }
+
+        for (int j = 0; j < size; j++) {
+            aux[j] = aux2[j];
+        }
+
+        aux2 = new Player[current.length - size];
+
+        switch(selection1) {
+            case "elite":
+                aux2 = Selection.elite(all, current.length - size);
+                break;
+            case "roulette":
+                aux2 = Selection.roulette(all, current.length - size);
+                break;
+            case "universal":
+                aux2 = Selection.universal(all, current.length - size);
+                break;
+            case "ranking":
+                aux2 = Selection.ranking(all, current.length - size);
+                break;
+            case "boltzmann":
+                aux2 = Selection.boltzmann(all, current.length - size, temperature1);
+                break;
+            case "dTournament":
+                aux2 = Selection.dTournament(all, current.length - size, m);
+                break;
+            case "pTournament":
+                aux2 = Selection.pTournament(all, current.length - size);
+        }
+
+        for (int j = 0; j < current.length - size; j++) {
+            aux[size + j] = aux2[j];
         }
 
         return aux;
     }
 
-    public static Player[] fillParent(Player[] current, Player[] sons, String selection, double temperature, int m){
+    public static Player[] fillParent(Player[] current, Player[] sons, double temperature0, double temperature1, int m, double b, String selection0, String selection1){
         Player[] aux = new Player[current.length];
         if (sons.length > current.length){
-            switch(selection) {
+            int size = (int) Math.floor(sons.length * b);
+            if (sons.length % 2 != 0)
+                size++;
+            Player[] aux2 = new Player[size];
+
+            switch(selection0) {
                 case "elite":
-                    aux = Selection.elite(sons, current.length);
+                    aux2 = Selection.elite(sons, size);
                     break;
                 case "roulette":
-                    aux = Selection.roulette(sons, current.length);
+                    aux2 = Selection.roulette(sons, size);
                     break;
                 case "universal":
-                    aux = Selection.universal(sons, current.length);
+                    aux2 = Selection.universal(sons, size);
                     break;
                 case "ranking":
-                    aux = Selection.ranking(sons, current.length);
+                    aux2 = Selection.ranking(sons, size);
                     break;
                 case "boltzmann":
-                    aux = Selection.boltzmann(sons, current.length, temperature);
+                    aux2 = Selection.boltzmann(sons, size, temperature0);
                     break;
                 case "dTournament":
-                    aux = Selection.dTournament(sons, current.length, m);
+                    aux2 = Selection.dTournament(sons, size, m);
                     break;
                 case "pTournament":
-                    aux = Selection.pTournament(sons, current.length);
+                    aux2 = Selection.pTournament(sons, size);
             }
-        }else {
-            Player[] aux2 = new Player[current.length - sons.length];
-            switch(selection) {
+
+            for (int j = 0; j < size; j++) {
+                aux[j] = aux2[j];
+            }
+
+            aux2 = new Player[sons.length - size];
+
+            switch(selection1) {
                 case "elite":
-                    aux2 = Selection.elite(current, current.length - sons.length);
+                    aux2 = Selection.elite(sons, sons.length - size);
                     break;
                 case "roulette":
-                    aux2 = Selection.roulette(current, current.length - sons.length);
+                    aux2 = Selection.roulette(sons, sons.length - size);
                     break;
                 case "universal":
-                    aux2 = Selection.universal(current, current.length - sons.length);
+                    aux2 = Selection.universal(sons, sons.length - size);
                     break;
                 case "ranking":
-                    aux2 = Selection.ranking(current, current.length - sons.length);
+                    aux2 = Selection.ranking(sons, sons.length - size);
                     break;
                 case "boltzmann":
-                    aux2 = Selection.boltzmann(current, current.length - sons.length, temperature);
+                    aux2 = Selection.boltzmann(sons, sons.length - size, temperature1);
                     break;
                 case "dTournament":
-                    aux2 = Selection.dTournament(current, current.length - sons.length, m);
+                    aux2 = Selection.dTournament(sons, sons.length - size, m);
                     break;
                 case "pTournament":
-                    aux2 = Selection.pTournament(current, current.length - sons.length);
+                    aux2 = Selection.pTournament(sons, sons.length - size);
+            }
+            for (int i = 0; i < sons.length - size; i++) {
+                aux[size +i] = aux2[i];
+            }
+        } else {
+            int size = (int) Math.floor(current.length - sons.length * b);
+            if ((current.length - sons.length) % 2 != 0)
+                size++;
+            Player[] aux2 = new Player[size];
+
+            switch(selection0) {
+                case "elite":
+                    aux2 = Selection.elite(current, size);
+                    break;
+                case "roulette":
+                    aux2 = Selection.roulette(current, size);
+                    break;
+                case "universal":
+                    aux2 = Selection.universal(current, size);
+                    break;
+                case "ranking":
+                    aux2 = Selection.ranking(current, size);
+                    break;
+                case "boltzmann":
+                    aux2 = Selection.boltzmann(current, size, temperature0);
+                    break;
+                case "dTournament":
+                    aux2 = Selection.dTournament(current, size, m);
+                    break;
+                case "pTournament":
+                    aux2 = Selection.pTournament(current, size);
             }
 
-            int i = 0;
-            for (Player p: aux2) {
-                aux[i] = p;
-                i++;
+            for (int j = 0; j < size; j++) {
+                aux[j] = aux2[j];
             }
 
+            int auxLength = (current.length - sons.length) - size;
+            aux2 = new Player[auxLength];
+
+            switch(selection1) {
+                case "elite":
+                    aux2 = Selection.elite(current, auxLength);
+                    break;
+                case "roulette":
+                    aux2 = Selection.roulette(current, auxLength);
+                    break;
+                case "universal":
+                    aux2 = Selection.universal(current, auxLength);
+                    break;
+                case "ranking":
+                    aux2 = Selection.ranking(current, auxLength);
+                    break;
+                case "boltzmann":
+                    aux2 = Selection.boltzmann(current, auxLength, temperature1);
+                    break;
+                case "dTournament":
+                    aux2 = Selection.dTournament(current, auxLength, m);
+                    break;
+                case "pTournament":
+                    aux2 = Selection.pTournament(current, auxLength);
+            }
+            for (int i = 0; i < auxLength; i++) {
+                aux[size + i] = aux2[i];
+            }
+
+            int j = 0;
             for (Player p: sons) {
-                aux[i] = p;
-                i++;
+                aux[auxLength + size + j] = p;
+                j++;
             }
         }
 

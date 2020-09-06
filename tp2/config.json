@@ -18,9 +18,9 @@
   "m": "5",
   "impSel": "elite",
   "cut": "generations",
-  "generations": "10000",
+  "generations": "100",
   "time": "1000000000",
   "accepted": "20.0",
   "structure": null,
-  "content": null
+  "content": "10"
 }

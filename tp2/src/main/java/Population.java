@@ -3,6 +3,7 @@ import com.github.sh0nk.matplotlib4j.PythonExecutionException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -19,9 +20,13 @@ public class Population {
     private String type = null;
     private int k = 0;
     private double selectionValue = 0;
-    private String[] selectionType = new String[2];
+    private double selectionValue2 = 0;
+    private String[] selectionType = new String[4];
     private String matingType = "onePoint";
-    private double temperature = 0;
+    private double temperature1 = 0;
+    private double temperature2 = 0;
+    private double temperature3 = 0;
+    private double temperature4 = 0;
     private int t0 = 0;
     private int tc = 0;
     private String mutation;
@@ -37,9 +42,13 @@ public class Population {
     private double accepted;
     private int iterations;
     private long start;
+    private int content;
+    private int contentIteration;
+    private double previousMaxFitness;
 
     private LinkedList<Double> avgFitness;
     private LinkedList<Double> lowerFitness;
+    private LinkedList<Integer> geneticDiversity;
 
     public Population(ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList) {
         this.bootList = bootList;
@@ -53,14 +62,17 @@ public class Population {
     }
 
     public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm, String
-            matingType, String implementation, int m, String impSel, String cut, int generations, int time, double accepted) {
+            matingType, String implementation, int m, String impSel, String cut, int generations, int time, double accepted, int content, double selectionValue2, String selectionType2, String selectionType3) {
         this.populationSize = size;
         this.type = type;
         this.k = k;
         this.selectionValue = selectionValue;
+        this.selectionValue2 = selectionValue2;
         this.parents = new LinkedList<Player>();
         this.selectionType[0] = selectionType0;
         this.selectionType[1] = selectionType1;
+        this.selectionType[2] = selectionType2;
+        this.selectionType[3] = selectionType3;
         this.t0 = t0;
         this.tc = tc;
         this.mutation = mutation;
@@ -75,6 +87,10 @@ public class Population {
         this.time = time;
         this.accepted = accepted;
         this.start = System.nanoTime();
+        this.content = content;
+        this.iterations = 0;
+        this.contentIteration = 0;
+        this.previousMaxFitness = 0;
 
         for (int i = 0; i < size; i++) {
             Random rand = new Random();
@@ -85,6 +101,9 @@ public class Population {
 
 
     public void selection () {
+        this.iterations++;
+        System.out.println("Iteración:" + this.iterations);
+
         this.selected = new LinkedList<Player>();
         int size = (int) Math.floor(k*selectionValue);
         if (k % 2 != 0) {
@@ -108,7 +127,7 @@ public class Population {
                 aux = Selection.ranking(selectedList,size);
                 break;
             case "boltzmann":
-                aux = Selection.boltzmann(selectedList,size,this.temperature());
+                aux = Selection.boltzmann(selectedList,size,this.temperature(1));
                 break;
             case "dTournament":
                 aux = Selection.dTournament(selectedList,size, this.m);
@@ -121,7 +140,7 @@ public class Population {
         for (Player p : aux ){
             this.selected.add(p);
         }
-
+        
         aux = new Player[k - size];
 
         switch(this.selectionType[1]) {
@@ -138,7 +157,7 @@ public class Population {
                 aux = Selection.ranking(selectedList,k - size);
                 break;
             case "boltzmann":
-                aux = Selection.boltzmann(selectedList,k - size, this.temperature());
+                aux = Selection.boltzmann(selectedList,k - size, this.temperature(2));
                 break;
             case "dTournament":
                 aux = Selection.dTournament(selectedList,k - size, this.m);
@@ -207,10 +226,10 @@ public class Population {
 
         switch (this.implementation){
             case "fillAll":
-                aux = Implementation.fillAll(current, sons, impSel, this.temperature(), this.m);
+                aux = Implementation.fillAll(current, sons, this.temperature(3), this.temperature(4), this.m, this.selectionValue2, this.selectionType[2], this.selectionType[3]);
                 break;
             case "fillParent":
-                aux = Implementation.fillParent(current, sons, impSel, this.temperature(), this.m);
+                aux = Implementation.fillParent(current, sons, this.temperature(3), this.temperature(4), this.m, this.selectionValue2, this.selectionType[2], this.selectionType[3]);
         }
 
         for (Player p : aux ){
@@ -220,9 +239,21 @@ public class Population {
         this.parents = newGen;
     }
 
-    private double temperature () {
-        this.temperature = this.tc + (this.t0 - this.tc) * Math.exp((-1 * (1.3806488 * Math.pow(10,-16))) * this.temperature);
-        return this.temperature;
+    private double temperature (int i) {
+        switch (i) {
+            case 1:
+                this.temperature1 = this.tc + (this.t0 - this.tc) * Math.exp((-1 * (1.3806488 * Math.pow(10,-16))) * this.temperature1);
+                return this.temperature1;
+            case 2:
+                this.temperature2 = this.tc + (this.t0 - this.tc) * Math.exp((-1 * (1.3806488 * Math.pow(10,-16))) * this.temperature2);
+                return this.temperature2;
+            case 3:
+                this.temperature3 = this.tc + (this.t0 - this.tc) * Math.exp((-1 * (1.3806488 * Math.pow(10,-16))) * this.temperature3);
+                return this.temperature3;
+            default:
+                this.temperature4 = this.tc + (this.t0 - this.tc) * Math.exp((-1 * (1.3806488 * Math.pow(10,-16))) * this.temperature4);
+                return this.temperature4;
+        }
     }
 
     public boolean hasTerminated () {
@@ -243,6 +274,19 @@ public class Population {
                     else if (aux.performance() < p.performance())
                         aux = p;
                 }
+                return false;
+            case "content":
+                double auxMax = 0;
+                for (Player p: this.parents) {
+                    if (auxMax < p.performance())
+                        auxMax = p.performance();
+                }
+                if (this.previousMaxFitness != auxMax)
+                    this.contentIteration = 0;
+                else if (this.contentIteration == this.content)
+                    return true;
+                this.contentIteration++;
+                this.previousMaxFitness = auxMax;
                 return false;
             default:
                 return false;
@@ -265,6 +309,12 @@ public class Population {
 
     public void graphData() {
         Player aux = this.parents.get(0);
+        HashSet<Item> boots = new HashSet<Item>();
+        HashSet<Item> chest = new HashSet<Item>();
+        HashSet<Item> gloves = new HashSet<Item>();
+        HashSet<Item> helmet = new HashSet<Item>();
+        HashSet<Item> weapon = new HashSet<Item>();
+        HashSet<Double> height = new HashSet<Double>();
 
         double average = 0;
         for (Player p : this.parents ) {
@@ -272,18 +322,28 @@ public class Population {
             if (p.performance() < aux.performance()) {
                 aux = p;
             }
+            boots.add(p.getBoots());
+            chest.add(p.getChest());
+            gloves.add(p.getGloves());
+            helmet.add(p.getHelmet());
+            weapon.add(p.getWeapon());
+            height.add(p.getHeight());
         }
-        // System.out.println("Fitness minimo : " + aux.performance());
-        // System.out.println("Fitness promedio : " + (average / this.parents.size()));
+
+        System.out.println(average / this.parents.size());
+        System.out.println(aux.performance());
+        System.out.print('\n');
         this.avgFitness.add(average / this.parents.size());
         this.lowerFitness.add(aux.performance());
+        this.geneticDiversity.add(boots.size() + chest.size() + gloves.size() + helmet.size() + weapon.size() + height.size());
 
-        // System.out.println("Genetic Diversity : " + aux.performance());
     }
 
     public void plotData() throws IOException, PythonExecutionException {
         Plot pltAvg = Plot.create();
         Plot pltMin = Plot.create();
+        Plot pltGenes = Plot.create();
+
         pltAvg.plot().add(this.avgFitness);
         pltAvg.xlabel("Iteration");
         pltAvg.ylabel("Fitness");
@@ -297,6 +357,13 @@ public class Population {
         pltMin.title("Lower Fitness");
         pltMin.legend();
         pltMin.show();
+
+        pltGenes.plot().add(this.geneticDiversity);
+        pltGenes.xlabel("Iteration");
+        pltGenes.ylabel("Genes amount");
+        pltGenes.title("Genetic Diversity");
+        pltGenes.legend();
+        pltGenes.show();
     }
 
 }
