@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="324bb463-a25e-49ec-a301-4105683b6699" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Population.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Population.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,29 +88,29 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="766" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598905198540" />
-    <state width="1358" height="217" key="GridCell.Tab.0.bottom" timestamp="1599429999451">
+    <state width="1358" height="217" key="GridCell.Tab.0.bottom" timestamp="1599430195036">
       <screen x="0" y="23" width="1680" height="940" />
     </state>
     <state width="1878" height="249" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599085976405" />
-    <state width="1358" height="217" key="GridCell.Tab.0.bottom/0.23.1680.940@0.23.1680.940" timestamp="1599429999451" />
+    <state width="1358" height="217" key="GridCell.Tab.0.bottom/0.23.1680.940@0.23.1680.940" timestamp="1599430195036" />
     <state width="1358" height="238" key="GridCell.Tab.0.bottom/0.23.1680.941@0.23.1680.941" timestamp="1599361654734" />
-    <state width="1358" height="217" key="GridCell.Tab.0.center" timestamp="1599429999450">
+    <state width="1358" height="217" key="GridCell.Tab.0.center" timestamp="1599430195035">
       <screen x="0" y="23" width="1680" height="940" />
     </state>
     <state width="1878" height="249" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599085976405" />
-    <state width="1358" height="217" key="GridCell.Tab.0.center/0.23.1680.940@0.23.1680.940" timestamp="1599429999450" />
+    <state width="1358" height="217" key="GridCell.Tab.0.center/0.23.1680.940@0.23.1680.940" timestamp="1599430195035" />
     <state width="1358" height="238" key="GridCell.Tab.0.center/0.23.1680.941@0.23.1680.941" timestamp="1599361654733" />
-    <state width="1358" height="217" key="GridCell.Tab.0.left" timestamp="1599429999449">
+    <state width="1358" height="217" key="GridCell.Tab.0.left" timestamp="1599430195035">
       <screen x="0" y="23" width="1680" height="940" />
     </state>
     <state width="1878" height="249" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599085976405" />
-    <state width="1358" height="217" key="GridCell.Tab.0.left/0.23.1680.940@0.23.1680.940" timestamp="1599429999449" />
+    <state width="1358" height="217" key="GridCell.Tab.0.left/0.23.1680.940@0.23.1680.940" timestamp="1599430195035" />
     <state width="1358" height="238" key="GridCell.Tab.0.left/0.23.1680.941@0.23.1680.941" timestamp="1599361654733" />
-    <state width="1358" height="217" key="GridCell.Tab.0.right" timestamp="1599429999450">
+    <state width="1358" height="217" key="GridCell.Tab.0.right" timestamp="1599430195036">
       <screen x="0" y="23" width="1680" height="940" />
     </state>
     <state width="1878" height="249" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599085976405" />
-    <state width="1358" height="217" key="GridCell.Tab.0.right/0.23.1680.940@0.23.1680.940" timestamp="1599429999450" />
+    <state width="1358" height="217" key="GridCell.Tab.0.right/0.23.1680.940@0.23.1680.940" timestamp="1599430195036" />
     <state width="1358" height="238" key="GridCell.Tab.0.right/0.23.1680.941@0.23.1680.941" timestamp="1599361654734" />
     <state x="586" y="251" width="568" height="490" key="find.popup" timestamp="1599426636338">
       <screen x="0" y="23" width="1680" height="940" />

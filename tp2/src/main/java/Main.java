@@ -41,6 +41,13 @@ public class Main {
                 System.out.println("b can't be null, negative or bigger than 1");
                 return;
             }
+            int tc = InitializerJson.giveInt((String) data.get("tc"), 2);
+            int t0 = InitializerJson.giveInt((String) data.get("t0"), 1);
+            if (t0 > tc) {
+                System.out.println("t0 must be lower than tc");
+                return;
+            }
+            
             String method1 = InitializerJson.giveSelectionMethod((String) data.get("method1"));
             String method2 = InitializerJson.giveSelectionMethod((String) data.get("method2"));
             String method3 = InitializerJson.giveSelectionMethod((String) data.get("method3"));
@@ -55,8 +62,6 @@ public class Main {
             int content = InitializerJson.giveInt((String) data.get("content"), 5);
             double structure = InitializerJson.giveDouble((String) data.get("structure"), 0.5);
 
-            int t0 = InitializerJson.giveInt((String) data.get("t0"), 1);
-            int tc = InitializerJson.giveInt((String) data.get("tc"), 1);
             int m = InitializerJson.giveInt((String) data.get("m"), 1);
             double pm = InitializerJson.giveDouble((String) data.get("pm"), 0.5);
             int limitm = InitializerJson.giveInt((String) data.get("limitm"), 1);
