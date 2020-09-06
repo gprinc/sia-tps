@@ -22,8 +22,8 @@ public class Main {
                 return;
             }
             int k = InitializerJson.giveRequiredInt((String) data.get("k"));
-            if (k == 0 || k > populationSize) {
-                System.out.println("k can't be null, negative, 0 or bigger than population");
+            if (k == 0) {
+                System.out.println("k can't be null, negative or 0");
                 return;
             }
             String dndClass = InitializerJson.giveClass((String) data.get("class"));
