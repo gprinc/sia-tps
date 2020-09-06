@@ -14,45 +14,56 @@ public class Main {
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
-
         try {
             JSONObject data = (JSONObject) parser.parse(new FileReader("config.json"));
-            int populationSize = Integer.parseInt((String) data.get("population"));
-            double a = Double.parseDouble((String) data.get("a"));
-            double b = Double.parseDouble((String) data.get("b"));
-            String method1 = (String) data.get("method1");
-            String method2 = (String) data.get("method2");
-            String method3 = (String) data.get("method3");
-            String method4 = (String) data.get("method4");
-            String matingType = (String) data.get("matingType");
-            int k = Integer.parseInt((String) data.get("k"));
-            int t0 = Integer.parseInt((String) data.get("t0"));
-            int tc = Integer.parseInt((String) data.get("tc"));
-            String implementation = (String) data.get("implementation");
-            int m = Integer.parseInt((String) data.get("m"));
-            int generations = Integer.parseInt((String) data.get("generations"));
-            int time = Integer.parseInt((String) data.get("time"));
-            double accepted = Double.parseDouble((String) data.get("accepted"));
-            int content = Integer.parseInt((String) data.get("content"));
-            int structure = Integer.parseInt((String) data.get("structure"));
+            int populationSize = InitializerJson.giveRequiredInt((String) data.get("population"));
+            if (populationSize == 0) {
+                System.out.println("population can't be null or lower/equals to 0");
+                return;
+            }
+            int k = InitializerJson.giveRequiredInt((String) data.get("k"));
+            if (k == 0 || k > populationSize) {
+                System.out.println("k can't be null, negative, 0 or bigger than population");
+                return;
+            }
+            String dndClass = InitializerJson.giveClass((String) data.get("class"));
+            if (dndClass == null) {
+                System.out.println("class can't be null or must be either warrio, archer, defender or infiltrate");
+                return;
+            }
+            double a = InitializerJson.givePercentage((String) data.get("a"));
+            if (a == -1) {
+                System.out.println("a can't be null, negative or bigger than 1");
+                return;
+            }
+            double b = InitializerJson.givePercentage((String) data.get("b"));
+            if (a == -1) {
+                System.out.println("b can't be null, negative or bigger than 1");
+                return;
+            }
+            String method1 = InitializerJson.giveSelectionMethod((String) data.get("method1"));
+            String method2 = InitializerJson.giveSelectionMethod((String) data.get("method2"));
+            String method3 = InitializerJson.giveSelectionMethod((String) data.get("method3"));
+            String method4 = InitializerJson.giveSelectionMethod((String) data.get("method4"));
+            String matingType = InitializerJson.giveMating((String) data.get("matingType"));
+            String implementation = InitializerJson.giveImplementation((String) data.get("implementation"));
+            String mutation = InitializerJson.giveMutation((String) data.get("mutation"));
+            String cut = InitializerJson.giveCut((String) data.get("cut"));
+            int generations = InitializerJson.giveInt((String) data.get("generations"), 10);
+            int time = InitializerJson.giveInt((String) data.get("time"), 1000000);
+            double accepted = InitializerJson.giveDouble((String) data.get("accepted"), 20.0);
+            int content = InitializerJson.giveInt((String) data.get("content"), 5);
+            double structure = InitializerJson.giveDouble((String) data.get("structure"), 0.5);
 
-            String cut = (String) data.get("cut");;
-            if (cut.equals(null))
-                cut = DEFAULT_CUT;
+            int t0 = InitializerJson.giveInt((String) data.get("t0"), 1);
+            int tc = InitializerJson.giveInt((String) data.get("tc"), 1);
+            int m = InitializerJson.giveInt((String) data.get("m"), 1);
+            double pm = InitializerJson.giveDouble((String) data.get("pm"), 0.5);
+            int limitm = InitializerJson.giveInt((String) data.get("limitm"), 1);
 
-            String dndClass = (String) data.get("class");
-            if (dndClass.equals(null))
-                dndClass = DEFAULT_DND_CLASS;
             Population population = new Population(TSVReader.getItemList("fulldata/botas.tsv"),TSVReader.getItemList("fulldata/armas.tsv"),TSVReader.getItemList("fulldata/cascos.tsv"),TSVReader.getItemList("fulldata/guantes.tsv"),TSVReader.getItemList("fulldata/pecheras.tsv"));
 
             System.out.println("Finalización de carga de archivos");
-
-            String mutation = (String) data.get("mutation");
-            if (mutation.equals(null))
-                mutation = DEFAULT_MUTATION;
-
-            double pm = Double.parseDouble((String) data.get("pm"));
-            int limitm = Integer.parseInt((String) data.get("limitm"));
 
             population.init(populationSize,dndClass,k,a, method1, method2,t0,tc, mutation, pm, limitm, matingType, implementation, m, cut, generations, time, accepted, structure, content, b, method3, method4);
 

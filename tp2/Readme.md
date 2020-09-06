@@ -104,5 +104,5 @@ Example:
 To create and execute the jar file use the following command:
 
 ```
-mvn package && java -jar target/tp2-jar-with-dependencies.jar
+mvn clean install -U  && mvn package && java -jar target/tp2-jar-with-dependencies.jar
 ```

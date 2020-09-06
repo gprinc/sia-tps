@@ -17,7 +17,7 @@
   "implementation": "fillParent",
   "m": "5",
   "cut": "generations",
-  "generations": "1",
+  "generations": "3",
   "time": "1000000000",
   "accepted": "20.0",
   "structure": "10",

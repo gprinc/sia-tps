@@ -43,7 +43,7 @@ public class Population {
     private int iterations;
     private long start;
     private int content;
-    private int structure;
+    private double structure;
     private int structureIterations;
     private int contentIteration;
     private double previousMaxFitness;
@@ -67,7 +67,7 @@ public class Population {
     }
 
     public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm, String
-            matingType, String implementation, int m, String cut, int generations, int time, double accepted, int structure, int content, double selectionValue2, String selectionType2, String selectionType3) {
+            matingType, String implementation, int m, String cut, int generations, int time, double accepted, double structure, int content, double selectionValue2, String selectionType2, String selectionType3) {
         this.populationSize = size;
         this.type = type;
         this.k = k;
@@ -328,7 +328,6 @@ public class Population {
 
     public void graphData() {
         Player aux = this.parents.get(0);
-        Player aux2 = this.parents.get(0);
         HashSet<Item> boots = new HashSet<Item>();
         HashSet<Item> chest = new HashSet<Item>();
         HashSet<Item> gloves = new HashSet<Item>();
@@ -342,8 +341,6 @@ public class Population {
             if (p.performance() < aux.performance()) {
                 aux = p;
             }
-            if (p.performance() > aux2.performance())
-                aux2 = p;
             boots.add(p.getBoots());
             chest.add(p.getChest());
             gloves.add(p.getGloves());
@@ -351,7 +348,6 @@ public class Population {
             weapon.add(p.getWeapon());
             height.add(new Double(p.getHeight()));
         }
-        System.out.println(aux2.performance());
 
         this.avgFitness.add(average / this.parents.size());
         this.lowerFitness.add(aux.performance());
