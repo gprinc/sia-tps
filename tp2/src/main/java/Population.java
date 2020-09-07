@@ -268,7 +268,7 @@ public class Population {
             case "time":
                 long now = System.nanoTime();
                 double elapsedTimeInSecond = (double) (now - this.start) / 1000000000;
-                return elapsedTimeInSecond == this.time;
+                return elapsedTimeInSecond >= this.time;
             case "accepted":
                 Player aux = null;
                 for (Player p: this.parents) {
@@ -422,6 +422,10 @@ public class Population {
         System.out.println("Gloves: " + aux.getGloves().getId());
         System.out.println("Helmet: " + aux.getHelmet().getId());
         System.out.println("Weapon: " + aux.getWeapon().getId());
+        System.out.print('\n');
+        long now = System.nanoTime();
+        double elapsedTimeInSecond = (double) (now - this.start) / 1000000000;
+        System.out.println("Execution time: " + elapsedTimeInSecond + " seconds");
     }
 
 }
