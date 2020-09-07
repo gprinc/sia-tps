@@ -417,11 +417,11 @@ public class Population {
         System.out.println("Best player from last generation:");
         System.out.println("Fitness: " + aux.performance());
         System.out.println("Height: " + aux.getHeight());
-        System.out.println("Boots: " + aux.getBoots());
-        System.out.println("Chest: " + aux.getChest());
-        System.out.println("Gloves: " + aux.getGloves());
-        System.out.println("Helmet: " + aux.getHelmet());
-        System.out.println("Weapon: " + aux.getWeapon());
+        System.out.println("Boots: " + aux.getBoots().getId());
+        System.out.println("Chest: " + aux.getChest().getId());
+        System.out.println("Gloves: " + aux.getGloves().getId());
+        System.out.println("Helmet: " + aux.getHelmet().getId());
+        System.out.println("Weapon: " + aux.getWeapon().getId());
     }
 
 }
