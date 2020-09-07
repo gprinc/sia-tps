@@ -83,8 +83,8 @@ public class Implementation {
     public static Player[] fillParent(Player[] current, Player[] sons, double temperature0, double temperature1, int m, double b, String selection0, String selection1){
         Player[] aux = new Player[current.length];
         if (sons.length > current.length){
-            int size = (int) Math.floor(sons.length * b);
-            if (sons.length % 2 != 0)
+            int size = (int) Math.floor(current.length * b);
+            if (current.length % 2 != 0)
                 size++;
             Player[] aux2 = new Player[size];
 
@@ -115,31 +115,31 @@ public class Implementation {
                 aux[j] = new Player(aux2[j]);
             }
 
-            aux2 = new Player[sons.length - size];
+            aux2 = new Player[current.length - size];
 
             switch(selection1) {
                 case "elite":
-                    aux2 = Selection.elite(sons, sons.length - size);
+                    aux2 = Selection.elite(sons, current.length - size);
                     break;
                 case "roulette":
-                    aux2 = Selection.roulette(sons, sons.length - size);
+                    aux2 = Selection.roulette(sons, current.length - size);
                     break;
                 case "universal":
-                    aux2 = Selection.universal(sons, sons.length - size);
+                    aux2 = Selection.universal(sons, current.length - size);
                     break;
                 case "ranking":
-                    aux2 = Selection.ranking(sons, sons.length - size);
+                    aux2 = Selection.ranking(sons, current.length - size);
                     break;
                 case "boltzmann":
-                    aux2 = Selection.boltzmann(sons, sons.length - size, temperature1);
+                    aux2 = Selection.boltzmann(sons, current.length - size, temperature1);
                     break;
                 case "dTournament":
-                    aux2 = Selection.dTournament(sons, sons.length - size, m);
+                    aux2 = Selection.dTournament(sons, current.length - size, m);
                     break;
                 case "pTournament":
-                    aux2 = Selection.pTournament(sons, sons.length - size);
+                    aux2 = Selection.pTournament(sons, current.length - size);
             }
-            for (int i = 0; i < sons.length - size; i++) {
+            for (int i = 0; i < current.length - size; i++) {
                 aux[size + i] =  new Player(aux2[i]);
             }
         } else {
