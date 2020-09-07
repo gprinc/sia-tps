@@ -56,7 +56,7 @@ public class Mate {
             }
 
             gens0 = selected.get(0).getGens();
-            gens1 = selected.get(selected.size()).getGens();
+            gens1 = selected.get(selected.size() - 1).getGens();
 
             for (int j = 0; j < 6; j++) {
                 if (j < random) {
@@ -138,7 +138,7 @@ public class Mate {
             }
 
             gens0 = selected.get(0).getGens();
-            gens1 = selected.get(selected.size()).getGens();
+            gens1 = selected.get(selected.size() - 1).getGens();
 
             for (int j = 0; j < 6; j++) {
                 if (j <= max && j >= min ) {
@@ -235,7 +235,7 @@ public class Mate {
             }
 
             gens0 = selected.get(1).getGens();
-            gens1 = selected.get(aux.size()).getGens();
+            gens1 = selected.get(aux.size() - 1).getGens();
 
             if (pivot + len < 6) {
                 for (int j = 0; j < 6; j++) {
@@ -320,7 +320,7 @@ public class Mate {
             }
 
             gens0 = aux.get(1).getGens();
-            gens1 = aux.get(aux.size()).getGens();
+            gens1 = aux.get(aux.size() - 1).getGens();
 
             for (int j = 0; j < 6; j++) {
                 if (Math.random() < 0.5) {
