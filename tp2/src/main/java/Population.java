@@ -178,6 +178,7 @@ public class Population {
         for (Player p : aux ){
             this.selected.add(p);
         }
+
     }
 
     public void mate () {

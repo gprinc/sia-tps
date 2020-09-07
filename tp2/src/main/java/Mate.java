@@ -278,7 +278,7 @@ public class Mate {
         double[] son1 = new double[6];
 
         if (aux.size() % 2 == 0) {
-            for (int i = 0; i < aux.size() - 1; i++) {
+            for (int i = 0; i < aux.size() - 2; i++) {
                 gens0 = aux.get(i).getGens();
                 gens1 = aux.get(i+1).getGens();
                 i++;
@@ -299,7 +299,7 @@ public class Mate {
                 sons.add(p.generate(son1));
             }
         } else {
-            for (int i = 0; i < aux.size() - 2; i++) {
+            for (int i = 0; i < aux.size() - 3; i++) {
                 gens0 = aux.get(i).getGens();
                 gens1 = aux.get(i+1).getGens();
                 i++;

@@ -9,7 +9,12 @@ public class Selection {
         PriorityQueue<Player> relative = new PriorityQueue<Player>(new Comparator<Player>() {
             @Override
             public int compare(Player o1, Player o2) {
-                return (int) (o1.performance() - o2.performance());
+                double aux = o2.performance() - o1.performance();
+                if (aux > 0) {
+                    return 1;
+                } else if (aux<0){
+                    return -1;
+                } else return 0;
             }
         });
 
@@ -22,8 +27,9 @@ public class Selection {
             }
         }
 
-        for (int i = 0; i < k; i++)
-            aux[i] =  new Player(relative.poll());
+        for (int i = 0; i < k; i++) {
+            aux[i] = new Player(relative.poll());
+        }
 
         return aux;
     }
@@ -98,7 +104,12 @@ public class Selection {
         PriorityQueue<Player> listAux = new PriorityQueue<Player>(new Comparator<Player>() {
             @Override
             public int compare(Player o1, Player o2) {
-                return (int) (o1.performance() - o2.performance());
+                double aux = o1.performance() - o2.performance();
+                if (aux > 0) {
+                    return 1;
+                } else if (aux < 0){
+                    return -1;
+                } else return 0;
             }
         });
 
@@ -108,8 +119,8 @@ public class Selection {
             listAux.add(p);
         }
 
-        for (Player p : listAux) {
-            auxList.add(p);
+        for (int i = 0; i < players.length ; i++) {
+            auxList.add(listAux.poll());
         }
 
         double[] relative = new double[players.length];
@@ -131,7 +142,7 @@ public class Selection {
             double random = Math.random();
             for (int j = 0; j < accumulated.length; j++) {
                 if (accumulated[j] >= random) {
-                    aux[i] =  new Player(auxList.get(j));
+                    aux[i] = new Player(auxList.get(j));
                     break;
                 }
             }
