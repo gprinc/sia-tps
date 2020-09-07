@@ -52,6 +52,7 @@ public class Population {
     private LinkedList<Double> avgFitness;
     private LinkedList<Double> lowerFitness;
     private LinkedList<Integer> geneticDiversity;
+    private LinkedList<Double> maxFitness;
 
     public Population(ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList) {
         this.bootList = bootList;
@@ -64,6 +65,7 @@ public class Population {
         this.lowerFitness = new LinkedList<Double>();
         this.geneticDiversity = new LinkedList<Integer>();
         this.prevPopulation = new LinkedList<Player>();
+        this.maxFitness = new LinkedList<Double>();
     }
 
     public void init (int size, String type, int k, double selectionValue, String selectionType0, String selectionType1, int t0, int tc, String mutation, double pm, int limitm, String
@@ -328,6 +330,7 @@ public class Population {
 
     public void graphData() {
         Player aux = this.parents.get(0);
+        Player aux2 = this.parents.get(0);
         HashSet<Item> boots = new HashSet<Item>();
         HashSet<Item> chest = new HashSet<Item>();
         HashSet<Item> gloves = new HashSet<Item>();
@@ -338,9 +341,10 @@ public class Population {
         double average = 0;
         for (Player p : this.parents ) {
             average += p.performance();
-            if (p.performance() < aux.performance()) {
+            if (p.performance() < aux.performance())
                 aux = p;
-            }
+            if (p.performance() > aux2.performance())
+                aux2 = p;
             boots.add(p.getBoots());
             chest.add(p.getChest());
             gloves.add(p.getGloves());
@@ -351,6 +355,7 @@ public class Population {
 
         this.avgFitness.add(average / this.parents.size());
         this.lowerFitness.add(aux.performance());
+        this.maxFitness.add(aux2.performance());
         this.geneticDiversity.add(boots.size() + chest.size() + gloves.size() + helmet.size() + weapon.size() + height.size());
 
     }
@@ -367,6 +372,11 @@ public class Population {
 
         System.out.print("MIN: ");
         for (Double d: this.lowerFitness)
+            System.out.print(d + ", ");
+        System.out.print('\n');
+
+        System.out.print("MAX: ");
+        for (Double d: this.maxFitness)
             System.out.print(d + ", ");
         System.out.print('\n');
 
@@ -395,6 +405,23 @@ public class Population {
         pltGenes.title("Genetic Diversity");
         pltGenes.legend();
         pltGenes.show();
+
+        Player aux = this.parents.get(0);
+        for (Player p : this.parents ) {
+            if (p.performance() > aux.performance())
+                aux = p;
+        }
+
+        System.out.print('\n');
+        System.out.print('\n');
+        System.out.println("Best player from last generation:");
+        System.out.println("Fitness: " + aux.performance());
+        System.out.println("Height: " + aux.getHeight());
+        System.out.println("Boots: " + aux.getBoots());
+        System.out.println("Chest: " + aux.getChest());
+        System.out.println("Gloves: " + aux.getGloves());
+        System.out.println("Helmet: " + aux.getHelmet());
+        System.out.println("Weapon: " + aux.getWeapon());
     }
 
 }
