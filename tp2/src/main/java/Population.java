@@ -106,12 +106,13 @@ public class Population {
             Player aux = new Player(1.3 + (2.0 - 1.3) * rand.nextDouble(),chestList.get(rand.nextInt((chestList.size()) + 1)),glovesList.get(rand.nextInt((glovesList.size()) + 1)),helmetList.get(rand.nextInt((helmetList.size()) + 1)),weaponsList.get(rand.nextInt((weaponsList.size()) + 1)),bootList.get(rand.nextInt((bootList.size()) + 1)),type);
             this.parents.add(aux);
         }
+        System.out.println("Generation: " + (this.iterations));
     }
 
 
     public void selection () {
         this.iterations++;
-        System.out.println("Iteración:" + this.iterations);
+        System.out.println("Generation: " + (this.iterations));
 
         this.selected = new LinkedList<Player>();
         int size = (int) Math.floor(k*selectionValue);
