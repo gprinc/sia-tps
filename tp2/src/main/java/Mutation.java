@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Mutation {
-    private final static int DELTA = 2;
+    private final static int DELTA = 10;
 
     //Se altera un solo gen con una probabilidad Pm
     public static Player gene(Player player, ArrayList<Item> bootList, ArrayList<Item> weaponsList, ArrayList<Item> helmetList, ArrayList<Item> glovesList, ArrayList<Item> chestList, double pm){
@@ -16,31 +16,31 @@ public class Mutation {
             case 0:
                 return new Player(1.3 + (2.0 - 1.3) * random.nextDouble(), player.getChest(), player.getGloves(), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
             case 1:
-                j = chestList.indexOf(player.getChest()) + DELTA;
+                j = chestList.indexOf(player.getChest()) + random.nextInt(DELTA) + 1;
                 if(j > chestList.size()){
                     j -= chestList.size();
                 }
                 return new Player(player.getHeight(), chestList.get(j), player.getGloves(), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
             case 2:
-                j = glovesList.indexOf(player.getGloves()) + DELTA;
+                j = glovesList.indexOf(player.getGloves()) + random.nextInt(DELTA) + 1;
                 if (j > glovesList.size()){
                     j -= glovesList.size();
                 }
                 return new Player(player.getHeight(), player.getChest(), glovesList.get(j), player.getHelmet(), player.getWeapon(), player.getBoots(), player.getType());
             case 3:
-                j = helmetList.indexOf(player.getHelmet()) + DELTA;
+                j = helmetList.indexOf(player.getHelmet()) + random.nextInt(DELTA) + 1;
                 if(j > helmetList.size()){
                     j -= helmetList.size();
                 }
                 return new Player(player.getHeight(), player.getChest(), player.getGloves(), helmetList.get(j), player.getWeapon(), player.getBoots(), player.getType());
             case 4:
-                j = weaponsList.indexOf(player.getWeapon()) + DELTA;
+                j = weaponsList.indexOf(player.getWeapon()) + random.nextInt(DELTA) + 1;
                 if(j > weaponsList.size()){
                     j -= weaponsList.size();
                 }
                 return new Player(player.getHeight(), player.getChest(), player.getGloves(), player.getHelmet(), weaponsList.get(j), player.getBoots(), player.getType());
             case 5:
-                j = bootList.indexOf(player.getBoots()) + DELTA;
+                j = bootList.indexOf(player.getBoots()) + random.nextInt(DELTA) + 1;
                 if(j > bootList.size()){
                     j -= bootList.size();
                 }
@@ -75,35 +75,35 @@ public class Mutation {
                 player.setHeight(1.3 + (2.0 - 1.3) * random.nextDouble());
                 break;
             case 1:
-                j = chestList.indexOf(player.getChest()) + DELTA;
+                j = chestList.indexOf(player.getChest()) + random.nextInt(DELTA) + 1;
                 if(j > chestList.size()){
                     j -= chestList.size();
                 }
                 player.setChest(chestList.get(j));
                 break;
             case 2:
-                j = glovesList.indexOf(player.getGloves()) + DELTA;
+                j = glovesList.indexOf(player.getGloves()) + random.nextInt(DELTA) + 1;
                 if (j > glovesList.size()){
                     j -= glovesList.size();
                 }
                 player.setGloves(glovesList.get(j));
                 break;
             case 3:
-                j = helmetList.indexOf(player.getHelmet()) + DELTA;
+                j = helmetList.indexOf(player.getHelmet()) + random.nextInt(DELTA) + 1;
                 if(j > helmetList.size()){
                     j -= helmetList.size();
                 }
                 player.setHelmet(helmetList.get(j));
                 break;
             case 4:
-                j = weaponsList.indexOf(player.getWeapon()) + DELTA;
+                j = weaponsList.indexOf(player.getWeapon()) + random.nextInt(DELTA) + 1;
                 if(j > weaponsList.size()){
                     j -= weaponsList.size();
                 }
                 player.setWeapon(weaponsList.get(j));
                 break;
             case 5:
-                j = bootList.indexOf(player.getBoots()) + DELTA;
+                j = bootList.indexOf(player.getBoots()) + random.nextInt(DELTA) + 1;
                 if(j > bootList.size()){
                     j -= bootList.size();
                 }
@@ -124,31 +124,31 @@ public class Mutation {
             height = 1.3 + (2.0 - 1.3) * random.nextDouble();
         }
         if(random.nextDouble() <= pm){
-            jc = jc + DELTA;
+            jc = jc + random.nextInt(DELTA) + 1;
             if(jc > chestList.size()){
                 jc = jc - chestList.size();
             }
         }
         if(random.nextDouble()<= pm){
-            jg = jg + DELTA;
+            jg = jg + random.nextInt(DELTA) + 1;
             if (jg > glovesList.size()){
                 jg = jg - glovesList.size();
             }
         }
         if(random.nextDouble()<= pm){
-            jh = jh + DELTA;
+            jh = jh + random.nextInt(DELTA) + 1;
             if(jh > helmetList.size()){
                 jh = jh - helmetList.size();
             }
         }
         if(random.nextDouble()<= pm){
-            jw = jw + DELTA;
+            jw = jw + random.nextInt(DELTA) + 1;
             if(jw > weaponsList.size()){
                 jw = jw - weaponsList.size();
             }
         }
         if(random.nextDouble()<= pm){
-            jb = jb + DELTA;
+            jb = jb + random.nextInt(DELTA) + 1;
             if(jb > bootList.size()){
                 jb = jw - bootList.size();
             }
@@ -162,23 +162,23 @@ public class Mutation {
         if(random.nextDouble() > pm){
             return player;
         }
-        int jc = chestList.indexOf(player.getChest()) + DELTA;
+        int jc = chestList.indexOf(player.getChest()) + random.nextInt(DELTA) + 1;
         if(jc > chestList.size()){
             jc -= chestList.size();
         }
-        int jg = glovesList.indexOf(player.getGloves()) + DELTA;
+        int jg = glovesList.indexOf(player.getGloves()) + random.nextInt(DELTA) + 1;
         if (jg > glovesList.size()){
             jg -= glovesList.size();
         }
-        int jh = helmetList.indexOf(player.getHelmet()) + DELTA;
+        int jh = helmetList.indexOf(player.getHelmet()) + random.nextInt(DELTA) + 1;
         if(jh > helmetList.size()){
             jh -= helmetList.size();
         }
-        int jw = weaponsList.indexOf(player.getWeapon()) + DELTA;
+        int jw = weaponsList.indexOf(player.getWeapon()) + random.nextInt(DELTA) + 1;
         if(jw > weaponsList.size()){
             jw -= weaponsList.size();
         }
-        int jb = bootList.indexOf(player.getBoots()) + DELTA;
+        int jb = bootList.indexOf(player.getBoots()) + random.nextInt(DELTA) + 1;
         if(jb > bootList.size()){
             jb -= bootList.size();
         }
