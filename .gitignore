@@ -95,3 +95,6 @@ hs_err_pid*
 ./**/.idea/caches/build_file_checksums.ser
 
 tp1/.idea/workspace.xml
+tp2/.idea/workspace.xml
+*/fulldata
+.DS_Store
