@@ -1,8 +1,0 @@
-{
-  "map": "5",
-  "algorithm": "IDA*",
-  "heuristic": "bg",
-  "depth": "100",
-  "limit": "100000",
-  "iterations": "10000"
-}

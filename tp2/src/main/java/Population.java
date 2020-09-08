@@ -367,26 +367,6 @@ public class Population {
         Plot pltMin = Plot.create();
         Plot pltGenes = Plot.create();
 
-        System.out.print("AVG: ");
-        for (Double d: this.avgFitness)
-            System.out.print(d + ", ");
-        System.out.print('\n');
-
-        System.out.print("MIN: ");
-        for (Double d: this.lowerFitness)
-            System.out.print(d + ", ");
-        System.out.print('\n');
-
-        System.out.print("MAX: ");
-        for (Double d: this.maxFitness)
-            System.out.print(d + ", ");
-        System.out.print('\n');
-
-        System.out.print("Genetic Diversity: ");
-        for (Integer i: this.geneticDiversity)
-            System.out.print(i + ", ");
-        System.out.print('\n');
-
         pltAvg.plot().add(this.avgFitness);
         pltAvg.xlabel("Iteration");
         pltAvg.ylabel("Fitness");
@@ -428,6 +408,7 @@ public class Population {
         long now = System.nanoTime();
         double elapsedTimeInSecond = (double) (now - this.start) / 1000000000;
         System.out.println("Execution time: " + elapsedTimeInSecond + " seconds");
+        System.out.print('\n');
     }
 
 }
