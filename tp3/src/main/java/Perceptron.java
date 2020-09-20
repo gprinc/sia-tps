@@ -5,7 +5,7 @@ import java.math.*;
 
 class Perceptron
 {
-    static double LEARNING_RATE = 0.1;
+    static double LEARNING_RATE = 0.8;
 
     private double[] input;
     private int[] inputInt;
@@ -33,12 +33,15 @@ class Perceptron
         for (int i = 0; i < weights.length - 1; i++) {
             weights[i] += LEARNING_RATE * localError * input[i];
         }
+        weights[weights.length - 1] += LEARNING_RATE * localError;
     }
 
-    public int execute() {
+    public int execute(boolean update) {
         int outputAux = calculateOutput(theta,weights,input);
         double localError = outputAux - output;
-        this.updateWeight(localError);
+        if (update) {
+            this.updateWeight(localError);
+        }
         return outputAux;
     }
 
