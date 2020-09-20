@@ -29,6 +29,9 @@ public class TxtReader {
                     }
                     lastChar = s;
                 }
+                if (num != "") {
+                    arrayAux[i++] = new Double(num);
+                }
                 aux.add(arrayAux);
             }
             myReader.close();
@@ -61,6 +64,9 @@ public class TxtReader {
                         num += s;
                     }
                     lastChar = s;
+                }
+                if (num != "") {
+                    arrayAux[i++] = new Integer(num);
                 }
                 aux.add(arrayAux);
             }
