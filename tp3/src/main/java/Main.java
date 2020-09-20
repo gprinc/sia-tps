@@ -14,20 +14,16 @@ public class Main {
         aux2 = TxtReader.getDoubleArrayFromTxt(file2, 1);
 
         System.out.println("\n=======\nAND:");
-        double[][] inputs = {{(1.0 * -1), 1}, {1, (1.0 * -1)}, {(1.0 * -1), (1.0 * -1)}, {1, 1}};
-        double[] outputs = {(1.0 * -1), (1.0 * -1), (1.0 * -1), 1};
+        double[][] inputs = {{-1, 1}, {1, -1}, {-1, -1}, {1, 1}};
+        double[] outputs = {-1, -1, -1, 1};
         int aux1 = 0;
         Perceptron p = new Perceptron(inputs[0],0, outputs[0]);
-        aux1 = p.execute(true);
-        //p.print();
-        //System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[0] + "\n");
-        int j = 100;
+        p.execute(true);
+        int j = 4;
         while ( --j != 0) {
             for (int i = 1; i < outputs.length; i++) {
                 p.newValues(inputs[i],0, outputs[i]);
-                aux1 = p.execute(true);
-                //p.print();
-                //System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[i] + "\n");
+                p.execute(true);
             }
         }
 
@@ -40,21 +36,19 @@ public class Main {
 
 
         System.out.println("\n\n=======\nXOR:");
-        inputs = new double[][] {{(1.0 * -1), 1}, {1, (1.0 * -1)}, {(1.0 * -1), (1.0 * -1)}, {1, 1}};
-        outputs = new double[] {1, 1, (1.0 * -1), (1.0 * -1)};
+        inputs = new double[][] {{-1, 1}, {1, -1}, {-1, -1}, {1, 1}};
+        outputs = new double[] {1, 1, -1, -1};
 
         p = new Perceptron(inputs[0],0, outputs[0]);
         aux1 = p.execute(true);
         p.print();
         System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[0] + "\n");
 
-        j = 100;
+        j = 3;
         while ( --j != 0) {
             for (int i = 1; i < outputs.length; i++) {
                 p.newValues(inputs[i],0, outputs[i]);
-                aux1 = p.execute(true);
-                //p.print();
-                //System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[i] + "\n");
+                p.execute(true);
             }
         }
 
