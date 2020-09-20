@@ -9,12 +9,9 @@ public class Main {
         ArrayList<Double[]> aux = new ArrayList<>();
         aux = TxtReader.getDoubleArrayFromTxt(file, 3);
 
-        for (Double[] i: aux) {
-            for (Double j: i){
-                System.out.print(j + " ");
-            }
-            System.out.println();
-        }
+        File file2 = new File("TP3-ej2-Salida-deseada.txt");
+        ArrayList<Double[]> aux2 = new ArrayList<>();
+        aux2 = TxtReader.getDoubleArrayFromTxt(file2, 1);
 
         System.out.println("\n=======\nAND:");
         double[][] inputs = {{(1.0 * -1), 1}, {1, (1.0 * -1)}, {(1.0 * -1), (1.0 * -1)}, {1, 1}};
