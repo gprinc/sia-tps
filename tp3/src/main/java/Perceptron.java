@@ -5,7 +5,7 @@ import java.math.*;
 
 class Perceptron
 {
-    static double LEARNING_RATE = 0.5;
+    static double LEARNING_RATE = 0.1;
 
     private double[] input;
     private int[] inputInt;
@@ -23,18 +23,9 @@ class Perceptron
         this.generateWeights();
     }
 
-    public Perceptron(int[] input, double theta, double output) {
-        this.inputInt = input;
-        this.theta = theta;
-        // n for input variables and one for bias
-        this.weights = new double[input.length + 1];
-        this.output = output;
-        this.generateWeights();
-    }
-
     private void generateWeights() {
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = 1/weights.length;
+            weights[i] = 0.1;
         }
     }
 
@@ -54,8 +45,9 @@ class Perceptron
     public void print() {
         System.out.println("\n=======\nWeights:");
         for (int i = 0; i < weights.length - 1; i++) {
-            System.out.println("\n " + i + ": " + weights[i]);
+            System.out.println("\nWeight " + i + " : " + weights[i]);
         }
+        System.out.println("\nBias : " + weights[weights.length - 1]);
     }
 
     /**
@@ -73,7 +65,8 @@ class Perceptron
             sum+= input[i] * weights[i];
         }
         sum+= weights[weights.length - 1];
-        return (sum >= theta) ? 1 : 0;
+        System.out.println("\n=======\n"+ sum +"\n=======\n");
+        return (sum >= theta) ? 1 : -1;
     }
 
     public void newValues(double[] input, double theta, double output) {
