@@ -5,7 +5,7 @@ import java.math.*;
 
 class Perceptron
 {
-    static double LEARNING_RATE = 0.8;
+    static double LEARNING_RATE = 0.2;
 
     private double[] input;
     private int[] inputInt;
@@ -25,15 +25,15 @@ class Perceptron
 
     private void generateWeights() {
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = 0.1;
+            weights[i] = 0.01;
         }
     }
 
     private void updateWeight(double localError) {
         for (int i = 0; i < weights.length - 1; i++) {
-            weights[i] += LEARNING_RATE * localError * input[i];
+            weights[i] -= LEARNING_RATE * localError * input[i];
         }
-        weights[weights.length - 1] += LEARNING_RATE * localError;
+        weights[weights.length - 1] -= LEARNING_RATE * localError;
     }
 
     public int execute(boolean update) {
@@ -68,7 +68,7 @@ class Perceptron
             sum+= input[i] * weights[i];
         }
         sum+= weights[weights.length - 1];
-        System.out.println("\n=======\n"+ sum +"\n=======\n");
+        //System.out.println("\n=======\n"+ sum +"\n=======\n");
         return (sum >= theta) ? 1 : -1;
     }
 
