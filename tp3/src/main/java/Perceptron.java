@@ -8,6 +8,7 @@ class Perceptron
     static double LEARNING_RATE = 0.1;
 
     private double[] input;
+    private int[] inputInt;
     // n for input variables and one for bias
     private double[] weights;
     private double theta;
@@ -15,6 +16,15 @@ class Perceptron
 
     public Perceptron(double[] input, double theta, double output) {
         this.input = input;
+        this.theta = theta;
+        // n for input variables and one for bias
+        this.weights = new double[input.length + 1];
+        this.output = output;
+        this.generateWeights();
+    }
+
+    public Perceptron(int[] input, double theta, double output) {
+        this.inputInt = input;
         this.theta = theta;
         // n for input variables and one for bias
         this.weights = new double[input.length + 1];

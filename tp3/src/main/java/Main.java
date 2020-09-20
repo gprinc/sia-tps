@@ -2,6 +2,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class Main {
+    private static final int[][] logicNumbers = {{1,1},{1,-1},{-1,1},{-1,-1}};
+
     public static void main(String[] args) {
         File file = new File("TP3-ej2-Conjunto-entrenamiento.txt");
         ArrayList<Double[]> aux = new ArrayList<>();
