@@ -1,4 +1,7 @@
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Main {
@@ -64,6 +67,41 @@ public class Main {
         perceptron.train();
         System.out.println("********** Pesos Finales **********");
         perceptron.printWeights();
+
+
+        System.out.println("\n\n=======\nMultiLayer Perceptron");
+
+        // initialization
+        ArrayList<float[]> input = new ArrayList<float[]>();
+        ArrayList<float[]> output = new ArrayList<float[]>();
+        for (int i = 0; i < 4; ++i) {
+            input.add(new float[2]);
+            output.add(new float[1]);
+        }
+
+        // fill the examples database
+        input.get(0)[0] = -1; input.get(0)[1] = 1;  output.get(0)[0] = 1;
+        input.get(1)[0] = 1;  input.get(1)[1] = 1;  output.get(1)[0] = -1;
+        input.get(2)[0] = 1;  input.get(2)[1] = -1; output.get(2)[0] = 1;
+        input.get(3)[0] = -1; input.get(3)[1] = -1; output.get(3)[0] = -1;
+
+        int nn_neurons[] = {
+                input.get(0).length,
+                input.get(0).length * 3,
+                output.get(0).length
+        };
+
+        MultiLayerPerceptron mlp = new MultiLayerPerceptron(nn_neurons);
+
+        for (int i = 0; i < 100; ++i) {
+            mlp.learn(input, output, 0.3f);
+            mlp.evaluateQuadraticError(input, output);
+        }
+
+        float[] a = mlp.getOutput();
+        for (int m = 0; m < output.size(); m++){
+            System.out.println("Esperada: " + output.get(m)[0] + ", Calculada: " + a[m]);
+        }
 
         return;
 
