@@ -3,38 +3,28 @@ public class NonLinealPerceptron {
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
-    private static final double LEARNING_VALUE = 0.5d;
+    private static final double LEARNING_RATE = 0.5d;
+    private static final double BETA = 0.1d;
 
-    public double[][] getInputs() {
-        return inputs;
-    }
-
-    public void setInputs(double[][] inputs) {
+    public NonLinealPerceptron(double[][] inputs, double[] outputs) {
         this.inputs = inputs;
-        this.inputLength = inputs[0].length;
-    }
-    public double[] getOutputs() {
-        return outputs;
-    }
-
-    public void setOutputs(double[] outputs) {
         this.outputs = outputs;
-    }
-    public double[] getWeights() {
-        return weights;
-    }
-
-    public void setWeights(double[] weights) {
-        this.weights = weights;
+        this.inputLength = inputs[0].length;
+        this.startWeights();
     }
 
-    /**
-     * Inicializar los pesos sinápticos con números aleatorios del intervalo [-1, 1]
-     */
+    private double g(double x) {
+        return 1 / (1 + Math.exp(-2 * BETA * x));
+    }
+
+    private double g_prima(double x) {
+        return 2 * BETA * g(x) * (1 - g(x));
+    }
+
     public void startWeights() {
-        weights = new double[inputLength];
+        this.weights = new double[inputLength];
         for (int i = 0; i < inputLength; i++) {
-            weights[i] = Math.random();
+            this.weights[i] = Math.random();
         }
     }
 
@@ -44,12 +34,9 @@ public class NonLinealPerceptron {
         }
     }
 
-    /**
-     * wj(k+1)=wj(k)+&#951;[z(k)&#8722;y(k)]xj(k), j =1,2,...,n+1
-     */
-    public void calculateWeight(int posicionEntrada, double y) {
+    public void calculateWeight(int x_i, double y) {
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = weights[i] + LEARNING_VALUE * (outputs[posicionEntrada] - y) * inputs[posicionEntrada][i];
+            weights[i] = weights[i] + LEARNING_RATE * g(outputs[x_i] - y) * inputs[x_i][i] * g_prima(outputs[x_i] - y);
         }
     }
 
@@ -57,11 +44,11 @@ public class NonLinealPerceptron {
         int index = 0;
         double yi = 0;
         while (index < inputs.length) {
-            double suma = 0;
+            double sum = 0;
             for (int i = 0; i < inputLength; i++) {
-                suma += (weights[i] * inputs[index][i]);//&#8721; x[i] * W[i]
+                sum += (weights[i] * inputs[index][i]);//&#8721; x[i] * W[i]
             }
-            yi = suma >= 0 ? 1 : -1;
+            yi = sum >= 0 ? 1 : -1;
             if (yi == outputs[index]) {
                 //Correcto
                 for (int i = 0; i < inputLength; i++) {

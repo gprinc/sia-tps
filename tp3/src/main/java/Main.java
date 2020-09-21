@@ -2,7 +2,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class Main {
-    private static final double[][] logicNumbers = {{1,1},{1,-1},{-1,1},{-1,-1}};
+    private static final double[][] logicNumbers = {{1,1,-1},{1,-1,-1},{-1,1,-1},{-1,-1,-1}};
+    private static final double[] AND_OUTPUT = {1, -1, -1, -1};
+    private static final double[] XOR_OUTPUT = {-1, 1, 1, -1};
 
     public static void main(String[] args) {
         File file = new File("TP3-ej2-Conjunto-entrenamiento.txt");
@@ -58,17 +60,7 @@ public class Main {
             p.print();
             System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[i] + "\n");
         }
-        NonLinealPerceptron perceptron = new NonLinealPerceptron();
-        double[] objetivos = {1, -1, -1, -1};
-        double[][] entradas = {
-                {1, 1, -1},
-                {1, -1, -1},
-                {-1, 1, -1},
-                {-1, -1, -1}
-        };
-        perceptron.setInputs(entradas);
-        perceptron.setOutputs(objetivos);
-        perceptron.startWeights();
+        LinealPerceptron perceptron = new LinealPerceptron(logicNumbers, AND_OUTPUT);
         perceptron.train();
         System.out.println("********** Pesos Finales **********");
         perceptron.printWeights();
