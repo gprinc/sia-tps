@@ -70,23 +70,28 @@ public class Main {
         output = new ArrayList<float[]>();
 
         // initialization
-        for (int i = 0; i < aux3.size(); ++i) {
-            input.add(new float[4]);
+        for (int i = 0; i < 10; i++) {
+            input.add(new float[5*7]);
             output.add(new float[1]);
         }
 
+        int[] outputAux = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
+
         // fill the examples database
-        for (int i = 0; i < aux3.size() ; i++) {
-            Integer[] auxList = aux3.get(i);
-            for (int j = 0; j < auxList.length - 1; j++) {
-                input.get(i)[j] = auxList[j];
+        for (int z = 0; z < 10; z++) {
+            for (int i = (z * 7); i < (z+1) * 7 ; i++) {
+                Integer[] auxList = aux3.get(i);
+                for (int j = ( i * 5); j < auxList.length ; j++) {
+                    input.get(z)[j] = auxList[j];
+                }
             }
-            output.get(i)[0] = auxList[auxList.length - 1];
+            output.get(z)[0] = outputAux[z];
         }
+
 
         int nn_neurons2[] = {
             input.get(0).length,
-            input.get(0).length,
+            input.get(0).length * 5,
             output.get(0).length
         };
 
