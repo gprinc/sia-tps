@@ -64,6 +64,20 @@ public class Main {
             p.print();
             System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[i] + "\n");
         }
+        NonLinealPerceptron perceptron = new NonLinealPerceptron();
+        double[] objetivos = {1, -1, -1, -1};
+        double[][] entradas = {
+                {1, 1, -1},
+                {1, -1, -1},
+                {-1, 1, -1},
+                {-1, -1, -1}
+        };
+        perceptron.setInputs(entradas);
+        perceptron.setOutputs(objetivos);
+        perceptron.startWeights();
+        perceptron.train();
+        System.out.println("********** Pesos Finales **********");
+        perceptron.printWeights();
 
         return;
 

@@ -1,11 +1,6 @@
-import java.util.*;
-import java.io.*;
-import java.text.*;
-import java.math.*;
-
-class Perceptron
-{
+public class LinealPerceptron {
     static double LEARNING_RATE = 0.2;
+    static double beta = 0.1;
 
     private double[] input;
     private int[] inputInt;
@@ -14,13 +9,21 @@ class Perceptron
     private double theta;
     private double output;
 
-    public Perceptron(double[] input, double theta, double output) {
+    public LinealPerceptron(double[] input, double theta, double output) {
         this.input = input;
         this.theta = theta;
         // n for input variables and one for bias
         this.weights = new double[input.length + 1];
         this.output = output;
         this.generateWeights();
+    }
+
+    private static double g(double x) {
+        return 1 / (1 + Math.exp(-2 * beta * x));
+    }
+
+    private static double g_prima(double x) {
+        return 2 * beta * g(x) * (1 - g(x));
     }
 
     private void generateWeights() {
@@ -32,6 +35,13 @@ class Perceptron
     private void updateWeight(double localError) {
         for (int i = 0; i < weights.length - 1; i++) {
             weights[i] -= LEARNING_RATE * localError * input[i];
+        }
+        weights[weights.length - 1] -= LEARNING_RATE * localError;
+    }
+
+    private void updateNoLinealWeight(double localError) {
+        for (int i = 0; i < weights.length - 1; i++) {
+            weights[i] -= LEARNING_RATE * localError * g_prima(localError) * input[i];
         }
         weights[weights.length - 1] -= LEARNING_RATE * localError;
     }
@@ -77,5 +87,4 @@ class Perceptron
         this.input = input;
         this.theta = theta;
     }
-
 }
