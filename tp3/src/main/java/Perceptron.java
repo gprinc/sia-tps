@@ -5,7 +5,7 @@ import java.math.*;
 
 class Perceptron
 {
-    static double LEARNING_RATE = 0.2;
+    static double LEARNING_RATE = 0.5;
 
     private double[] input;
     private int[] inputInt;
@@ -25,20 +25,21 @@ class Perceptron
 
     private void generateWeights() {
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = 0.01;
+            weights[i] = 0;
         }
     }
 
     private void updateWeight(double localError) {
         for (int i = 0; i < weights.length - 1; i++) {
-            weights[i] -= LEARNING_RATE * localError * input[i];
+            weights[i] += LEARNING_RATE * localError * input[i];
         }
-        weights[weights.length - 1] -= LEARNING_RATE * localError;
+        weights[weights.length - 1] += LEARNING_RATE * localError;
     }
 
     public int execute(boolean update) {
         int outputAux = calculateOutput(theta,weights,input);
         double localError = outputAux - output;
+
         if (update) {
             this.updateWeight(localError);
         }
@@ -63,13 +64,12 @@ class Perceptron
      */
     static int calculateOutput(double theta, double weights[], double input[])
     {
-        double sum = 0;
+        double sum = weights[weights.length - 1];
         for (int i = 0; i < weights.length - 1; i++) {
-            sum+= input[i] * weights[i];
+            //System.out.println("\nLocal error " + sum);
+            sum= sum + (input[i] * weights[i]);
         }
-        sum+= weights[weights.length - 1];
-        //System.out.println("\n=======\n"+ sum +"\n=======\n");
-        return (sum >= theta) ? 1 : -1;
+        return (sum >= 1) ? 1 : -1;
     }
 
     public void newValues(double[] input, double theta, double output) {
