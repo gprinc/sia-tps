@@ -18,51 +18,10 @@ public class Main {
         ArrayList<Double[]> aux2 = new ArrayList<>();
         aux2 = TxtReader.getDoubleArrayFromTxt(file2, 1);
 
-        System.out.println("\n=======\nAND:");
-        double[][] inputs = {{-1, 1}, {1, -1}, {-1, -1}, {1, 1}};
-        double[] outputs = {-1, -1, -1, 1};
-        int aux1 = 0;
-        Perceptron p = new Perceptron(inputs[0],0, outputs[0]);
-        p.execute(true);
-        int j = 4;
-        while ( --j != 0) {
-            for (int i = 1; i < outputs.length; i++) {
-                p.newValues(inputs[i],0, outputs[i]);
-                p.execute(true);
-            }
-        }
+        File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
+        ArrayList<Integer[]> aux3 = new ArrayList<>();
+        aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
 
-        for (int i = 0; i < outputs.length; i++) {
-            p.newValues(inputs[i],0, outputs[i]);
-            aux1 = p.execute(false);
-            p.print();
-            System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[i] + "\n");
-        }
-
-
-        System.out.println("\n\n=======\nXOR:");
-        inputs = new double[][] {{-1, 1}, {1, -1}, {-1, -1}, {1, 1}};
-        outputs = new double[] {1, 1, -1, -1};
-
-        p = new Perceptron(inputs[0],0, outputs[0]);
-        aux1 = p.execute(true);
-        p.print();
-        System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[0] + "\n");
-
-        j = 3;
-        while ( --j != 0) {
-            for (int i = 1; i < outputs.length; i++) {
-                p.newValues(inputs[i],0, outputs[i]);
-                p.execute(true);
-            }
-        }
-
-        for (int i = 1; i < outputs.length; i++) {
-            p.newValues(inputs[i],0, outputs[i]);
-            aux1 = p.execute(true);
-            p.print();
-            System.out.println("\n"+ "Output " + aux1 + " Expected "+  outputs[i] + "\n");
-        }
         LinealPerceptron perceptron = new LinealPerceptron(logicNumbers, AND_OUTPUT);
         perceptron.train();
         System.out.println("********** Pesos Finales **********");
@@ -70,6 +29,8 @@ public class Main {
 
 
         System.out.println("\n\n=======\nMultiLayer Perceptron");
+
+        System.out.println("\n********** XOR **********\n");
 
         // initialization
         ArrayList<float[]> input = new ArrayList<float[]>();
@@ -101,6 +62,44 @@ public class Main {
         float[] a = mlp.getOutput();
         for (int m = 0; m < output.size(); m++){
             System.out.println("Esperada: " + output.get(m)[0] + ", Calculada: " + a[m]);
+        }
+
+        System.out.println("\n********** Even number **********\n");
+
+        input = new ArrayList<float[]>();
+        output = new ArrayList<float[]>();
+
+        // initialization
+        for (int i = 0; i < aux3.size(); ++i) {
+            input.add(new float[4]);
+            output.add(new float[1]);
+        }
+
+        // fill the examples database
+        for (int i = 0; i < aux3.size() ; i++) {
+            Integer[] auxList = aux3.get(i);
+            for (int j = 0; j < auxList.length - 1; j++) {
+                input.get(i)[j] = auxList[j];
+            }
+            output.get(i)[0] = auxList[auxList.length - 1];
+        }
+
+        int nn_neurons2[] = {
+            input.get(0).length,
+            input.get(0).length,
+            output.get(0).length
+        };
+
+        MultiLayerPerceptron mlp1 = new MultiLayerPerceptron(nn_neurons2);
+
+        for (int i = 0; i < 2; ++i) {
+            mlp1.learn(input, output, 0.3f);
+            mlp1.evaluateQuadraticError(input, output);
+        }
+
+        float[] a2 = mlp1.getOutput();
+        for (int m = 0; m < output.size(); m++){
+            System.out.println("Esperada: " + output.get(m)[0] + ", Calculada: " + a2[m]);
         }
 
         return;

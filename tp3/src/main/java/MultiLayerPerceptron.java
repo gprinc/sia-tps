@@ -14,13 +14,9 @@ public class MultiLayerPerceptron {
 
         // create the required layers
         _layers = new ArrayList<Layer>();
-        for (int i = 0; i < nn_neurons.length; ++i)
-            _layers.add(
-                    new Layer(
-                            i == 0 ?
-                                    nn_neurons[i] : nn_neurons[i - 1],
-                            nn_neurons[i], rand)
-            );
+        for (int i = 0; i < nn_neurons.length; ++i){
+            _layers.add(new Layer(i == 0 ? nn_neurons[i] : nn_neurons[i - 1], nn_neurons[i], rand));
+        }
 
         _delta_w = new ArrayList<float[][]>();
         for (int i = 0; i < nn_neurons.length; ++i)
