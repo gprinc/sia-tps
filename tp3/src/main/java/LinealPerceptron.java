@@ -59,31 +59,35 @@ public class LinealPerceptron {
     public void train() {
         int index = 0;
         double yi = 0;
-        while (index < inputs.length) {
-            double sum = 0;
-            for (int i = 0; i < inputLength; i++) {
-                sum += (weights[i] * inputs[index][i]);
-            }
-            sum += this.bias;
-            yi = sum;
-            if (Math.abs(yi - outputs[index]) < THRESHOLD) {
-                // return;
+        boolean gotError = true;
+        while(gotError) {
+            gotError = false;
+            while (index < inputs.length) {
+                double sum = 0;
                 for (int i = 0; i < inputLength; i++) {
-                    System.out.print(inputs[index][i] + "\t");
+                    sum += (weights[i] * inputs[index][i]);
                 }
-                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
-            } else {
-                for (int i = 0; i < inputLength; i++) {
-                    System.out.print(inputs[index][i] + "\t");
+                sum += this.bias;
+                yi = sum;
+                if (Math.abs(yi - outputs[index]) < THRESHOLD) {
+                    for (int i = 0; i < inputLength; i++) {
+                        System.out.print(inputs[index][i] + "\t");
+                    }
+                    System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
+                } else {
+                    gotError = true;
+                    for (int i = 0; i < inputLength; i++) {
+                        System.out.print(inputs[index][i] + "\t");
+                    }
+                    System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + " [Error]\n");
+                    System.out.println("Corrección de pesos");
+                    calculateWeight(index, yi);
+                    printWeights();
+                    System.out.println("--");
                 }
-                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + " [Error]\n");
-                System.out.println("Corrección de pesos");
-                calculateWeight(index, yi);
-                printWeights();
-                System.out.println("--");
-                index = -1;
+                index++;
             }
-            index++;
+            index = 0;
         }
     }
 }
