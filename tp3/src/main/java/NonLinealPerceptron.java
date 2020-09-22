@@ -60,7 +60,7 @@ public class NonLinealPerceptron {
 
     public void calculateWeight(int x_i, double y) {
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = weights[i] + LEARNING_RATE * g(outputs[x_i] - y) * inputs[x_i][i] * g_prima(outputs[x_i] - y);
+            weights[i] = weights[i] + LEARNING_RATE * (outputs[x_i] - y) * inputs[x_i][i] * g_prima(y);
         }
         this.bias += LEARNING_RATE * g(outputs[x_i] - y) * g_prima(outputs[x_i] - y);
     }
