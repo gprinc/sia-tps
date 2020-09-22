@@ -1,15 +1,36 @@
+import java.util.ArrayList;
+
 public class NonLinealPerceptron {
     private double[] weights;
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
     private static final double LEARNING_RATE = 0.5d;
-    private static final double BETA = 0.1d;
+    private static final double BETA = 1.0d;
 
     public NonLinealPerceptron(double[][] inputs, double[] outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
         this.inputLength = inputs[0].length;
+        this.startWeights();
+    }
+
+    public NonLinealPerceptron(ArrayList<Double[]> inputs, ArrayList<Double> outputs) {
+        int i = 0;
+        this.inputs = new double[inputs.size()][inputs.get(0).length + 1];
+        for (Double[] d: inputs) {
+            for (int j = 0; j < d.length; j++) {
+                this.inputs[i][j] = d[j];
+            }
+            this.inputs[i][d.length] = -1;
+            i++;
+        }
+        this.outputs = new double[outputs.size()];
+        i = 0;
+        for (Double d: outputs) {
+            this.outputs[i++] = d;
+        }
+        this.inputLength = inputs.get(0).length + 1;
         this.startWeights();
     }
 
@@ -46,7 +67,7 @@ public class NonLinealPerceptron {
         while (index < inputs.length) {
             double sum = 0;
             for (int i = 0; i < inputLength; i++) {
-                sum += (weights[i] * inputs[index][i]);//&#8721; x[i] * W[i]
+                sum += (weights[i] * inputs[index][i]);
             }
             yi = sum >= 0 ? 1 : -1;
             if (yi == outputs[index]) {

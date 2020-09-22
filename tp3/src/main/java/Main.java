@@ -15,8 +15,11 @@ public class Main {
         aux = TxtReader.getDoubleArrayFromTxt(file, 3);
 
         File file2 = new File("TP3-ej2-Salida-deseada.txt");
-        ArrayList<Double[]> aux2 = new ArrayList<>();
-        aux2 = TxtReader.getDoubleArrayFromTxt(file2, 1);
+        ArrayList<Double> aux2 = new ArrayList<>();
+        aux2 = TxtReader.getDoubleArrayFromTxt(file2);
+
+        /*LinealPerceptron linealPer = new LinealPerceptron(aux, aux2);
+        linealPer.train();*/
 
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
