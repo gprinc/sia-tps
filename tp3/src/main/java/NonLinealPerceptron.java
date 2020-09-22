@@ -68,9 +68,7 @@ public class NonLinealPerceptron {
     public void train() {
         int index = 0;
         double yi = 0;
-        int asd = 0;
-        while (index < inputs.length && asd < 10) {
-            asd++;
+        while (index < inputs.length) {
             double sum = 0;
             for (int i = 0; i < inputLength; i++) {
                 sum += (weights[i] * inputs[index][i]);
