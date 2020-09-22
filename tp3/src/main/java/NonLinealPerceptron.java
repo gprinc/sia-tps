@@ -5,8 +5,8 @@ public class NonLinealPerceptron {
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
-    private static final double LEARNING_RATE = 0.01d;
-    private static final double THRESHOLD = 0.00001d;
+    private static final double LEARNING_RATE = 0.0001d;
+    private static final double THRESHOLD = 0.01d;
     private static final double BETA = 1.0d;
     private double bias;
 
@@ -60,9 +60,9 @@ public class NonLinealPerceptron {
 
     public void calculateWeight(int x_i, double y) {
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = weights[i] + LEARNING_RATE * (outputs[x_i] - y) * inputs[x_i][i] * g_prima(y);
+            weights[i] = weights[i] + LEARNING_RATE * (g(outputs[x_i])-g(y)) * inputs[x_i][i] * g_prima(y);
         }
-        this.bias += LEARNING_RATE * g(outputs[x_i] - y) * g_prima(outputs[x_i] - y);
+        this.bias += LEARNING_RATE * (g(outputs[x_i])-g(y)) * g_prima(y) ;
     }
 
     public void train() {
@@ -75,18 +75,18 @@ public class NonLinealPerceptron {
             }
             sum += this.bias;
             yi = sum;
-            if (Math.abs(yi - outputs[index]) < THRESHOLD) {
+            if (Math.abs(g(yi) - g(outputs[index])) < THRESHOLD) {
                 //Correcto
                 for (int i = 0; i < inputLength; i++) {
                     System.out.print(inputs[index][i] + "\t");
                 }
-                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
+                System.out.print(" => Esperada = " + g(outputs[index]) + ", Calculada = " + g(yi) + "\n");
             } else {
                 //Incorrecto
                 for (int i = 0; i < inputLength; i++) {
                     System.out.print(inputs[index][i] + "\t");
                 }
-                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + " [Error]\n");
+                System.out.print(" => Esperada = " + g(outputs[index]) + ", Calculada = " + g(yi) + " [Error]\n");
                 System.out.println("Corrección de pesos");
                 calculateWeight(index, yi);
                 printWeights();

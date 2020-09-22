@@ -5,8 +5,8 @@ public class LinealPerceptron {
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
-    private static final double LEARNING_RATE = 0.01d;
-    private static final double THRESHOLD = 0.00001d;
+    private static final double LEARNING_RATE = 0.001d;
+    private static final double THRESHOLD = 0.1d;
     private double bias;
 
     public LinealPerceptron(double[][] inputs, double[] outputs) {

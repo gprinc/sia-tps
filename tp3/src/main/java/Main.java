@@ -5,22 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Main {
-    private static final double[][] logicNumbers = {{1,1,-1},{1,-1,-1},{-1,1,-1},{-1,-1,-1}};
-    private static final double[] AND_OUTPUT = {1, -1, -1, -1};
-    private static final double[] XOR_OUTPUT = {-1, 1, 1, -1};
-
     public static void main(String[] args) {
-        File file = new File("TP3-ej2-Conjunto-entrenamiento.txt");
-        ArrayList<Double[]> aux = new ArrayList<>();
-        aux = TxtReader.getDoubleArrayFromTxt(file, 3);
-
-        File file2 = new File("TP3-ej2-Salida-deseada.txt");
-        ArrayList<Double> aux2 = new ArrayList<>();
-        aux2 = TxtReader.getDoubleArrayFromTxt(file2);
-
-        NonLinealPerceptron linealPer = new NonLinealPerceptron(aux, aux2);
-        linealPer.train();
-
         /*File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
         aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
