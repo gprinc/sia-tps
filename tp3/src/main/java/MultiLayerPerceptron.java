@@ -19,15 +19,14 @@ public class MultiLayerPerceptron {
         }
 
         _delta_w = new ArrayList<float[][]>();
-        for (int i = 0; i < nn_neurons.length; ++i)
-            _delta_w.add(new float
-                    [_layers.get(i).size()]
-                    [_layers.get(i).getWeights(0).length]
-            );
+        for (int i = 0; i < nn_neurons.length; ++i) {
+            _delta_w.add(new float [_layers.get(i).size()] [_layers.get(i).getWeights(0).length]);
+        }
 
         _grad_ex = new ArrayList<float[]>();
-        for (int i =  0; i < nn_neurons.length; ++i)
+        for (int i =  0; i < nn_neurons.length; ++i) {
             _grad_ex.add(new float[_layers.get(i).size()]);
+        }
     }
 
     public float[] evaluate(float[] inputs) {

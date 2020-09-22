@@ -75,18 +75,18 @@ public class Main {
             output.add(new float[1]);
         }
 
-        int[] outputAux = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
+        int[] outputAux = { 1, -1, 1, -1, 1, -1, 1, -1, 1, -1 };
 
         // fill the examples database
         for (int z = 0; z < 10; z++) {
-            System.out.println("\n**********  "+z+ "  **********\n");
+            //System.out.println("\n**********  " + z + "  **********\n");
             for (int i = (z * 7); i < (z+1) * 7 ; i++) {
                 Integer[] auxList = aux3.get(i);
                 for (int j = 0; j < auxList.length ; j++) {
-                    input.get(z)[j + ((i%7) * 5)] = auxList[j];
-                    System.out.println(input.get(z)[j + ((i%7) * 5)]);
+                    input.get(z)[j + ((i%7) * 5)] = auxList[j] == 1 ? 1.0f: -1.0f;
+                    //System.out.println(input.get(z)[j + ((i%7) * 5)]);
                 }
-                System.out.println("\n");
+                //System.out.println("\n");
             }
             output.get(z)[0] = outputAux[z];
         }
@@ -94,16 +94,20 @@ public class Main {
 
         int nn_neurons2[] = {
             input.get(0).length,
-            input.get(0).length * 5,
+            input.get(0).length * 3,
             output.get(0).length
         };
 
         MultiLayerPerceptron mlp1 = new MultiLayerPerceptron(nn_neurons2);
 
-        for (int i = 0; i < 2; ++i) {
-            mlp1.learn(input, output, 0.3f);
+        for (int i = 0; i < 1; ++i) {
+            System.out.println("\n********** llegue 1 **********\n");
+            mlp1.learn(input, output, 0.5f);
+            System.out.println("\n********** llegue 2 **********\n");
             mlp1.evaluateQuadraticError(input, output);
         }
+
+        System.out.println("\n********** llegue 3 **********\n");
 
         float[] a2 = mlp1.getOutput();
         for (int m = 0; m < output.size(); m++){
