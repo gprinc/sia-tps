@@ -6,7 +6,7 @@ public class LinealPerceptron {
     private double[][] inputs;
     private int inputLength;
     private static final double LEARNING_RATE = 0.001d;
-    private static final double THRESHOLD = 0.1d;
+    private static final double THRESHOLD = 0.001d;
     private double bias;
 
     public LinealPerceptron(double[][] inputs, double[] outputs) {
@@ -85,6 +85,26 @@ public class LinealPerceptron {
                     printWeights();
                     System.out.println("--");
                 }
+                index++;
+            }
+            index = 0;
+        }
+    }
+
+    public void train(int iterations) {
+        int index = 0;
+        double yi = 0;
+        for (int j = 0; j < iterations; j++) {
+            System.out.println(j);
+            while (index < inputs.length) {
+                double sum = 0;
+                for (int i = 0; i < inputLength; i++) {
+                    sum += (weights[i] * inputs[index][i]);
+                }
+                sum += this.bias;
+                yi = sum;
+                calculateWeight(index, yi);
+                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
                 index++;
             }
             index = 0;
