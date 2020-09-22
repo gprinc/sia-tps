@@ -71,7 +71,7 @@ public class Main {
 
         // initialization
         for (int i = 0; i < 10; i++) {
-            input.add(new float[5*7]);
+            input.add(new float[35]);
             output.add(new float[1]);
         }
 
@@ -79,11 +79,14 @@ public class Main {
 
         // fill the examples database
         for (int z = 0; z < 10; z++) {
+            System.out.println("\n**********  "+z+ "  **********\n");
             for (int i = (z * 7); i < (z+1) * 7 ; i++) {
                 Integer[] auxList = aux3.get(i);
-                for (int j = ( i * 5); j < auxList.length ; j++) {
-                    input.get(z)[j] = auxList[j];
+                for (int j = 0; j < auxList.length ; j++) {
+                    input.get(z)[j + ((i%7) * 5)] = auxList[j];
+                    System.out.println(input.get(z)[j + ((i%7) * 5)]);
                 }
+                System.out.println("\n");
             }
             output.get(z)[0] = outputAux[z];
         }
