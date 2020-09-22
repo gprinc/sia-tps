@@ -151,7 +151,7 @@ public class MultiLayerPerceptron {
 
         float e = Float.POSITIVE_INFINITY;
 
-        while (e > 0.001f) {
+        while (e > 0.1f) {
 
             batchBackPropagation(examples, results, learning_rate);
 

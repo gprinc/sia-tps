@@ -22,12 +22,6 @@ public class Main {
         ArrayList<Integer[]> aux3 = new ArrayList<>();
         aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
 
-        LinealPerceptron perceptron = new LinealPerceptron(logicNumbers, AND_OUTPUT);
-        perceptron.train();
-        System.out.println("********** Pesos Finales **********");
-        perceptron.printWeights();
-
-
         System.out.println("\n\n=======\nMultiLayer Perceptron");
 
         System.out.println("\n********** XOR **********\n");
@@ -66,6 +60,7 @@ public class Main {
 
         System.out.println("\n********** Even number **********\n");
 
+
         input = new ArrayList<float[]>();
         output = new ArrayList<float[]>();
 
@@ -75,7 +70,7 @@ public class Main {
             output.add(new float[1]);
         }
 
-        int[] outputAux = { 1, -1, 1, -1, 1, -1, 1, -1, 1, -1 };
+        int[] outputAux = {1, 0, 1, 0, 1, 0, 1, 0, 1, 0};
 
         // fill the examples database
         for (int z = 0; z < 10; z++) {
@@ -83,7 +78,7 @@ public class Main {
             for (int i = (z * 7); i < (z+1) * 7 ; i++) {
                 Integer[] auxList = aux3.get(i);
                 for (int j = 0; j < auxList.length ; j++) {
-                    input.get(z)[j + ((i%7) * 5)] = auxList[j] == 1 ? 1.0f: -1.0f;
+                    input.get(z)[j + ((i%7) * 5)] = auxList[j];
                     //System.out.println(input.get(z)[j + ((i%7) * 5)]);
                 }
                 //System.out.println("\n");
@@ -94,7 +89,7 @@ public class Main {
 
         int nn_neurons2[] = {
             input.get(0).length,
-            input.get(0).length * 3,
+            input.get(0).length * 2,
             output.get(0).length
         };
 
