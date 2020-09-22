@@ -8,22 +8,23 @@ public class NonLinealPerceptron {
     private static final double LEARNING_RATE = 0.01d;
     private static final double THRESHOLD = 0.00001d;
     private static final double BETA = 1.0d;
+    private double bias;
 
     public NonLinealPerceptron(double[][] inputs, double[] outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
         this.inputLength = inputs[0].length;
+        this.bias = Math.random();
         this.startWeights();
     }
 
     public NonLinealPerceptron(ArrayList<Double[]> inputs, ArrayList<Double> outputs) {
         int i = 0;
-        this.inputs = new double[inputs.size()][inputs.get(0).length + 1];
+        this.inputs = new double[inputs.size()][inputs.get(0).length];
         for (Double[] d: inputs) {
             for (int j = 0; j < d.length; j++) {
                 this.inputs[i][j] = d[j];
             }
-            this.inputs[i][d.length] = -1;
             i++;
         }
         this.outputs = new double[outputs.size()];
@@ -31,7 +32,8 @@ public class NonLinealPerceptron {
         for (Double d: outputs) {
             this.outputs[i++] = d;
         }
-        this.inputLength = inputs.get(0).length + 1;
+        this.inputLength = inputs.get(0).length;
+        this.bias = Math.random();
         this.startWeights();
     }
 
@@ -60,29 +62,33 @@ public class NonLinealPerceptron {
         for (int i = 0; i < weights.length; i++) {
             weights[i] = weights[i] + LEARNING_RATE * g(outputs[x_i] - y) * inputs[x_i][i] * g_prima(outputs[x_i] - y);
         }
+        this.bias += LEARNING_RATE * g(outputs[x_i] - y) * g_prima(outputs[x_i] - y);
     }
 
     public void train() {
         int index = 0;
         double yi = 0;
-        while (index < inputs.length) {
+        int asd = 0;
+        while (index < inputs.length && asd < 10) {
+            asd++;
             double sum = 0;
             for (int i = 0; i < inputLength; i++) {
                 sum += (weights[i] * inputs[index][i]);
             }
+            sum += this.bias;
             yi = sum;
             if (Math.abs(yi - outputs[index]) < THRESHOLD) {
                 //Correcto
                 for (int i = 0; i < inputLength; i++) {
-                    System.out.print(inputs[index][i] + "t");
+                    System.out.print(inputs[index][i] + "\t");
                 }
-                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "n");
+                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
             } else {
                 //Incorrecto
                 for (int i = 0; i < inputLength; i++) {
-                    System.out.print(inputs[index][i] + "t");
+                    System.out.print(inputs[index][i] + "\t");
                 }
-                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + " [Error]n");
+                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + " [Error]\n");
                 System.out.println("Corrección de pesos");
                 calculateWeight(index, yi);
                 printWeights();
