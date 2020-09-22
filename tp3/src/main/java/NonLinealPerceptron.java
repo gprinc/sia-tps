@@ -6,8 +6,8 @@ public class NonLinealPerceptron {
     private double[][] inputs;
     private int inputLength;
     private static final double LEARNING_RATE = 0.01d;
-    private static final double THRESHOLD = 0.001d;
-    private static final double BETA = 1.0d;
+    private static final double THRESHOLD = 0.01d;
+    private static final double BETA = 5;
     private double bias;
 
     public NonLinealPerceptron(double[][] inputs, double[] outputs) {
@@ -94,6 +94,28 @@ public class NonLinealPerceptron {
                 index = -1;
             }
             index++;
+        }
+    }
+
+    public void train(int iterations) {
+        int index = 0;
+        double yi = 0;
+        double error = 100000;
+        while (error > THRESHOLD && iterations!=0) {
+            while (index < inputs.length) {
+                double sum = 0;
+                for (int i = 0; i < inputLength; i++) {
+                    sum += (weights[i] * inputs[index][i]);
+                }
+                sum += this.bias;
+                yi = sum;
+                calculateWeight(index, yi);
+                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + g(yi) + "\n");
+                error += Math.abs(outputs[index] - g(yi));
+                index++;
+            }
+            error = error/inputs.length;
+            index = 0;
         }
     }
 }

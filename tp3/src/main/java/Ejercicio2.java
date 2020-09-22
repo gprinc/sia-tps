@@ -21,8 +21,8 @@ public class Ejercicio2 {
 
         aux2 = normalize(aux2);
         NonLinealPerceptron NoLinealPer = new NonLinealPerceptron(aux, aux2);
-        NoLinealPer.train();
-
+        NoLinealPer.train(1000000000);
+        NoLinealPer.train(1);
         return;
 
     }
