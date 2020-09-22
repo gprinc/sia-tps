@@ -18,10 +18,10 @@ public class Main {
         ArrayList<Double> aux2 = new ArrayList<>();
         aux2 = TxtReader.getDoubleArrayFromTxt(file2);
 
-        /*LinealPerceptron linealPer = new LinealPerceptron(aux, aux2);
-        linealPer.train();*/
+        LinealPerceptron linealPer = new LinealPerceptron(aux, aux2);
+        linealPer.train();
 
-        File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
+        /*File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
         aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
 
@@ -110,7 +110,7 @@ public class Main {
         float[] a2 = mlp1.getOutput();
         for (int m = 0; m < output.size(); m++){
             System.out.println("Esperada: " + output.get(m)[0] + ", Calculada: " + a2[m]);
-        }
+        }*/
 
         return;
 

@@ -5,7 +5,8 @@ public class LinealPerceptron {
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
-    private static final double LEARNING_RATE = 0.5d;
+    private static final double LEARNING_RATE = 0.01d;
+    private static final double THRESHOLD = 0.00001d;
     private double bias;
 
     public LinealPerceptron(double[][] inputs, double[] outputs) {
@@ -65,7 +66,8 @@ public class LinealPerceptron {
             }
             sum += this.bias;
             yi = sum;
-            if (yi == outputs[index]) {
+            if (Math.abs(yi - outputs[index]) < THRESHOLD) {
+                // return;
                 for (int i = 0; i < inputLength; i++) {
                     System.out.print(inputs[index][i] + "\t");
                 }
