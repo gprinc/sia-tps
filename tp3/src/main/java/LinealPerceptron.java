@@ -105,7 +105,7 @@ public class LinealPerceptron {
                 sum += this.bias;
                 yi = sum;
                 calculateWeight(index, yi);
-                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
+                //System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
                 error += Math.abs(outputs[index] - yi);
                 index++;
             }

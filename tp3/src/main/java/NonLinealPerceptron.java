@@ -116,7 +116,7 @@ public class NonLinealPerceptron {
                 index++;
             }
             error = error/inputs.length;
-            System.out.print(" => Error = " + error + "\n");
+            //System.out.print(" => Error = " + error + "\n");
             index = 0;
             iterations--;
         }

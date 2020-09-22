@@ -24,15 +24,16 @@ public class Ejercicio2 {
         NonLinealPerceptron NoLinealPer;
         switch (subtask) {
             case 0:
+                int iterations = 10000;
                 double linearError = 0;
                 double noLinearError = 0;
                 LinealPerceptron linearPer = new LinealPerceptron(aux, aux2);
-                linearPer.train(10000);
+                linearPer.train(iterations);
                 linearError = linearPer.test();
                 NoLinealPer = new NonLinealPerceptron(aux, aux2);
-                NoLinealPer.train(10000);
+                NoLinealPer.train(iterations);
                 noLinearError = NoLinealPer.test();
-                System.out.print(" => Despues de 10000000 iteraciones\n => Error no Lineal " + noLinearError + ", Error Lineal = " + linearError + "\n");
+                System.out.print(" => Despues de 10000 iteraciones\n => Error no Lineal " + noLinearError + ", Error Lineal = " + linearError + "\n");
                 break;
             case 1:
                 noLinearTest(aux,aux2,k);
