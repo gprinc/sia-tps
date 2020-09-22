@@ -110,12 +110,50 @@ public class NonLinealPerceptron {
                 sum += this.bias;
                 yi = sum;
                 calculateWeight(index, yi);
-                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + g(yi) + "\n");
+                //System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + g(yi) + "\n");
                 error += Math.abs(outputs[index] - g(yi));
                 index++;
             }
             error = error/inputs.length;
             index = 0;
+            iterations--;
         }
+    }
+
+    public void setValues(ArrayList<Double[]> inputs, ArrayList<Double> outputs) {
+        int i = 0;
+        this.inputs = new double[inputs.size()][inputs.get(0).length];
+        for (Double[] d: inputs) {
+            for (int j = 0; j < d.length; j++) {
+                this.inputs[i][j] = d[j];
+            }
+            i++;
+        }
+        this.outputs = new double[outputs.size()];
+        i = 0;
+        for (Double d: outputs) {
+            this.outputs[i++] = d;
+        }
+        this.inputLength = inputs.get(0).length;
+        this.bias = Math.random();
+        this.startWeights();
+    }
+
+    public void test() {
+        int index = 0;
+        double yi = 0;
+        double error = 0;
+        while (index < inputs.length) {
+            double sum = 0;
+            for (int i = 0; i < inputLength; i++) {
+                sum += (weights[i] * inputs[index][i]);
+            }
+            sum += this.bias;
+            yi = sum;
+            //System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + g(yi) + "\n");
+            error += Math.abs(outputs[index] - g(yi));
+            index++;
+        }
+        System.out.print(" => Error = " + error/inputs.length + "\n");
     }
 }

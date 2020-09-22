@@ -94,8 +94,8 @@ public class LinealPerceptron {
     public void train(int iterations) {
         int index = 0;
         double yi = 0;
-        for (int j = 0; j < iterations; j++) {
-            System.out.println(j);
+        double error = 100000;
+        while (error > THRESHOLD && iterations!=0) {
             while (index < inputs.length) {
                 double sum = 0;
                 for (int i = 0; i < inputLength; i++) {
@@ -105,8 +105,10 @@ public class LinealPerceptron {
                 yi = sum;
                 calculateWeight(index, yi);
                 System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
+                error += Math.abs(outputs[index] - yi);
                 index++;
             }
+            error = error/inputs.length;
             index = 0;
         }
     }

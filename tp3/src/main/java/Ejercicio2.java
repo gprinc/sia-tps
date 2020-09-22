@@ -1,8 +1,9 @@
 import sun.security.util.ArrayUtil;
 
 import java.io.File;
-import java.lang.reflect.Array;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Ejercicio2 {
     public static void main(String[] args) {
@@ -16,13 +17,21 @@ public class Ejercicio2 {
         /*
         LinealPerceptron linearPer = new LinealPerceptron(aux, aux2);
         linearPer.train(1000);
-        linearPer.train(1);
-        +*/
+        */
 
+        double k = 0.8;
         aux2 = normalize(aux2);
-        NonLinealPerceptron NoLinealPer = new NonLinealPerceptron(aux, aux2);
-        NoLinealPer.train(1000000000);
-        NoLinealPer.train(1);
+        int subtask = 1;
+        NonLinealPerceptron NoLinealPer;
+        switch (subtask) {
+            case 0:
+                NoLinealPer = new NonLinealPerceptron(aux, aux2);
+                NoLinealPer.train(-1);
+                NoLinealPer.test();
+                break;
+            case 1:
+                noLinearTest(aux,aux2,k);
+        }
         return;
 
     }
@@ -42,5 +51,72 @@ public class Ejercicio2 {
         }
 
         return arr;
+    }
+
+    public static void noLinearTest(ArrayList<Double[]> inputs, ArrayList<Double> outputs,double k) {
+        ArrayList<Double[]> aux = new ArrayList<>();
+        for (int i = 0; i < outputs.size(); i++) {
+            Double[] value = new Double[4];
+            for (int j = 0; j < 3; j++) {
+                value[j] = inputs.get(i)[j];
+            }
+            value[3] = outputs.get(i);
+            aux.add(value);
+        }
+
+        Collections.shuffle(aux);
+        ArrayList<ArrayList<Double[]>> values = new ArrayList<>();
+        if (k < 1) {
+            ArrayList<Double[]> aux2 = new ArrayList<>();
+            for (Double [] a: aux.subList(0,(int)((k)* aux.size()))) {
+                aux2.add(a);
+            }
+            values.add(aux2);
+            aux2 = new ArrayList<>();
+            for (Double [] a: aux.subList((int)((k)* aux.size()), aux.size())) {
+                aux2.add(a);
+            }
+            values.add(aux2);
+        } else {
+            for (int i = 0; i < k; i++) {
+                ArrayList<Double[]> aux2 = new ArrayList<>();
+                for (Double [] a: aux.subList( (int) (i * aux.size()/k), (int) ((1 + i)* aux.size()/k))) {
+                    aux2.add(a);
+                }
+                values.add(aux2);
+            }
+        }
+
+
+        for (int i = 0; i < values.size(); i++) {
+            ArrayList<Double[]> inputsAux = new ArrayList<>();
+            ArrayList<Double> outputAux = new ArrayList<>();
+            for (int j = 0; j < values.get(i).size(); j++) {
+                Double[] auxValues = new Double[2];
+                auxValues[0] = values.get(i).get(j)[0];
+                auxValues[1] = values.get(i).get(j)[1];
+                inputsAux.add(auxValues);
+                outputAux.add(values.get(i).get(j)[2]);
+            }
+            NonLinealPerceptron NoLinealPer = new NonLinealPerceptron(inputsAux, outputAux);
+            NoLinealPer.train(100000);
+
+            for (int j = 0; j < values.size(); j++) {
+                if (j!=i) {
+                    inputsAux = new ArrayList<>();
+                    outputAux = new ArrayList<>();
+                    for (int z = 0; z < values.get(j).size(); z++) {
+                        Double[] auxValues = new Double[2];
+                        auxValues[0] = values.get(j).get(z)[0];
+                        auxValues[1] = values.get(j).get(z)[1];
+                        inputsAux.add(auxValues);
+                        outputAux.add(values.get(j).get(z)[2]);
+                    }
+                    NoLinealPer.setValues(inputsAux,outputAux);
+                    NoLinealPer.test();
+                }
+            }
+
+        }
     }
 }
