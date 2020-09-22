@@ -160,6 +160,6 @@ public class NonLinealPerceptron {
         }
 
         //System.out.print(" => Error = " + error/inputs.length + "\n");
-        return error;
+        return error/inputs.length;
     }
 }

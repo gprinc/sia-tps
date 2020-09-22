@@ -15,12 +15,9 @@ public class Ejercicio2 {
         ArrayList<Double> aux2 = new ArrayList<>();
         aux2 = TxtReader.getDoubleArrayFromTxt(file2);
 
-
-
-
         double k = 2;
         aux2 = normalize(aux2);
-        int subtask = 0;
+        int subtask = 1;
         NonLinealPerceptron NoLinealPer;
         switch (subtask) {
             case 0:
@@ -70,7 +67,7 @@ public class Ejercicio2 {
             aux.add(value);
         }
 
-        //Collections.shuffle(aux);
+        Collections.shuffle(aux);
         ArrayList<ArrayList<Double[]>> values = new ArrayList<>();
         if (k < 1) {
             ArrayList<Double[]> aux2 = new ArrayList<>();
@@ -104,6 +101,7 @@ public class Ejercicio2 {
                 inputsAux.add(auxValues);
                 outputAux.add(values.get(i).get(j)[2]);
             }
+
             NonLinealPerceptron NoLinealPer = new NonLinealPerceptron(inputsAux, outputAux);
 
             ArrayList<Double> trainError = new ArrayList<>();
@@ -120,7 +118,7 @@ public class Ejercicio2 {
             }
 
             for (int w = 0; w < 10; w++) {
-                trainError.add(NoLinealPer.train(-1));
+                trainError.add(NoLinealPer.train(10000));
                 for (int j = 0; j < values.size(); j++) {
                     if (j!=i) {
                         inputsAux = new ArrayList<>();
@@ -142,6 +140,7 @@ public class Ejercicio2 {
             for (double e :trainError) {
                 System.out.print(" => Error = " + e + " ");
             }
+            System.out.println("\n");
 
             for (double e :testError) {
                 System.out.print(" => Error = " + e + " ");
