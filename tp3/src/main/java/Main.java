@@ -49,13 +49,17 @@ public class Main {
         System.out.println("\n********** Even number **********\n");
 
 
-        input = new ArrayList<float[]>();
-        output = new ArrayList<float[]>();
+        ArrayList<float[]> input1 = new ArrayList<float[]>();
+        ArrayList<float[]> input2 = new ArrayList<float[]>();
+        ArrayList<float[]> output1 = new ArrayList<float[]>();
+        ArrayList<float[]> output2 = new ArrayList<float[]>();
 
         // initialization
-        for (int i = 0; i < 10; i++) {
-            input.add(new float[35]);
-            output.add(new float[1]);
+        for (int i = 0; i < 5; i++){
+            input1.add(new float[35]);
+            input2.add(new float[35]);
+            output1.add(new float[1]);
+            output2.add(new float[1]);
         }
 
         int[] outputAux = {1, -1, 1, -1, 1, -1, 1, -1, 1, -1};
@@ -65,31 +69,40 @@ public class Main {
             for (int i = (z * 7); i < (z+1) * 7 ; i++) {
                 Integer[] auxList = aux3.get(i);
                 for (int j = 0; j < auxList.length; j++) {
-                    input.get(z)[j + ((i%7) * 5)] = auxList[j];
-                    //System.out.println(input.get(z)[j + ((i%7) * 5)] + "  input(" + z + ")[" + (j + ((i%7) * 5)) + "]");
+                    if (z < 5) {
+                        input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
+                        //System.out.println(input.get(z)[j + ((i%7) * 5)] + "  input(" + z + ")[" + (j + ((i%7) * 5)) + "]");
+                    }else {
+                        input2.get(z - 5)[j + ((i%7) * 5)] = auxList[j];
+                        //System.out.println(input.get(z-5)[j + ((i%7) * 5)] + "  input(" + (z-5) + ")[" + (j + ((i%7) * 5)) + "]");
+                    }
                 }
                 //System.out.println("\n");
             }
-            output.get(z)[0] = outputAux[z];
+            if (z < 5) {
+                output1.get(z)[0] = outputAux[z];
+            }else {
+                output2.get(z - 5)[0] = outputAux[z];
+            }
         }
 
 
         int nn_neurons2[] = {
-            input.get(0).length,
-            input.get(0).length,
-            output.get(0).length
+            input1.get(0).length,
+            input1.get(0).length,
+            output1.get(0).length
         };
 
         MultiLayerPerceptron mlp1 = new MultiLayerPerceptron(nn_neurons2);
 
-        for (int i = 0; i < 2; i++) {
-            mlp1.learn(input, output, 0.5f);
-            mlp1.evaluateQuadraticError(input, output);
+        for (int i = 0; i < 5; i++) {
+            mlp1.learn(input1, output1, 0.1f);
+            mlp1.evaluateQuadraticError(input2, output2);
         }
 
         float[] a2 = mlp1.getOutput();
-        for (int m = 0; m < output.size(); m++){
-            System.out.println("Esperada: " + output.get(m)[0] + ", Calculada: " + a2[m]);
+        for (int m = 0; m < output2.size(); m++){
+            System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
         }
 
         return;
