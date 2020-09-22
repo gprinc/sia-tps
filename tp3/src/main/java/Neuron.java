@@ -5,14 +5,12 @@ public class Neuron {
     // parameter of the sigmoid
     static final float lambda = 1.5f;
 
-    // main constructor
     public Neuron(int prev_n_neurons, java.util.Random rand) {
-        // each neuron know the weights of each connection
-        // with neurons of the previous layer
+        // each neuron knows the weights of each connection with neurons of the previous layer
         _synapticWeights = new float[prev_n_neurons];
 
         // set default weights
-        for (int i = 0; i < prev_n_neurons; ++i)
+        for (int i = 0; i < prev_n_neurons; i++)
             _synapticWeights[i] = rand.nextFloat() - 0.5f;
     }
 
@@ -21,11 +19,12 @@ public class Neuron {
         _activation = 0.0f;
         assert(inputs.length == _synapticWeights.length);
 
-        for (int i = 0; i < inputs.length; ++i) // dot product (produit scalaire)
+        for (int i = 0; i < inputs.length; i++)
             _activation += inputs[i] * _synapticWeights[i];
 
-        // phi(_activation), our activation function (tanh(x))
-        return 2.0f / (1.0f + (float) Math.exp((-_activation) * lambda)) - 1.0f;
+        // activation function (tanh(x))
+        //return 2.0f / (1.0f + (float) Math.exp((-_activation) * lambda)) - 1.0f;
+        return (float) Math.tanh((_activation) * lambda);
     }
 
     // dphi(_activation)

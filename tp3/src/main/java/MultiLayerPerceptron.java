@@ -1,99 +1,95 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.io.*;
 
 public class MultiLayerPerceptron {
-    private ArrayList<Layer> _layers;
-    private ArrayList<float[][]> _delta_w;
-    private ArrayList<float[]> _grad_ex;
-    private float[] output;
+    private ArrayList<Layer> layers;
+    private ArrayList<float[][]> deltaW;
+    private ArrayList<float[]> gradEx;
+    private float[] finalOutput;
 
-    // main constructor
     public MultiLayerPerceptron(int nn_neurons[]) {
         Random rand = new Random();
 
         // create the required layers
-        _layers = new ArrayList<Layer>();
-        for (int i = 0; i < nn_neurons.length; ++i){
-            _layers.add(new Layer(i == 0 ? nn_neurons[i] : nn_neurons[i - 1], nn_neurons[i], rand));
+        layers = new ArrayList<Layer>();
+        for (int i = 0; i < nn_neurons.length; i++){
+            layers.add(new Layer(i == 0 ? nn_neurons[i] : nn_neurons[i - 1], nn_neurons[i], rand));
         }
 
-        _delta_w = new ArrayList<float[][]>();
-        for (int i = 0; i < nn_neurons.length; ++i) {
-            _delta_w.add(new float [_layers.get(i).size()] [_layers.get(i).getWeights(0).length]);
+        deltaW = new ArrayList<float[][]>();
+        for (int i = 0; i < nn_neurons.length; i++) {
+            deltaW.add(new float [layers.get(i).size()] [layers.get(i).getWeights(0).length]);
         }
 
-        _grad_ex = new ArrayList<float[]>();
-        for (int i =  0; i < nn_neurons.length; ++i) {
-            _grad_ex.add(new float[_layers.get(i).size()]);
+        gradEx = new ArrayList<float[]>();
+        for (int i =  0; i < nn_neurons.length; i++) {
+            gradEx.add(new float[layers.get(i).size()]);
         }
     }
 
     public float[] evaluate(float[] inputs) {
-        // propagate the inputs through all neural network
-        // and return the outputs
+        // propagate the inputs through all neural network and return the outputs
         assert(false);
 
         float outputs[] = new float[inputs.length];
 
-        for( int i = 0; i < _layers.size(); ++i ) {
-            outputs = _layers.get(i).evaluate(inputs);
+        for( int i = 0; i < layers.size(); i++) {
+            outputs = layers.get(i).evaluate(inputs);
             inputs = outputs;
         }
 
         return outputs;
     }
 
-    private float evaluateError(float nn_output[], float desired_output[]) {
+    private float evaluateError(float nn_output[], float desiredOutput[]) {
         float d[];
 
         // add bias to input if necessary
-        if (desired_output.length != nn_output.length)
-            d = Layer.add_bias(desired_output);
+        if (desiredOutput.length != nn_output.length)
+            d = Layer.add_bias(desiredOutput);
         else
-            d = desired_output;
+            d = desiredOutput;
 
         assert(nn_output.length == d.length);
 
-        float e = 0;
-        for (int i = 0; i < nn_output.length; ++i)
-            e += (nn_output[i] - d[i]) * (nn_output[i] - d[i]);
+        float error = 0;
+        for (int i = 0; i < nn_output.length; i++)
+            error += (nn_output[i] - d[i]) * (nn_output[i] - d[i]);
 
-        return e;
+        return error;
     }
 
-    public float evaluateQuadraticError(ArrayList<float[]> examples, ArrayList<float[]> results) {
-        // this function calculate the quadratic error for the given
-        // examples/results sets
+    public float evaluateQuadraticError(ArrayList<float[]> input, ArrayList<float[]> output) {
+        // this function calculate the quadratic error for the given inputs/outputs sets
         assert(false);
 
-        float e = 0;
+        float error = 0;
 
-        this.output = new float[examples.size()];
-        for (int i = 0; i < examples.size(); ++i) {
-            float[] j = evaluate(examples.get(i));
-            output[i] = j[j.length - 1];
-            e += evaluateError(j, results.get(i));
+        finalOutput = new float[input.size()];
+        for (int i = 0; i < input.size(); i++) {
+            float[] j = evaluate(input.get(i));
+            finalOutput[i] = j[j.length - 1];
+            error += evaluateError(j, output.get(i));
         }
 
-        return e;
+        return error;
     }
 
-    private void evaluateGradients(float[] results) {
+    private void evaluateGradients(float[] output) {
         // for each neuron in each layer
-        for (int c = _layers.size()-1; c >= 0; --c) {
-            for (int i = 0; i < _layers.get(c).size(); ++i) {
+        for (int c = layers.size()-1; c >= 0; c--) {
+            for (int i = 0; i < layers.get(c).size(); i++) {
                 // if it's output layer neuron
-                if (c == _layers.size()-1) {
-                    _grad_ex.get(c)[i] =
-                            2 * (_layers.get(c).getOutput(i) - results[0])
-                                    * _layers.get(c).getActivationDerivative(i);
+                if (c == layers.size()-1) {
+                    gradEx.get(c)[i] =
+                            2 * (layers.get(c).getOutput(i) - output[0])
+                                    * layers.get(c).getActivationDerivative(i);
                 }
                 else { // if it's neuron of the previous layers
                     float sum = 0;
-                    for (int k = 1; k < _layers.get(c+1).size(); ++k)
-                        sum += _layers.get(c+1).getWeight(k, i) * _grad_ex.get(c+1)[k];
-                    _grad_ex.get(c)[i] = _layers.get(c).getActivationDerivative(i) * sum;
+                    for (int k = 1; k < layers.get(c+1).size(); k++)
+                        sum += layers.get(c+1).getWeight(k, i) * gradEx.get(c+1)[k];
+                    gradEx.get(c)[i] = layers.get(c).getActivationDerivative(i) * sum;
                 }
             }
         }
@@ -101,69 +97,67 @@ public class MultiLayerPerceptron {
 
     private void resetWeightsDelta() {
         // reset delta values for each weight
-        for (int c = 0; c < _layers.size(); ++c) {
-            for (int i = 0; i < _layers.get(c).size(); ++i) {
-                float weights[] = _layers.get(c).getWeights(i);
-                for (int j = 0; j < weights.length; ++j)
-                    _delta_w.get(c)[i][j] = 0;
+        for (int c = 0; c < layers.size(); c++) {
+            for (int i = 0; i < layers.get(c).size(); i++) {
+                float weights[] = layers.get(c).getWeights(i);
+                for (int j = 0; j < weights.length; j++)
+                    deltaW.get(c)[i][j] = 0;
             }
         }
     }
 
     private void evaluateWeightsDelta() {
         // evaluate delta values for each weight
-        for (int c = 1; c < _layers.size(); ++c) {
-            for (int i = 0; i < _layers.get(c).size(); ++i) {
-                float weights[] = _layers.get(c).getWeights(i);
-                for (int j = 0; j < weights.length; ++j)
-                    _delta_w.get(c)[i][j] += _grad_ex.get(c)[i]
-                            * _layers.get(c-1).getOutput(j);
+        for (int c = 1; c < layers.size(); c++) {
+            for (int i = 0; i < layers.get(c).size(); i++) {
+                float weights[] = layers.get(c).getWeights(i);
+                for (int j = 0; j < weights.length; j++)
+                    deltaW.get(c)[i][j] += gradEx.get(c)[i]
+                            * layers.get(c-1).getOutput(j);
             }
         }
     }
 
-    private void updateWeights(float learning_rate) {
-        for (int c = 0; c < _layers.size(); ++c) {
-            for (int i = 0; i < _layers.get(c).size(); ++i) {
-                float weights[] = _layers.get(c).getWeights(i);
-                for (int j = 0; j < weights.length; ++j)
-                    _layers.get(c).setWeight(i, j, _layers.get(c).getWeight(i, j)
-                            - (learning_rate * _delta_w.get(c)[i][j]));
+    private void updateWeights(float learningRate) {
+        // update values for each weight
+        for (int c = 0; c < layers.size(); c++) {
+            for (int i = 0; i < layers.get(c).size(); i++) {
+                float weights[] = layers.get(c).getWeights(i);
+                for (int j = 0; j < weights.length; j++)
+                    layers.get(c).setWeight(i, j, layers.get(c).getWeight(i, j)
+                            - (learningRate * deltaW.get(c)[i][j]));
             }
         }
     }
 
-    private void batchBackPropagation(ArrayList<float[]> examples, ArrayList<float[]> results, float learning_rate) {
+    private void batchBackPropagation(ArrayList<float[]> input, ArrayList<float[]> output, float learningRate) {
         resetWeightsDelta();
 
-        for (int l = 0; l < examples.size(); ++l) {
-            evaluate(examples.get(l));
-            evaluateGradients(results.get(l));
+        for (int l = 0; l < input.size(); l++) {
+            evaluate(input.get(l));
+            evaluateGradients(output.get(l));
             evaluateWeightsDelta();
         }
 
-        updateWeights(learning_rate);
+        updateWeights(learningRate);
     }
 
-    public void learn(ArrayList<float[]> examples, ArrayList<float[]> results, float learning_rate) {
-        // this function implements a batched back propagation algorithm
+    public void learn(ArrayList<float[]> input, ArrayList<float[]> output, float learningRate) {
         assert(false);
 
-        float e = Float.POSITIVE_INFINITY;
+        float error = Float.POSITIVE_INFINITY;
 
-        while (e > 0.1f) {
+        int iterations = 0;
+        while (error > 0.1f && iterations < 1000) {
 
-            batchBackPropagation(examples, results, learning_rate);
+            batchBackPropagation(input, output, learningRate);
 
-            e = evaluateQuadraticError(examples, results);
+            error = evaluateQuadraticError(input, output);
+            iterations++;
         }
     }
 
-    public ArrayList<Layer> get_layers() {
-        return _layers;
-    }
-
     public float[] getOutput(){
-        return this.output;
+        return finalOutput;
     }
 }
