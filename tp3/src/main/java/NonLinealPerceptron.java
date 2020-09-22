@@ -5,7 +5,7 @@ public class NonLinealPerceptron {
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
-    private static final double LEARNING_RATE = 0.01d;
+    private static final double LEARNING_RATE = 0.001d;
     private static final double THRESHOLD = 0.01d;
     private static final double BETA = 5;
     private double bias;
@@ -97,11 +97,12 @@ public class NonLinealPerceptron {
         }
     }
 
-    public void train(int iterations) {
+    public double train(int iterations) {
         int index = 0;
         double yi = 0;
-        double error = 100000;
+        double error = 1;
         while (error > THRESHOLD && iterations!=0) {
+            error = 0;
             while (index < inputs.length) {
                 double sum = 0;
                 for (int i = 0; i < inputLength; i++) {
@@ -115,9 +116,12 @@ public class NonLinealPerceptron {
                 index++;
             }
             error = error/inputs.length;
+            System.out.print(" => Error = " + error + "\n");
             index = 0;
             iterations--;
         }
+
+        return error;
     }
 
     public void setValues(ArrayList<Double[]> inputs, ArrayList<Double> outputs) {
@@ -139,7 +143,7 @@ public class NonLinealPerceptron {
         this.startWeights();
     }
 
-    public void test() {
+    public double test() {
         int index = 0;
         double yi = 0;
         double error = 0;
@@ -154,6 +158,8 @@ public class NonLinealPerceptron {
             error += Math.abs(outputs[index] - g(yi));
             index++;
         }
-        System.out.print(" => Error = " + error/inputs.length + "\n");
+
+        //System.out.print(" => Error = " + error/inputs.length + "\n");
+        return error;
     }
 }

@@ -14,20 +14,25 @@ public class Ejercicio2 {
         File file2 = new File("TP3-ej2-Salida-deseada.txt");
         ArrayList<Double> aux2 = new ArrayList<>();
         aux2 = TxtReader.getDoubleArrayFromTxt(file2);
-        /*
-        LinealPerceptron linearPer = new LinealPerceptron(aux, aux2);
-        linearPer.train(1000);
-        */
 
-        double k = 0.8;
+
+
+
+        double k = 2;
         aux2 = normalize(aux2);
-        int subtask = 1;
+        int subtask = 0;
         NonLinealPerceptron NoLinealPer;
         switch (subtask) {
             case 0:
+                double linearError = 0;
+                double noLinearError = 0;
+                LinealPerceptron linearPer = new LinealPerceptron(aux, aux2);
+                linearPer.train(10000);
+                linearError = linearPer.test();
                 NoLinealPer = new NonLinealPerceptron(aux, aux2);
-                NoLinealPer.train(-1);
-                NoLinealPer.test();
+                NoLinealPer.train(10000);
+                noLinearError = NoLinealPer.test();
+                System.out.print(" => Despues de 10000000 iteraciones\n => Error no Lineal " + noLinearError + ", Error Lineal = " + linearError + "\n");
                 break;
             case 1:
                 noLinearTest(aux,aux2,k);
@@ -64,7 +69,7 @@ public class Ejercicio2 {
             aux.add(value);
         }
 
-        Collections.shuffle(aux);
+        //Collections.shuffle(aux);
         ArrayList<ArrayList<Double[]>> values = new ArrayList<>();
         if (k < 1) {
             ArrayList<Double[]> aux2 = new ArrayList<>();
@@ -99,24 +104,47 @@ public class Ejercicio2 {
                 outputAux.add(values.get(i).get(j)[2]);
             }
             NonLinealPerceptron NoLinealPer = new NonLinealPerceptron(inputsAux, outputAux);
-            NoLinealPer.train(100000);
 
-            for (int j = 0; j < values.size(); j++) {
-                if (j!=i) {
-                    inputsAux = new ArrayList<>();
-                    outputAux = new ArrayList<>();
-                    for (int z = 0; z < values.get(j).size(); z++) {
-                        Double[] auxValues = new Double[2];
-                        auxValues[0] = values.get(j).get(z)[0];
-                        auxValues[1] = values.get(j).get(z)[1];
-                        inputsAux.add(auxValues);
-                        outputAux.add(values.get(j).get(z)[2]);
-                    }
-                    NoLinealPer.setValues(inputsAux,outputAux);
-                    NoLinealPer.test();
-                }
+            ArrayList<Double> trainError = new ArrayList<>();
+            ArrayList<Double> testError = new ArrayList<>();
+            ArrayList<Double[]> inputsTrain = new ArrayList<>();
+            ArrayList<Double> outputTrain= new ArrayList<>();
+
+            for (Double[] a :inputsAux) {
+                inputsTrain.add(a);
             }
 
+            for (Double a :outputAux) {
+                outputTrain.add(a);
+            }
+
+            for (int w = 0; w < 10; w++) {
+                trainError.add(NoLinealPer.train(-1));
+                for (int j = 0; j < values.size(); j++) {
+                    if (j!=i) {
+                        inputsAux = new ArrayList<>();
+                        outputAux = new ArrayList<>();
+                        for (int z = 0; z < values.get(j).size(); z++) {
+                            Double[] auxValues = new Double[2];
+                            auxValues[0] = values.get(j).get(z)[0];
+                            auxValues[1] = values.get(j).get(z)[1];
+                            inputsAux.add(auxValues);
+                            outputAux.add(values.get(j).get(z)[2]);
+                        }
+                        NoLinealPer.setValues(inputsAux,outputAux);
+                        testError.add(NoLinealPer.test());
+                    }
+                }
+                NoLinealPer.setValues(inputsTrain,outputTrain);
+            }
+
+            for (double e :trainError) {
+                System.out.print(" => Error = " + e + " ");
+            }
+
+            for (double e :testError) {
+                System.out.print(" => Error = " + e + " ");
+            }
         }
     }
 }
