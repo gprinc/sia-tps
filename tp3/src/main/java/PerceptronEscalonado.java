@@ -3,7 +3,7 @@ public class PerceptronEscalonado {
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
-    private static final double LEARNING_RATE = 0.5d;
+    private static final double LEARNING_RATE = 0.1d;
 
     public PerceptronEscalonado(double[][] inputs, double[] outputs) {
         this.inputs = inputs;

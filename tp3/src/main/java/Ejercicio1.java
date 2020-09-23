@@ -8,13 +8,13 @@ public class Ejercicio1 {
 
     public static void main(String[] args) {
         System.out.println("\n********** AND **********\n");
-        LinealPerceptron perceptron = new LinealPerceptron(logicNumbers, AND_OUTPUT);
+        PerceptronEscalonado perceptron = new PerceptronEscalonado(logicNumbers, AND_OUTPUT);
         perceptron.train();
         System.out.println("********** Pesos Finales **********");
         perceptron.printWeights();
 
         System.out.println("\n********** XOR **********\n");
-        perceptron = new LinealPerceptron(logicNumbers, XOR_OUTPUT);
+        perceptron = new PerceptronEscalonado(logicNumbers, XOR_OUTPUT);
         perceptron.train();
         System.out.println("********** Pesos Finales **********");
         perceptron.printWeights();
