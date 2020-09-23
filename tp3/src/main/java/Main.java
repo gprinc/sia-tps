@@ -88,7 +88,7 @@ public class Main {
 
         try {
             FileWriter csvWriter = null;
-            csvWriter = new FileWriter("results.csv");
+            csvWriter = new FileWriter("Ejercicio3-xor.csv");
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             long nowSeconds = System.nanoTime();
@@ -99,7 +99,7 @@ public class Main {
             csvWriter.append("\n");
 
             for (int i = 0; i < mlp_iter_xor; i++) {
-                mlp.learn(input, output, mlp_lrate_xor);
+                mlp.learn(input, output, mlp_lrate_xor, 1000);
                 float error = mlp.evaluateQuadraticError(input, output);
                 System.out.println(" => Error = " + error);
                 csvWriter.append(error + "\n");
@@ -171,7 +171,7 @@ public class Main {
 
         try {
             FileWriter csvWriter2 = null;
-            csvWriter2 = new FileWriter("results.csv");
+            csvWriter2 = new FileWriter("Ejercicio3-even.csv");
             DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now2 = LocalDateTime.now();
             long nowSeconds2 = System.nanoTime();
@@ -181,8 +181,14 @@ public class Main {
             csvWriter2.append("Execution time: " + elapsedTimeInSecond2 + " seconds");
             csvWriter2.append("\n");
 
+            csvWriter2.append("Train Error" + "\n");
             for (int i = 0; i < mlp_iter_even; i++) {
-                mlp1.learn(input1, output1, mlp_lrate_even);
+                float error3 = mlp1.learn(input1, output1, mlp_lrate_even, 1);
+                csvWriter2.append(error3 + "\n");
+            }
+
+            csvWriter2.append("Test Error" + "\n");
+            for (int i = 0; i < mlp_iter_even; i++) {
                 float error2 = mlp1.evaluateQuadraticError(input2, output2);
                 System.out.println(" => Error = " + error2);
                 csvWriter2.append(error2 + "\n");
