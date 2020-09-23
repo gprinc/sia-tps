@@ -31,7 +31,7 @@ public class Ejercicio2 {
         if (auxData == null)
             subtask = DEFAULT_SUBTASK;
         else
-            subtask = Integer.parseInt(auxData);
+            subtask = Integer.parseInt(auxData) - 1;
         double threshold;
         if (auxData == null)
             threshold = DEFAULT_THRESHOLD;
