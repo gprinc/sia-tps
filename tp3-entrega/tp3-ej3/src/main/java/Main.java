@@ -55,7 +55,7 @@ public class Main {
 				mlp.learn(input, output, 0.3f);
 				float error = mlp.evaluateQuadraticError(input, output);
 				System.out.println(i + " -> error : " + error);
-				csvWriter.append("\t" + i + "\t" + error);
+				csvWriter.append(error + "\n");
 			}
 
             csvWriter.flush();
@@ -69,7 +69,7 @@ public class Main {
             System.out.println("Esperada: " + output.get(m)[0] + ", Calculada: " + a[m]);
         }
 
-        System.out.println("\n********** Even number **********\n");
+        System.out.println("\n********** Even number 5-5 **********\n");
 
         long start2 = System.nanoTime();
 
@@ -135,7 +135,7 @@ public class Main {
                 mlp1.learn(input1, output1, 0.1f);
                 float error2 = mlp1.evaluateQuadraticError(input2, output2);
                 System.out.println(i + " -> error : " + error2);
-                csvWriter2.append("\t" + i + "\t" + error2);
+                csvWriter2.append(error2 + "\n");
             }
 
             csvWriter2.flush();
@@ -147,6 +147,87 @@ public class Main {
         float[] a2 = mlp1.getOutput();
         for (int m = 0; m < output2.size(); m++){
             System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
+        }
+
+        System.out.println("\n********** Even number 7-3 **********\n");
+
+        long start3 = System.nanoTime();
+
+        input1 = new ArrayList<float[]>();
+        input2 = new ArrayList<float[]>();
+        output1 = new ArrayList<float[]>();
+        output2 = new ArrayList<float[]>();
+
+        // initialization
+        for (int i = 0; i < 7; i++){
+            input1.add(new float[35]);
+            output1.add(new float[1]);
+        }
+
+        for (int i = 0; i < 3; i++){
+            input2.add(new float[35]);
+            output2.add(new float[1]);
+        }
+
+        // fill the examples database
+        for (int z = 0; z < 10; z++) {
+            for (int i = (z * 7); i < (z+1) * 7 ; i++) {
+                Integer[] auxList = aux3.get(i);
+                for (int j = 0; j < auxList.length; j++) {
+                    if (z < 7) {
+                        input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
+                        //System.out.println(input.get(z)[j + ((i%7) * 5)] + "  input(" + z + ")[" + (j + ((i%7) * 5)) + "]");
+                    }else {
+                        input2.get(z - 7)[j + ((i%7) * 5)] = auxList[j];
+                        //System.out.println(input.get(z-5)[j + ((i%7) * 5)] + "  input(" + (z-5) + ")[" + (j + ((i%7) * 5)) + "]");
+                    }
+                }
+                //System.out.println("\n");
+            }
+            if (z < 7) {
+                output1.get(z)[0] = outputAux[z];
+            }else {
+                output2.get(z - 7)[0] = outputAux[z];
+            }
+        }
+
+
+        int nn_neurons3[] = {
+                input1.get(0).length,
+                input1.get(0).length,
+                output1.get(0).length
+        };
+
+        MultiLayerPerceptron mlp2 = new MultiLayerPerceptron(nn_neurons3);
+
+        try {
+            FileWriter csvWriter3 = null;
+            csvWriter3 = new FileWriter("results3.csv");
+            DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now3 = LocalDateTime.now();
+            long nowSeconds3 = System.nanoTime();
+            double elapsedTimeInSecond3 = (double) (nowSeconds3 - start3) / 1000000000;
+            csvWriter3.append("Time: " + dtf3.format(now3));
+            csvWriter3.append("\n");
+            csvWriter3.append("Execution time: " + elapsedTimeInSecond3 + " seconds");
+            csvWriter3.append("\n");
+
+            for (int i = 0; i < 5; i++) {
+                mlp1.learn(input1, output1, 0.1f);
+                float error3 = mlp1.evaluateQuadraticError(input2, output2);
+                System.out.println(i + " -> error : " + error3);
+                csvWriter3.append(error3 + "\n");
+            }
+
+            csvWriter3.flush();
+            csvWriter3.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        float[] a3 = mlp1.getOutput();
+        for (int m = 0; m < output2.size(); m++){
+            System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a3[m]);
         }
 
         return;
