@@ -15,7 +15,7 @@ public class Ejercicio1 {
 
         System.out.println("\n********** XOR **********\n");
         perceptron = new PerceptronEscalonado(logicNumbers, XOR_OUTPUT);
-        perceptron.train();
+        perceptron.train(1000);
         System.out.println("********** Pesos Finales **********");
         perceptron.printWeights();
         return;

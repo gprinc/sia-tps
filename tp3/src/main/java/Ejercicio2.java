@@ -18,7 +18,7 @@ public class Ejercicio2 {
         ArrayList<Double> aux2 = new ArrayList<>();
         aux2 = TxtReader.getDoubleArrayFromTxt(file2);
 
-        double k = 2;
+        double k = 0.8;
         aux2 = normalize(aux2);
         int subtask = 1;
         NonLinealPerceptron NoLinealPer;
