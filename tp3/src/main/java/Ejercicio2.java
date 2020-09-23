@@ -69,6 +69,7 @@ public class Ejercicio2 {
 
         aux2 = normalize(aux2);
         NonLinealPerceptron NoLinealPer;
+
         switch (subtask) {
             case 0:
                 int iterations = 10000;
@@ -80,10 +81,11 @@ public class Ejercicio2 {
                 NoLinealPer = new NonLinealPerceptron(aux, aux2, threshold, rate, beta);
                 NoLinealPer.train(iterations);
                 noLinearError = NoLinealPer.test();
-                System.out.print(" => Despues de 10000 iteraciones\n => Error no Lineal " + noLinearError + ", Error Lineal = " + linearError + "\n");
+                System.out.print(" => Después de 10000 iteraciones\n => Error no Lineal " + noLinearError + ", Error Lineal = " + linearError + "\n");
                 break;
             case 1:
                 noLinearTest(aux,aux2,k,threshold, rate, beta);
+                System.out.println("Revisar el csv correspondiente para más datos");
                 break;
         }
 
@@ -194,7 +196,7 @@ public class Ejercicio2 {
 
             try {
                 FileWriter csvWriter = null;
-                csvWriter = new FileWriter("Ejercico2-iteration"+i+".csv");
+                csvWriter = new FileWriter("Ejercico2-iteration" + i + ".csv");
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 LocalDateTime now = LocalDateTime.now();
                 long nowSeconds = System.nanoTime();
@@ -207,14 +209,14 @@ public class Ejercicio2 {
                 csvWriter.append("Train error");
                 csvWriter.append("\n");
                 for (double e :trainError) {
-                    csvWriter.append(e+"");
+                    csvWriter.append(e + "\t");
                     csvWriter.append("\n");
                 }
 
                 csvWriter.append("Test error");
                 csvWriter.append("\n");
                 for (double e :testError) {
-                    csvWriter.append(e+"");
+                    csvWriter.append(e + "\t");
                     csvWriter.append("\n");
                 }
 
@@ -223,7 +225,7 @@ public class Ejercicio2 {
                     csvWriter.append("\n");
                     for (Double[] v: e) {
                         for (Double input:v) {
-                            csvWriter.append(input+"");
+                            csvWriter.append(input + "\t");
                         }
                         csvWriter.append("\n");
                     }

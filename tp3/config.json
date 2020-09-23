@@ -1,7 +1,7 @@
 {
   "beta": "0.5",
   "threshold": "0.001d",
-  "k": "2",
+  "k": "4",
   "subtask": "2",
   "rate": "0.001d",
   "mlp_lrate_xor": "0.3f",

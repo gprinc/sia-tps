@@ -4,6 +4,8 @@
 
 To modify each value, you must change corresponding value from `config.json` file inside `tp3-ej2` folder.
 
+All execution data will be displayed in its corresponding csv file.
+
 # Config.json values
 
 They are all *string* values.

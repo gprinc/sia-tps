@@ -1,4 +1,4 @@
 {
-  "logicOperator": "AND",
+  "logicOperator": "XOR",
   "iterations": "200"
 }

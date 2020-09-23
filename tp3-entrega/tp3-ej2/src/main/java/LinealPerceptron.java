@@ -5,19 +5,23 @@ public class LinealPerceptron {
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
-    private static final double LEARNING_RATE = 0.01d;
-    private static final double THRESHOLD = 0.01d;
     private double bias;
+    private double threshold;
+    private double rate;
 
-    public LinealPerceptron(double[][] inputs, double[] outputs) {
+    public LinealPerceptron(double[][] inputs, double[] outputs, double threshold, double rate) {
         this.inputs = inputs;
         this.outputs = outputs;
         this.inputLength = inputs[0].length;
         this.bias = Math.random();
+        this.threshold = threshold;
+        this.rate = rate;
         this.startWeights();
     }
 
-    public LinealPerceptron(ArrayList<Double[]> inputs, ArrayList<Double> outputs) {
+    public LinealPerceptron(ArrayList<Double[]> inputs, ArrayList<Double> outputs, double threshold, double rate) {
+        this.threshold = threshold;
+        this.rate = rate;
         int i = 0;
         this.inputs = new double[inputs.size()][inputs.get(0).length];
         for (Double[] d: inputs) {
@@ -51,9 +55,9 @@ public class LinealPerceptron {
 
     public void calculateWeight(int x_i, double y) {
         for (int i = 0; i < weights.length; i++) {
-            weights[i] += LEARNING_RATE * (outputs[x_i] - y) * inputs[x_i][i];
+            weights[i] += this.rate * (outputs[x_i] - y) * inputs[x_i][i];
         }
-        this.bias += LEARNING_RATE * (outputs[x_i] - y);
+        this.bias += this.rate * (outputs[x_i] - y);
     }
 
     public void train() {
@@ -69,7 +73,7 @@ public class LinealPerceptron {
                 }
                 sum += this.bias;
                 yi = sum;
-                if (Math.abs(yi - outputs[index]) < THRESHOLD) {
+                if (Math.abs(yi - outputs[index]) < this.threshold) {
                     for (int i = 0; i < inputLength; i++) {
                         System.out.print(inputs[index][i] + "\t");
                     }
@@ -95,7 +99,7 @@ public class LinealPerceptron {
         int index = 0;
         double yi = 0;
         double error = 100000;
-        while (error > THRESHOLD && iterations!=0) {
+        while (error > this.threshold && iterations!=0) {
             error = 0;
             while (index < inputs.length) {
                 double sum = 0;
@@ -132,6 +136,6 @@ public class LinealPerceptron {
         }
 
         //System.out.print(" => Error = " + error/inputs.length + "\n");
-        return error;
+        return error / inputs.length;
     }
 }

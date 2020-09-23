@@ -27,7 +27,8 @@ public class Main {
                 iterations = Integer.parseInt(iterationsString);
             }
             PerceptronEscalonado perceptron;
-            if (logicOperator == "XOR") {
+            
+            if (logicOperator.equals("XOR")) {
                 System.out.println("\n********** XOR **********\n");
                 perceptron = new PerceptronEscalonado(logicNumbers, XOR_OUTPUT);
                 perceptron.train(iterations);
