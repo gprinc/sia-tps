@@ -15,6 +15,7 @@ public class Ejercicio2 {
     private static final double DEFAULT_THRESHOLD = 0.001d;
     private static final double DEFAULT_RATE = 0.001d;
     private static final double DEFAULT_BETA = 0.5;
+    private static final double DEFAULT_K = 0.8;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -51,7 +52,13 @@ public class Ejercicio2 {
         else
             beta = Double.parseDouble(auxData);
 
-        long start = System.nanoTime();
+        auxData = (String) data.get("k");
+        double k;
+        if (auxData == null)
+            k = DEFAULT_K;
+        else
+            k = Double.parseDouble(auxData);
+
         File file = new File("TP3-ej2-Conjunto-entrenamiento.txt");
         ArrayList<Double[]> aux = new ArrayList<>();
         aux = TxtReader.getDoubleArrayFromTxt(file, 3);
@@ -60,7 +67,6 @@ public class Ejercicio2 {
         ArrayList<Double> aux2 = new ArrayList<>();
         aux2 = TxtReader.getDoubleArrayFromTxt(file2);
 
-        double k = 0.8;
         aux2 = normalize(aux2);
         NonLinealPerceptron NoLinealPer;
         switch (subtask) {
@@ -81,24 +87,6 @@ public class Ejercicio2 {
                 break;
         }
 
-        try {
-            FileWriter csvWriter = null;
-            csvWriter = new FileWriter("results.csv");
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now();
-            long nowSeconds = System.nanoTime();
-            double elapsedTimeInSecond = (double) (nowSeconds - start) / 1000000000;
-            csvWriter.append("Time: " + dtf.format(now));
-            csvWriter.append("\n");
-            csvWriter.append("Execution time: " + elapsedTimeInSecond + " seconds");
-            csvWriter.append("\n");
-            // rest of data
-
-            csvWriter.flush();
-            csvWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return;
 
     }
@@ -181,9 +169,10 @@ public class Ejercicio2 {
             for (Double a :outputAux) {
                 outputTrain.add(a);
             }
+            long start = System.nanoTime();
 
             for (int w = 0; w < 10; w++) {
-                trainError.add(NoLinealPer.train(1000));
+                trainError.add(NoLinealPer.train(100));
                 for (int j = 0; j < values.size(); j++) {
                     if (j!=i) {
                         inputsAux = new ArrayList<>();
@@ -203,17 +192,49 @@ public class Ejercicio2 {
                 NoLinealPer.setValues(inputsTrain,outputTrain);
             }
 
-            for (double e :trainError) {
-                System.out.print(" => Error = " + e + " ");
+            try {
+                FileWriter csvWriter = null;
+                csvWriter = new FileWriter("Ejercico2-iteration"+i+".csv");
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                long nowSeconds = System.nanoTime();
+                double elapsedTimeInSecond = (double) (nowSeconds - start) / 1000000000;
+                csvWriter.append("Time: " + dtf.format(now));
+                csvWriter.append("\n");
+                csvWriter.append("Execution time: " + elapsedTimeInSecond + " seconds");
+                csvWriter.append("\n");
+
+                csvWriter.append("Train error");
+                csvWriter.append("\n");
+                for (double e :trainError) {
+                    csvWriter.append(e+"");
+                    csvWriter.append("\n");
+                }
+
+                csvWriter.append("Test error");
+                csvWriter.append("\n");
+                for (double e :testError) {
+                    csvWriter.append(e+"");
+                    csvWriter.append("\n");
+                }
+
+                for (ArrayList<Double[]> e: values) {
+                    csvWriter.append("Subset");
+                    csvWriter.append("\n");
+                    for (Double[] v: e) {
+                        for (Double input:v) {
+                            csvWriter.append(input+"");
+                        }
+                        csvWriter.append("\n");
+                    }
+                    csvWriter.append("\n");
+                }
+
+                csvWriter.flush();
+                csvWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            System.out.println("\n");
-
-            for (double e :testError) {
-                System.out.print(" => Error = " + e + " ");
-            }
-
-            System.out.println("\n");
-
         }
     }
 }
