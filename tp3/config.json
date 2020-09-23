@@ -1,6 +1,7 @@
 {
   "beta": "0.5",
   "threshold": "0.001d",
+  "k": "2",
   "subtask": "2",
   "rate": "0.001d"
 }
