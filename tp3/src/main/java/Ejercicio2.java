@@ -1,12 +1,15 @@
-import sun.security.util.ArrayUtil;
-
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Array;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Ejercicio2 {
     public static void main(String[] args) {
+        long start = System.nanoTime();
         File file = new File("TP3-ej2-Conjunto-entrenamiento.txt");
         ArrayList<Double[]> aux = new ArrayList<>();
         aux = TxtReader.getDoubleArrayFromTxt(file, 3);
@@ -34,6 +37,25 @@ public class Ejercicio2 {
                 break;
             case 1:
                 noLinearTest(aux,aux2,k);
+        }
+
+        try {
+            FileWriter csvWriter = null;
+            csvWriter = new FileWriter("results.csv");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            long nowSeconds = System.nanoTime();
+            double elapsedTimeInSecond = (double) (nowSeconds - start) / 1000000000;
+            csvWriter.append("Time: " + dtf.format(now));
+            csvWriter.append("\n");
+            csvWriter.append("Execution time: " + elapsedTimeInSecond + " seconds");
+            csvWriter.append("\n");
+            // rest of data
+
+            csvWriter.flush();
+            csvWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return;
 
