@@ -2,10 +2,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+        long start = System.nanoTime();
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
         aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
@@ -36,9 +39,29 @@ public class Main {
 
         MultiLayerPerceptron mlp = new MultiLayerPerceptron(nn_neurons);
 
-        for (int i = 0; i < 100; i++) {
-            mlp.learn(input, output, 0.3f);
-            mlp.evaluateQuadraticError(input, output);
+        try {
+            FileWriter csvWriter = null;
+            csvWriter = new FileWriter("results.csv");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            long nowSeconds = System.nanoTime();
+            double elapsedTimeInSecond = (double) (nowSeconds - start) / 1000000000;
+            csvWriter.append("Time: " + dtf.format(now));
+            csvWriter.append("\n");
+            csvWriter.append("Execution time: " + elapsedTimeInSecond + " seconds");
+            csvWriter.append("\n");
+
+            for (int i = 0; i < 100; i++) {
+				mlp.learn(input, output, 0.3f);
+				float error = mlp.evaluateQuadraticError(input, output);
+				System.out.println(i + " -> error : " + error);
+				csvWriter.append("\t" + i + "\t" + error);
+			}
+
+            csvWriter.flush();
+            csvWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         float[] a = mlp.getOutput();
@@ -48,6 +71,7 @@ public class Main {
 
         System.out.println("\n********** Even number **********\n");
 
+        long start2 = System.nanoTime();
 
         ArrayList<float[]> input1 = new ArrayList<float[]>();
         ArrayList<float[]> input2 = new ArrayList<float[]>();
@@ -95,9 +119,29 @@ public class Main {
 
         MultiLayerPerceptron mlp1 = new MultiLayerPerceptron(nn_neurons2);
 
-        for (int i = 0; i < 5; i++) {
-            mlp1.learn(input1, output1, 0.1f);
-            mlp1.evaluateQuadraticError(input2, output2);
+        try {
+            FileWriter csvWriter2 = null;
+            csvWriter2 = new FileWriter("results2.csv");
+            DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now2 = LocalDateTime.now();
+            long nowSeconds2 = System.nanoTime();
+            double elapsedTimeInSecond2 = (double) (nowSeconds2 - start2) / 1000000000;
+            csvWriter2.append("Time: " + dtf2.format(now2));
+            csvWriter2.append("\n");
+            csvWriter2.append("Execution time: " + elapsedTimeInSecond2 + " seconds");
+            csvWriter2.append("\n");
+
+            for (int i = 0; i < 5; i++) {
+                mlp1.learn(input1, output1, 0.1f);
+                float error2 = mlp1.evaluateQuadraticError(input2, output2);
+                System.out.println(i + " -> error : " + error2);
+                csvWriter2.append("\t" + i + "\t" + error2);
+            }
+
+            csvWriter2.flush();
+            csvWriter2.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         float[] a2 = mlp1.getOutput();
