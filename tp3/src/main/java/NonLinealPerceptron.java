@@ -145,8 +145,6 @@ public class NonLinealPerceptron {
             this.outputs[i++] = d;
         }
         this.inputLength = inputs.get(0).length;
-        this.bias = Math.random();
-        this.startWeights();
     }
 
     public double test() {

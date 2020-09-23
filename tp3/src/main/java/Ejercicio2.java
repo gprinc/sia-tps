@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Ejercicio2 {
-    private static final int DEFAULT_SUBTASK = 1;
-    private static final double DEFAULT_THRESHOLD = 0.01d;
-    private static final double DEFAULT_RATE = 0.01d;
-    private static final double DEFAULT_BETA = 5;
+    private static final int DEFAULT_SUBTASK = 0;
+    private static final double DEFAULT_THRESHOLD = 0.001d;
+    private static final double DEFAULT_RATE = 0.001d;
+    private static final double DEFAULT_BETA = 0.5;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -32,16 +32,19 @@ public class Ejercicio2 {
             subtask = DEFAULT_SUBTASK;
         else
             subtask = Integer.parseInt(auxData) - 1;
+        auxData = (String) data.get("threshold");
         double threshold;
         if (auxData == null)
             threshold = DEFAULT_THRESHOLD;
         else
             threshold = Double.parseDouble(auxData);
+        auxData = (String) data.get("rate");
         double rate;
         if (auxData == null)
             rate = DEFAULT_RATE;
         else
             rate = Double.parseDouble(auxData);
+        auxData = (String) data.get("beta");
         double beta;
         if (auxData == null)
             beta = DEFAULT_BETA;
@@ -75,6 +78,7 @@ public class Ejercicio2 {
                 break;
             case 1:
                 noLinearTest(aux,aux2,k,threshold, rate, beta);
+                break;
         }
 
         try {
@@ -155,11 +159,12 @@ public class Ejercicio2 {
             ArrayList<Double[]> inputsAux = new ArrayList<>();
             ArrayList<Double> outputAux = new ArrayList<>();
             for (int j = 0; j < values.get(i).size(); j++) {
-                Double[] auxValues = new Double[2];
+                Double[] auxValues = new Double[3];
                 auxValues[0] = values.get(i).get(j)[0];
                 auxValues[1] = values.get(i).get(j)[1];
+                auxValues[2] = values.get(i).get(j)[2];
                 inputsAux.add(auxValues);
-                outputAux.add(values.get(i).get(j)[2]);
+                outputAux.add(values.get(i).get(j)[3]);
             }
 
             NonLinealPerceptron NoLinealPer = new NonLinealPerceptron(inputsAux, outputAux, threshold, rate, beta);
@@ -178,17 +183,18 @@ public class Ejercicio2 {
             }
 
             for (int w = 0; w < 10; w++) {
-                trainError.add(NoLinealPer.train(10000));
+                trainError.add(NoLinealPer.train(1000));
                 for (int j = 0; j < values.size(); j++) {
                     if (j!=i) {
                         inputsAux = new ArrayList<>();
                         outputAux = new ArrayList<>();
                         for (int z = 0; z < values.get(j).size(); z++) {
-                            Double[] auxValues = new Double[2];
-                            auxValues[0] = values.get(j).get(z)[0];
-                            auxValues[1] = values.get(j).get(z)[1];
+                            Double[] auxValues = new Double[3];
+                            auxValues[0] = values.get(i).get(j)[0];
+                            auxValues[1] = values.get(i).get(j)[1];
+                            auxValues[2] = values.get(i).get(j)[2];
                             inputsAux.add(auxValues);
-                            outputAux.add(values.get(j).get(z)[2]);
+                            outputAux.add(values.get(i).get(j)[3]);
                         }
                         NoLinealPer.setValues(inputsAux,outputAux);
                         testError.add(NoLinealPer.test());
@@ -205,6 +211,9 @@ public class Ejercicio2 {
             for (double e :testError) {
                 System.out.print(" => Error = " + e + " ");
             }
+
+            System.out.println("\n");
+
         }
     }
 }
