@@ -4,33 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="324bb463-a25e-49ec-a301-4105683b6699" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../tp2-b/.idea/artifacts/tp1_jar2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/Readme.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/src/main/java/com/sia/navarro/princ/tp1/Archer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/src/main/java/com/sia/navarro/princ/tp1/FileReader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/src/main/java/com/sia/navarro/princ/tp1/Helmet.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/src/main/java/com/sia/navarro/princ/tp1/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/src/main/java/com/sia/navarro/princ/tp1/Object.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/src/main/java/com/sia/navarro/princ/tp1/Player.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/target/classes/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tp2-b/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Population.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Population.java" afterDir="false" />
-    </list>
+    <list default="true" id="324bb463-a25e-49ec-a301-4105683b6699" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,6 +12,13 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$APPLICATION_HOME_DIR$/plugins/maven/lib/maven3" />
+      </MavenGeneralSettings>
+    </option>
   </component>
   <component name="ProjectId" id="1hARHcP9dJnvchit2cRyHVNCL1Y" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -51,6 +32,9 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -69,7 +53,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="772078bf-b9ee-484f-a786-8f0f2b5e5fb4" name="Default Changelist" comment="" />
+      <changelist id="324bb463-a25e-49ec-a301-4105683b6699" name="Default Changelist" comment="" />
       <created>1599451830910</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -118,6 +102,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599450350460" />
+    <state x="218" y="54" key="SettingsEditor" timestamp="1600824751257">
+      <screen x="0" y="23" width="1680" height="940" />
+    </state>
+    <state x="218" y="54" key="SettingsEditor/0.23.1680.940@0.23.1680.940" timestamp="1600824751257" />
     <state x="670" y="252" width="579" height="534" key="find.popup" timestamp="1599452678018">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
