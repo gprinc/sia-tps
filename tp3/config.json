@@ -2,5 +2,10 @@
   "beta": "0.5",
   "threshold": "0.001d",
   "subtask": "2",
-  "rate": "0.001d"
+  "rate": "0.001d",
+  "mlp_lrate_xor": "0.3f",
+  "mlp_lrate_even": "0.1f",
+  "mlp_iter_xor": "100",
+  "mlp_iter_even": "5",
+  "mlp_even_partition": "5"
 }
