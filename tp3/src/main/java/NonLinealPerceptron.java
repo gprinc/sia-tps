@@ -5,20 +5,26 @@ public class NonLinealPerceptron {
     private double[] outputs;
     private double[][] inputs;
     private int inputLength;
-    private static final double LEARNING_RATE = 0.001d;
-    private static final double THRESHOLD = 0.01d;
-    private static final double BETA = 5;
     private double bias;
+    private double threshold;
+    private double rate;
+    private double beta;
 
-    public NonLinealPerceptron(double[][] inputs, double[] outputs) {
+    public NonLinealPerceptron(double[][] inputs, double[] outputs, double threshold, double rate, double beta) {
         this.inputs = inputs;
         this.outputs = outputs;
         this.inputLength = inputs[0].length;
         this.bias = Math.random();
+        this.threshold = threshold;
+        this.rate = rate;
+        this.beta = beta;
         this.startWeights();
     }
 
-    public NonLinealPerceptron(ArrayList<Double[]> inputs, ArrayList<Double> outputs) {
+    public NonLinealPerceptron(ArrayList<Double[]> inputs, ArrayList<Double> outputs, double threshold, double rate, double beta) {
+        this.threshold = threshold;
+        this.rate = rate;
+        this.beta = beta;
         int i = 0;
         this.inputs = new double[inputs.size()][inputs.get(0).length];
         for (Double[] d: inputs) {
@@ -38,11 +44,11 @@ public class NonLinealPerceptron {
     }
 
     private double g(double x) {
-        return 1 / (1 + Math.exp(-2 * BETA * x));
+        return 1 / (1 + Math.exp(-2 * this.beta * x));
     }
 
     private double g_prima(double x) {
-        return 2 * BETA * g(x) * (1 - g(x));
+        return 2 * this.beta * g(x) * (1 - g(x));
     }
 
     public void startWeights() {
@@ -60,9 +66,9 @@ public class NonLinealPerceptron {
 
     public void calculateWeight(int x_i, double y) {
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = weights[i] + LEARNING_RATE * (outputs[x_i] - g(y)) * inputs[x_i][i] * g_prima(y);
+            weights[i] = weights[i] + this.rate * (outputs[x_i] - g(y)) * inputs[x_i][i] * g_prima(y);
         }
-        this.bias += LEARNING_RATE * (outputs[x_i] - g(y)) * g_prima(y) ;
+        this.bias += this.rate * (outputs[x_i] - g(y)) * g_prima(y) ;
     }
 
     public void train() {
@@ -75,7 +81,7 @@ public class NonLinealPerceptron {
             }
             sum += this.bias;
             yi = sum;
-            if (Math.abs(g(yi) - outputs[index]) < THRESHOLD) {
+            if (Math.abs(g(yi) - outputs[index]) < this.threshold) {
                 //Correcto
                 for (int i = 0; i < inputLength; i++) {
                     System.out.print(inputs[index][i] + "\t");
@@ -101,7 +107,7 @@ public class NonLinealPerceptron {
         int index = 0;
         double yi = 0;
         double error = 1;
-        while (error > THRESHOLD && iterations!=0) {
+        while (error > this.threshold && iterations!=0) {
             error = 0;
             while (index < inputs.length) {
                 double sum = 0;
