@@ -1,14 +1,53 @@
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Ejercicio2 {
+    private static final int DEFAULT_SUBTASK = 1;
+    private static final double DEFAULT_THRESHOLD = 0.01d;
+    private static final double DEFAULT_RATE = 0.01d;
+    private static final double DEFAULT_BETA = 5;
+
     public static void main(String[] args) {
+        JSONParser parser = new JSONParser();
+        JSONObject data;
+        try {
+            data = (JSONObject) parser.parse(new FileReader("config.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error reading config in TP2");
+            return;
+        }
+        String auxData = (String) data.get("subtask");
+        int subtask;
+        if (auxData == null)
+            subtask = DEFAULT_SUBTASK;
+        else
+            subtask = Integer.parseInt(auxData) - 1;
+        double threshold;
+        if (auxData == null)
+            threshold = DEFAULT_THRESHOLD;
+        else
+            threshold = Double.parseDouble(auxData);
+        double rate;
+        if (auxData == null)
+            rate = DEFAULT_RATE;
+        else
+            rate = Double.parseDouble(auxData);
+        double beta;
+        if (auxData == null)
+            beta = DEFAULT_BETA;
+        else
+            beta = Double.parseDouble(auxData);
+
         long start = System.nanoTime();
         File file = new File("TP3-ej2-Conjunto-entrenamiento.txt");
         ArrayList<Double[]> aux = new ArrayList<>();
@@ -20,23 +59,22 @@ public class Ejercicio2 {
 
         double k = 0.8;
         aux2 = normalize(aux2);
-        int subtask = 1;
         NonLinealPerceptron NoLinealPer;
         switch (subtask) {
             case 0:
                 int iterations = 10000;
                 double linearError = 0;
                 double noLinearError = 0;
-                LinealPerceptron linearPer = new LinealPerceptron(aux, aux2);
+                LinealPerceptron linearPer = new LinealPerceptron(aux, aux2, threshold, rate);
                 linearPer.train(iterations);
                 linearError = linearPer.test();
-                NoLinealPer = new NonLinealPerceptron(aux, aux2);
+                NoLinealPer = new NonLinealPerceptron(aux, aux2, threshold, rate, beta);
                 NoLinealPer.train(iterations);
                 noLinearError = NoLinealPer.test();
                 System.out.print(" => Despues de 10000 iteraciones\n => Error no Lineal " + noLinearError + ", Error Lineal = " + linearError + "\n");
                 break;
             case 1:
-                noLinearTest(aux,aux2,k);
+                noLinearTest(aux,aux2,k,threshold, rate, beta);
         }
 
         try {
@@ -78,7 +116,7 @@ public class Ejercicio2 {
         return arr;
     }
 
-    public static void noLinearTest(ArrayList<Double[]> inputs, ArrayList<Double> outputs,double k) {
+    public static void noLinearTest(ArrayList<Double[]> inputs, ArrayList<Double> outputs,double k, double threshold, double rate, double beta) {
         ArrayList<Double[]> aux = new ArrayList<>();
         for (int i = 0; i < outputs.size(); i++) {
             Double[] value = new Double[4];
@@ -124,7 +162,7 @@ public class Ejercicio2 {
                 outputAux.add(values.get(i).get(j)[2]);
             }
 
-            NonLinealPerceptron NoLinealPer = new NonLinealPerceptron(inputsAux, outputAux);
+            NonLinealPerceptron NoLinealPer = new NonLinealPerceptron(inputsAux, outputAux, threshold, rate, beta);
 
             ArrayList<Double> trainError = new ArrayList<>();
             ArrayList<Double> testError = new ArrayList<>();
