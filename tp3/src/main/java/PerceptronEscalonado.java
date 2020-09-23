@@ -61,4 +61,36 @@ public class PerceptronEscalonado {
             index++;
         }
     }
+
+    public void train(int iterations) {
+        int index = 0;
+        double yi = 0;
+        while (index < inputs.length && iterations != 0) {
+            double sum = 0;
+            for (int i = 0; i < inputLength; i++) {
+                sum += (weights[i] * inputs[index][i]);// x[i] * W[i]
+            }
+            yi = sum >= 0 ? 1 : -1;
+            if (yi == outputs[index]) {
+                //Correcto
+                for (int i = 0; i < inputLength; i++) {
+                    System.out.print(inputs[index][i] + "\t");
+                }
+                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + "\n");
+            } else {
+                //Incorrecto
+                for (int i = 0; i < inputLength; i++) {
+                    System.out.print(inputs[index][i] + "\t");
+                }
+                System.out.print(" => Esperada = " + outputs[index] + ", Calculada = " + yi + " [Error]\n");
+                System.out.println("Corrección de pesos");
+                calculateWeight(index, yi);
+                printWeights();
+                System.out.println("--");
+                index = -1;
+            }
+            index++;
+            iterations--;
+        }
+    }
 }
