@@ -185,7 +185,7 @@ public class Main {
             ArrayList<Float> testErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp1.learn(input1, output1, 0.1f);
+                mlp1.learn(input1, output1, 0.1f, mlp_iter_even);
                 float error1 = mlp1.evaluateAccuracy(input1, output1, 0.001f);
                 float error2 = mlp1.evaluateAccuracy(input2, output2,0.001f);
                 trainErrors.add(error1);
@@ -283,7 +283,7 @@ public class Main {
             ArrayList<Float> testErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp2.learn(input1, output1, 0.1f);
+                mlp2.learn(input1, output1, 0.1f, mlp_iter_even);
                 float error1 = mlp2.evaluateAccuracy(input1, output1, 0.1f);
                 float error2 = mlp2.evaluateAccuracy(input2, output2,0.1f);
                 trainErrors.add(error1);
