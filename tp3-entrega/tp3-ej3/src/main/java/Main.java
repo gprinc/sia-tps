@@ -1,14 +1,61 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Main {
+    private static final float DEFAULT_LRATE_XOR = 0.3f;
+    private static final float DEFAULT_LRATE_EVEN = 0.1f;
+    private static final int DEFAULT_ITER_XOR = 100;
+    private static final int DEFAULT_ITER_EVEN = 5;
+    private static final int DEFAULT_EVEN_PARTITION = 5;
+
     public static void main(String[] args) {
+        JSONParser parser = new JSONParser();
+        JSONObject data;
+        try {
+            data = (JSONObject) parser.parse(new FileReader("config.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error reading config in TP2");
+            return;
+        }
+        String auxData = (String) data.get("mlp_lrate_xor");
+        float mlp_lrate_xor;
+        if (auxData == null)
+            mlp_lrate_xor = DEFAULT_LRATE_XOR;
+        else
+            mlp_lrate_xor = Float.parseFloat(auxData);
+        auxData = (String) data.get("mlp_lrate_even");
+        float mlp_lrate_even;
+        if (auxData == null)
+            mlp_lrate_even = DEFAULT_LRATE_EVEN;
+        else
+            mlp_lrate_even = Float.parseFloat(auxData);
+        auxData = (String) data.get("mlp_iter_xor");
+        int mlp_iter_xor;
+        if (auxData == null)
+            mlp_iter_xor = DEFAULT_ITER_XOR;
+        else
+            mlp_iter_xor = Integer.parseInt(auxData);
+        auxData = (String) data.get("mlp_iter_even");
+        int mlp_iter_even;
+        if (auxData == null)
+            mlp_iter_even = DEFAULT_ITER_EVEN;
+        else
+            mlp_iter_even = Integer.parseInt(auxData);
+        auxData = (String) data.get("mlp_even_partition");
+        int mlp_even_partition;
+        if (auxData == null)
+            mlp_even_partition = DEFAULT_EVEN_PARTITION;
+        else
+            mlp_even_partition = Integer.parseInt(auxData);
+
         long start = System.nanoTime();
+
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
         aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
@@ -41,7 +88,7 @@ public class Main {
 
         try {
             FileWriter csvWriter = null;
-            csvWriter = new FileWriter("results.csv");
+            csvWriter = new FileWriter("Ejercicio3-xor.csv");
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             long nowSeconds = System.nanoTime();
@@ -51,12 +98,12 @@ public class Main {
             csvWriter.append("Execution time: " + elapsedTimeInSecond + " seconds");
             csvWriter.append("\n");
 
-            for (int i = 0; i < 100; i++) {
-				mlp.learn(input, output, 0.3f);
-				float error = mlp.evaluateQuadraticError(input, output);
-				System.out.println(i + " -> error : " + error);
-				csvWriter.append(error + "\n");
-			}
+            for (int i = 0; i < mlp_iter_xor; i++) {
+                mlp.learn(input, output, mlp_lrate_xor, 1000);
+                float error = mlp.evaluateQuadraticError(input, output);
+                System.out.println(" => Error = " + error);
+                csvWriter.append(error + "\n");
+            }
 
             csvWriter.flush();
             csvWriter.close();
@@ -69,7 +116,7 @@ public class Main {
             System.out.println("Esperada: " + output.get(m)[0] + ", Calculada: " + a[m]);
         }
 
-        System.out.println("\n********** Even number 5-5 **********\n");
+        System.out.println("\n********** Even number **********\n");
 
         long start2 = System.nanoTime();
 
@@ -78,35 +125,38 @@ public class Main {
         ArrayList<float[]> output1 = new ArrayList<float[]>();
         ArrayList<float[]> output2 = new ArrayList<float[]>();
 
+        int[] outputAux = {1, -1, 1, -1, 1, -1, 1, -1, 1, -1};
+
         // initialization
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < mlp_even_partition; i++){
             input1.add(new float[35]);
-            input2.add(new float[35]);
             output1.add(new float[1]);
-            output2.add(new float[1]);
         }
 
-        int[] outputAux = {1, -1, 1, -1, 1, -1, 1, -1, 1, -1};
+        for (int i = 0; i < (10 - mlp_even_partition); i++){
+            input2.add(new float[35]);
+            output2.add(new float[1]);
+        }
 
         // fill the examples database
         for (int z = 0; z < 10; z++) {
             for (int i = (z * 7); i < (z+1) * 7 ; i++) {
                 Integer[] auxList = aux3.get(i);
                 for (int j = 0; j < auxList.length; j++) {
-                    if (z < 5) {
+                    if (z < mlp_even_partition) {
                         input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
                         //System.out.println(input.get(z)[j + ((i%7) * 5)] + "  input(" + z + ")[" + (j + ((i%7) * 5)) + "]");
-                    } else {
-                        input2.get(z - 5)[j + ((i%7) * 5)] = auxList[j];
+                    }else {
+                        input2.get(z - mlp_even_partition)[j + ((i%7) * 5)] = auxList[j];
                         //System.out.println(input.get(z-5)[j + ((i%7) * 5)] + "  input(" + (z-5) + ")[" + (j + ((i%7) * 5)) + "]");
                     }
                 }
                 //System.out.println("\n");
             }
-            if (z < 5) {
+            if (z < mlp_even_partition) {
                 output1.get(z)[0] = outputAux[z];
-            } else {
-                output2.get(z - 5)[0] = outputAux[z];
+            }else {
+                output2.get(z - mlp_even_partition)[0] = outputAux[z];
             }
         }
 
@@ -121,7 +171,7 @@ public class Main {
 
         try {
             FileWriter csvWriter2 = null;
-            csvWriter2 = new FileWriter("results2.csv");
+            csvWriter2 = new FileWriter("Ejercicio3-even.csv");
             DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now2 = LocalDateTime.now();
             long nowSeconds2 = System.nanoTime();
