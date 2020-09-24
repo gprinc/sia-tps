@@ -2,8 +2,8 @@
   "threshold": "0.1f",
   "accuracy": "0.001f",
   "mlp_lrate_xor": "0.3f",
-  "mlp_lrate_even": "0.1f",
+  "mlp_lrate_even": "0.01f",
   "mlp_iter_xor": "100",
-  "mlp_iter_even": "100",
-  "mlp_even_partition": "9"
+  "mlp_iter_even": "10",
+  "mlp_even_partition": "6"
 }

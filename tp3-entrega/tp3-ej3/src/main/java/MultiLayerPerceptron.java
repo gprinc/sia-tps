@@ -77,9 +77,9 @@ public class MultiLayerPerceptron {
 
 
     public float evaluateAccuracy(ArrayList<float[]> input, ArrayList<float[]> output, float umbral) {
-        // this function calculate the quadratic error for the given inputs/outputs sets
+        // this function calculate the Acurracy
         assert(false);
-        float accuracy = 0;
+        float accuracy=0;
         finalOutput = new float[input.size()];
         for (int i = 0; i < input.size(); i++) {
             float[] j = evaluate(input.get(i));
@@ -90,7 +90,7 @@ public class MultiLayerPerceptron {
 
         }
 
-        return umbral / input.size();
+        return accuracy / input.size();
     }
 
     private void evaluateGradients(float[] output) {
