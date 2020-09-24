@@ -4,19 +4,21 @@
 
 To modify each value, you must change corresponding value from `config.json` file inside `tp3-ej3` folder.
 
+Check in generated csv files for more output.
+
 # Config.json values
 
 They are all *string* values.
 
-- `mlp_lrate_xor`: rate value for xor.
+- `mlp_lrate_xor`: learning rate value for xor. Its default value is 0.3f.
 
-- `mlp_lrate_even`: rate value for even.
+- `mlp_lrate_even`: leraning rate value for even. Its default value is 0.1f.
 
-- `mlp_iter_xor`: iterations for xor.
+- `mlp_iter_xor`: iterations for xor. Its default value is 100.
 
-- `mlp_iter_even`: iterations for even.
+- `mlp_iter_even`: iterations for even. Its default value is 5.
 
-- `mlp_even_partition`: even partition value.
+- `mlp_even_partition`: even partition value. Its default value is 5.
 
 
 Example: 
