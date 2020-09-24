@@ -62,7 +62,7 @@ public class Main {
         else
             threshold = Float.parseFloat(auxData);
         float accuracy;
-        auxData = (String) data.get("threshold");
+        auxData = (String) data.get("accuracy");
         if (auxData == null)
             accuracy = DEFAULT_ACCURACY;
         else
