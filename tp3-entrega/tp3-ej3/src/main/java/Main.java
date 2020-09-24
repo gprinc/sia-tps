@@ -186,8 +186,8 @@ public class Main {
 
             for (int i = 0; i < 10; i++) {
                 mlp1.learn(input1, output1, 0.1f, mlp_iter_even);
-                float error1 = mlp1.evaluateAccuracy(input1, output1, 0.001f);
-                float error2 = mlp1.evaluateAccuracy(input2, output2,0.001f);
+                float error1 = mlp1.evaluateAccuracy(input1, output1, 0.01f);
+                float error2 = mlp1.evaluateAccuracy(input2, output2,0.01f);
                 trainErrors.add(error1);
                 testErrors.add(error2);
                 System.out.println(i + " -> error : " + error2);
@@ -216,7 +216,7 @@ public class Main {
             System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
         }
 
-        System.out.println("\n********** Even number 7-3 **********\n");
+        System.out.println("\n********** Even number full **********\n");
 
         long start3 = System.nanoTime();
 
@@ -231,31 +231,17 @@ public class Main {
             output1.add(new float[1]);
         }
 
-        for (int i = 0; i < 3; i++){
-            input2.add(new float[35]);
-            output2.add(new float[1]);
-        }
-
         // fill the examples database
-        for (int z = 0; z < 10; z++) {
+        for (int z = 0; z < 7; z++) {
             for (int i = (z * 7); i < (z+1) * 7 ; i++) {
                 Integer[] auxList = aux3.get(i);
                 for (int j = 0; j < auxList.length; j++) {
-                    if (z < 7) {
                         input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
-                        //System.out.println(input.get(z)[j + ((i%7) * 5)] + "  input(" + z + ")[" + (j + ((i%7) * 5)) + "]");
-                    }else {
-                        input2.get(z - 7)[j + ((i%7) * 5)] = auxList[j];
-                        //System.out.println(input.get(z-5)[j + ((i%7) * 5)] + "  input(" + (z-5) + ")[" + (j + ((i%7) * 5)) + "]");
-                    }
+
                 }
                 //System.out.println("\n");
             }
-            if (z < 7) {
-                output1.get(z)[0] = outputAux[z];
-            } else {
-                output2.get(z - 7)[0] = outputAux[z];
-            }
+            output1.get(z)[0] = outputAux[z];
         }
 
 
@@ -280,26 +266,17 @@ public class Main {
             csvWriter3.append("\n");
 
             ArrayList<Float> trainErrors = new ArrayList<>();
-            ArrayList<Float> testErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp2.learn(input1, output1, 0.1f, mlp_iter_even);
+                mlp2.learn(input1, output1, 0.001f, 1);
                 float error1 = mlp2.evaluateAccuracy(input1, output1, 0.1f);
-                float error2 = mlp2.evaluateAccuracy(input2, output2,0.1f);
                 trainErrors.add(error1);
-                testErrors.add(error2);
-                System.out.println(i + " -> Accuracy : " + error2);
+                System.out.println(i + " -> Error : " + error1);
             }
 
             csvWriter3.append("\nTrain Error\n");
 
             for (float e: trainErrors) {
-                csvWriter3.append(e + "\n");
-            }
-
-            csvWriter3.append("\nTest Error\n");
-
-            for (float e: testErrors) {
                 csvWriter3.append(e + "\n");
             }
 
