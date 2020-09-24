@@ -99,7 +99,7 @@ public class Main {
             csvWriter.append("\n");
 
             for (int i = 0; i < mlp_iter_xor; i++) {
-                mlp.learn(input, output, mlp_lrate_xor, 1000);
+                mlp.learn(input, output, mlp_lrate_xor, mlp_iter_xor);
                 float error = mlp.evaluateQuadraticError(input, output);
                 System.out.println(" => Error = " + error);
                 csvWriter.append(error + "\n");
@@ -185,7 +185,7 @@ public class Main {
             ArrayList<Float> testErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp1.learn(input1, output1, 0.1f, mlp_iter_even);
+                mlp1.learn(input1, output1, mlp_lrate_even, mlp_iter_even);
                 float error1 = mlp1.evaluateAccuracy(input1, output1, 0.001f);
                 float error2 = mlp1.evaluateAccuracy(input2, output2,0.001f);
                 trainErrors.add(error1);
