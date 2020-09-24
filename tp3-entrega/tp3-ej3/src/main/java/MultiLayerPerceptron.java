@@ -160,13 +160,13 @@ public class MultiLayerPerceptron {
         updateWeights(learningRate);
     }
 
-    public float learn(ArrayList<float[]> input, ArrayList<float[]> output, float learningRate, int iter) {
+    public float learn(ArrayList<float[]> input, ArrayList<float[]> output, float learningRate, int iter, float threshold) {
         assert(false);
         float generalError = 0;
         float error = Float.POSITIVE_INFINITY;
 
         int iterations = 0;
-        while (error > 0.1f && iterations < iter) {
+        while (error > threshold && iterations < iter) {
 
             batchBackPropagation(input, output, learningRate);
 

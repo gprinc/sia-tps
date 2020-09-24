@@ -12,6 +12,8 @@ public class Main {
     private static final int DEFAULT_ITER_XOR = 100;
     private static final int DEFAULT_ITER_EVEN = 5;
     private static final int DEFAULT_EVEN_PARTITION = 5;
+    private static final float DEFAULT_THRESHOLD = 0.1f;
+    private static final float DEFAULT_ACCURACY = 0.001f;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -53,6 +55,18 @@ public class Main {
             mlp_even_partition = DEFAULT_EVEN_PARTITION;
         else
             mlp_even_partition = Integer.parseInt(auxData);
+        float threshold;
+        auxData = (String) data.get("threshold");
+        if (auxData == null)
+            threshold = DEFAULT_THRESHOLD;
+        else
+            threshold = Float.parseFloat(auxData);
+        float accuracy;
+        auxData = (String) data.get("threshold");
+        if (auxData == null)
+            accuracy = DEFAULT_ACCURACY;
+        else
+            accuracy = Float.parseFloat(auxData);
 
         long start = System.nanoTime();
 
@@ -99,7 +113,7 @@ public class Main {
             csvWriter.append("\n");
 
             for (int i = 0; i < mlp_iter_xor; i++) {
-                mlp.learn(input, output, mlp_lrate_xor, mlp_iter_xor);
+                mlp.learn(input, output, mlp_lrate_xor, mlp_iter_xor, threshold);
                 float error = mlp.evaluateQuadraticError(input, output);
                 System.out.println(" => Error = " + error);
                 csvWriter.append(error + "\n");
@@ -185,9 +199,9 @@ public class Main {
             ArrayList<Float> testErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp1.learn(input1, output1, mlp_lrate_even, mlp_iter_even);
-                float error1 = mlp1.evaluateAccuracy(input1, output1, 0.001f);
-                float error2 = mlp1.evaluateAccuracy(input2, output2,0.001f);
+                mlp1.learn(input1, output1, mlp_lrate_even, mlp_iter_even, threshold);
+                float error1 = mlp1.evaluateAccuracy(input1, output1, accuracy);
+                float error2 = mlp1.evaluateAccuracy(input2, output2,accuracy);
                 trainErrors.add(error1);
                 testErrors.add(error2);
                 System.out.println(i + " -> error : " + error2);
@@ -283,9 +297,9 @@ public class Main {
             ArrayList<Float> testErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp2.learn(input1, output1, 0.1f, mlp_iter_even);
-                float error1 = mlp2.evaluateAccuracy(input1, output1, 0.1f);
-                float error2 = mlp2.evaluateAccuracy(input2, output2,0.1f);
+                mlp2.learn(input1, output1, 0.1f, mlp_iter_even, threshold);
+                float error1 = mlp2.evaluateAccuracy(input1, output1, accuracy);
+                float error2 = mlp2.evaluateAccuracy(input2, output2,accuracy);
                 trainErrors.add(error1);
                 testErrors.add(error2);
                 System.out.println(i + " -> Accuracy : " + error2);
