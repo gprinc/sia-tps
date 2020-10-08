@@ -9,8 +9,13 @@ public class Main {
             try {
                 csvReader = new BufferedReader(new FileReader("europe.csv"));
                 String row;
+                boolean isFirstLine = true;
                 while ((row = csvReader.readLine()) != null) {
-                    String[] data = row.split(",");
+                    if (isFirstLine) {
+                        isFirstLine = false;
+                    } else {
+                        String[] data = row.split(",");
+                    }
                 }
                 csvReader.close();
             } catch (FileNotFoundException e) {
