@@ -4,6 +4,15 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
+        String country;
+        Double area;
+        Double gdp;
+        Double inflation;
+        Double lifeExpect;
+        Double military;
+        Double popGrowth;
+        Double unemployment;
+
         File csvFile = new File("europe.csv");
         BufferedReader csvReader;
         String[] data;
@@ -19,14 +28,14 @@ public class Main {
                         isFirstLine = false;
                     } else {
                         data = row.split(",");
-                        String country = data[0];
-                        String area = data[1];
-                        String gdp = data[2];
-                        String inflation = data[3];
-                        String lifeExpect = data[4];
-                        String military = data[5];
-                        String popGrowth = data[6];
-                        String unemployment = data[7];
+                        country = data[0];
+                        area = Double.parseDouble(data[1]);
+                        gdp = Double.parseDouble(data[2]);
+                        inflation = Double.parseDouble(data[3]);
+                        lifeExpect = Double.parseDouble(data[4]);
+                        military = Double.parseDouble(data[5]);
+                        popGrowth = Double.parseDouble(data[6]);
+                        unemployment = Double.parseDouble(data[7]);
                         countries.add(new Country(country, area, gdp, inflation, lifeExpect, military, popGrowth, unemployment));
                     }
                 }
@@ -36,18 +45,67 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Country i = countries.get(0);
-            System.out.println(i.getCountry());
-            System.out.println(i.getArea());
-            System.out.println(i.getGdp());
-            System.out.println(i.getInflation());
-            System.out.println(i.getLifeExpect());
-            System.out.println(i.getMilitary());
-            System.out.println(i.getPopGrowth());
-            System.out.println(i.getUnemployment());
+
+            Country media = new Country();
+            for (Country c : countries) {
+                media.setArea(media.getArea() + (c.getArea() / countries.size()));
+                media.setGdp(media.getGdp() + (c.getGdp() / countries.size()));
+                media.setInflation(media.getInflation() + (c.getInflation() / countries.size()));
+                media.setLifeExpect(media.getLifeExpect() + (c.getLifeExpect() / countries.size()));
+                media.setMilitary(media.getMilitary() + (c.getMilitary() / countries.size()));
+                media.setPopGrowth(media.getPopGrowth() + (c.getPopGrowth() / countries.size()));
+                media.setUnemployment(media.getUnemployment() + (c.getUnemployment() / countries.size()));
+            }
+
+            Country covarianza = new Country();
+            for (Country c: countries) {
+                covarianza.setArea(covarianza.getArea() + (Math.pow((c.getArea() - media.getArea()) , 2 ) / (countries.size() - 1)));
+                covarianza.setGdp(covarianza.getGdp() + (Math.pow((c.getGdp() - media.getGdp()) , 2 ) / (countries.size() - 1)));
+                covarianza.setInflation(covarianza.getInflation() + (Math.pow((c.getInflation() - media.getInflation()) , 2 ) / (countries.size() - 1)));
+                covarianza.setLifeExpect(covarianza.getLifeExpect() + (Math.pow((c.getLifeExpect() - media.getLifeExpect()) , 2 ) / (countries.size() - 1)));
+                covarianza.setMilitary(covarianza.getMilitary() + (Math.pow((c.getMilitary() - media.getMilitary()) , 2 ) / (countries.size() - 1)));
+                covarianza.setPopGrowth(covarianza.getPopGrowth() + (Math.pow((c.getPopGrowth() - media.getPopGrowth()) , 2 ) / (countries.size() - 1)));
+                covarianza.setUnemployment(covarianza.getUnemployment() + (Math.pow((c.getUnemployment() - media.getUnemployment()) , 2 ) / (countries.size() - 1)));
+            }
+
+            ArrayList<Country> normalizeCountries = new ArrayList<>();
+            for (Country c : countries) {
+                area = (c.getArea() - media.getArea()) / covarianza.getArea();
+                gdp = (c.getGdp() - media.getGdp()) / covarianza.getGdp();
+                inflation = (c.getInflation() - media.getInflation()) / covarianza.getInflation();
+                lifeExpect = (c.getLifeExpect() - media.getLifeExpect()) / covarianza.getLifeExpect();
+                military = (c.getMilitary() - media.getMilitary()) / covarianza.getMilitary();
+                popGrowth = (c.getPopGrowth() - media.getPopGrowth()) / covarianza.getPopGrowth();
+                unemployment = (c.getUnemployment() - media.getUnemployment()) / covarianza.getUnemployment();
+                normalizeCountries.add(new Country(c.getCountry(),area,gdp,inflation,lifeExpect,military,popGrowth,unemployment));
+            }
+
+            double[][] countriesMatrix = new double[7][countries.size()];
+            for (int i = 0; i < countries.size(); i++) {
+                Country aux = countries.get(i);
+                countriesMatrix[0][i] = aux.getArea();
+                countriesMatrix[1][i] = aux.getGdp();
+                countriesMatrix[2][i] = aux.getInflation();
+                countriesMatrix[3][i] = aux.getLifeExpect();
+                countriesMatrix[4][i] = aux.getMilitary();
+                countriesMatrix[5][i] = aux.getPopGrowth();
+                countriesMatrix[6][i] = aux.getUnemployment();
+            }
+
+            double[][] covarianzaMatrix = new double[7][countries.size()];
+            for (int i = 0; i < countries.size(); i++) {
+                for (int j = 0; j < 7; j++) {
+                    covarianzaMatrix[j][i] = fillMatrix(i, j, countriesMatrix, media);
+                }
+            }
+
         }
 
         return;
 
+    }
+
+    private static double fillMatrix(int i, int k, double[][] matrix, Country media) {
+        return 0;
     }
 }

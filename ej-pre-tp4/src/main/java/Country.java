@@ -2,15 +2,25 @@ import java.util.Objects;
 
 public class Country {
     private String country;
-    private String area;
-    private String gdp;
-    private String inflation;
-    private String lifeExpect;
-    private String military;
-    private String popGrowth;
-    private String unemployment;
+    private Double area;
+    private Double gdp;
+    private Double inflation;
+    private Double lifeExpect;
+    private Double military;
+    private Double popGrowth;
+    private Double unemployment;
 
-    public Country(String country, String area, String gdp, String inflation, String lifeExpect, String military, String popGrwoth, String unemployment) {
+    public Country(){
+        this.area = 0.0;
+        this.gdp = 0.0;
+        this.inflation = 0.0;
+        this.lifeExpect = 0.0;
+        this.military = 0.0;
+        this.popGrowth = 0.0;
+        this.unemployment = 0.0;
+    }
+
+    public Country(String country, Double area, Double gdp, Double inflation, Double lifeExpect, Double military, Double popGrwoth, Double unemployment) {
         this.country = country;
         this.area = area;
         this.gdp = gdp;
@@ -25,32 +35,64 @@ public class Country {
         return country;
     }
 
-    public String getArea() {
+    public Double getArea() {
         return area;
     }
 
-    public String getGdp() {
+    public Double getGdp() {
         return gdp;
     }
 
-    public String getInflation() {
+    public Double getInflation() {
         return inflation;
     }
 
-    public String getLifeExpect() {
+    public Double getLifeExpect() {
         return lifeExpect;
     }
 
-    public String getMilitary() {
+    public Double getMilitary() {
         return military;
     }
 
-    public String getPopGrowth() {
+    public Double getPopGrowth() {
         return popGrowth;
     }
 
-    public String getUnemployment() {
+    public Double getUnemployment() {
         return unemployment;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setArea(Double area) {
+        this.area = area;
+    }
+
+    public void setGdp(Double gdp) {
+        this.gdp = gdp;
+    }
+
+    public void setInflation(Double inflation) {
+        this.inflation = inflation;
+    }
+
+    public void setLifeExpect(Double lifeExpect) {
+        this.lifeExpect = lifeExpect;
+    }
+
+    public void setMilitary(Double military) {
+        this.military = military;
+    }
+
+    public void setPopGrowth(Double popGrowth) {
+        this.popGrowth = popGrowth;
+    }
+
+    public void setUnemployment(Double unemployment) {
+        this.unemployment = unemployment;
     }
 
     @Override
