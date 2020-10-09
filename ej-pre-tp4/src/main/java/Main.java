@@ -7,7 +7,7 @@ public class Main {
         File csvFile = new File("europe.csv");
         BufferedReader csvReader;
         String[] data;
-        ArrayList<Item> countries = new ArrayList<>();
+        ArrayList<Country> countries = new ArrayList<>();
         if (csvFile.isFile()) {
             try {
                 csvReader = new BufferedReader(new FileReader("europe.csv"));
@@ -27,7 +27,7 @@ public class Main {
                         String military = data[5];
                         String popGrowth = data[6];
                         String unemployment = data[7];
-                        countries.add(new Item(country, area, gdp, inflation, lifeExpect, military, popGrowth, unemployment));
+                        countries.add(new Country(country, area, gdp, inflation, lifeExpect, military, popGrowth, unemployment));
                     }
                 }
                 csvReader.close();
@@ -36,7 +36,7 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Item i = countries.get(0);
+            Country i = countries.get(0);
             System.out.println(i.getCountry());
             System.out.println(i.getArea());
             System.out.println(i.getGdp());
