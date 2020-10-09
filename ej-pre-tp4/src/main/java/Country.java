@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Item {
+public class Country {
     private String country;
     private String area;
     private String gdp;
@@ -10,7 +10,7 @@ public class Item {
     private String popGrowth;
     private String unemployment;
 
-    public Item(String country, String area, String gdp, String inflation, String lifeExpect, String military, String popGrwoth, String unemployment) {
+    public Country(String country, String area, String gdp, String inflation, String lifeExpect, String military, String popGrwoth, String unemployment) {
         this.country = country;
         this.area = area;
         this.gdp = gdp;
@@ -57,7 +57,7 @@ public class Item {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
+        Country item = (Country) o;
         return this.country.equals(o);
     }
 
