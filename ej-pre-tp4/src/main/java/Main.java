@@ -4,13 +4,13 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        File csvFile = new File("../europe.csv");
+        File csvFile = new File("europe.csv");
         BufferedReader csvReader;
         String[] data;
         ArrayList<Country> countries = new ArrayList<>();
         if (csvFile.isFile()) {
             try {
-                csvReader = new BufferedReader(new FileReader("../europe.csv"));
+                csvReader = new BufferedReader(new FileReader("europe.csv"));
                 String row;
                 boolean isFirstLine = true;
                 while ((row = csvReader.readLine()) != null) {
