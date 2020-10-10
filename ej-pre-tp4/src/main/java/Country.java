@@ -95,6 +95,26 @@ public class Country {
         this.unemployment = unemployment;
     }
 
+    public Double getByNumber(int number) {
+        switch (number) {
+            case 0:
+                return area;
+            case 1:
+                return gdp;
+            case 2:
+                return inflation;
+            case 3:
+                return lifeExpect;
+            case 4:
+                return military;
+            case 5:
+                return popGrowth;
+            default:
+                return unemployment;
+
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

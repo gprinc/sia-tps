@@ -1,5 +1,11 @@
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.correlation.Covariance;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Main {
 
@@ -92,20 +98,69 @@ public class Main {
                 countriesMatrix[6][i] = aux.getUnemployment();
             }
 
-            double[][] covarianzaMatrix = new double[7][countries.size()];
+            RealMatrix mx = MatrixUtils.createRealMatrix(countriesMatrix);
+            RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
+            RealMatrix corr  = new PearsonsCorrelation(countriesMatrix).getCorrelationMatrix();
+            /*double[][] covarianzaMatrix = new double[7][countries.size()];
             for (int i = 0; i < countries.size(); i++) {
                 for (int j = 0; j < 7; j++) {
-                    covarianzaMatrix[j][i] = fillMatrix(i, j, countriesMatrix, media);
+                    covarianzaMatrix[j][i] = fillMatrix(i, j, countriesMatrix, media, countries.size());
                 }
-            }
+            }*/
 
+            plotData(countries, normalizeCountries);
         }
 
         return;
 
     }
 
-    private static double fillMatrix(int i, int k, double[][] matrix, Country media) {
-        return 0;
+    private static double fillMatrix(int i, int k, double[][] matrix, Country media, int size) {
+        double aux = 0;
+        for (int j = 0; j < size; j++) {
+            aux += (matrix[i][j] - media.getByNumber(i)) * (matrix[k][j] - media.getByNumber(k));
+        }
+        return aux / 7;
+    }
+
+    private static void plotData(ArrayList<Country> common, ArrayList<Country> normalize) {
+        ArrayList<Double> areas = new ArrayList<>();
+        ArrayList<Double> gdps = new ArrayList<>();
+        ArrayList<Double> inflations = new ArrayList<>();
+        ArrayList<Double> lifeExpects = new ArrayList<>();
+        ArrayList<Double> militaries = new ArrayList<>();
+        ArrayList<Double> popGrowths = new ArrayList<>();
+        ArrayList<Double> unemployments = new ArrayList<>();
+        for (Country c: common) {
+            areas.add(c.getArea());
+            gdps.add(c.getGdp());
+            inflations.add(c.getInflation());
+            lifeExpects.add(c.getLifeExpect());
+            militaries.add(c.getMilitary());
+            popGrowths.add(c.getPopGrowth());
+            unemployments.add(c.getUnemployment());
+        }
+
+        BoxPlot b = new BoxPlot();
+        b.display(areas, gdps, inflations, lifeExpects, militaries, popGrowths, unemployments);
+
+        areas = new ArrayList<>();
+        gdps = new ArrayList<>();
+        inflations = new ArrayList<>();
+        lifeExpects = new ArrayList<>();
+        militaries = new ArrayList<>();
+        popGrowths = new ArrayList<>();
+        unemployments = new ArrayList<>();
+        for (Country c: normalize) {
+            areas.add(c.getArea());
+            gdps.add(c.getGdp());
+            inflations.add(c.getInflation());
+            lifeExpects.add(c.getLifeExpect());
+            militaries.add(c.getMilitary());
+            popGrowths.add(c.getPopGrowth());
+            unemployments.add(c.getUnemployment());
+        }
+
+        b.display(areas, gdps, inflations, lifeExpects, militaries, popGrowths, unemployments);
     }
 }
