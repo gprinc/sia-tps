@@ -1,3 +1,7 @@
+import org.apache.commons.math3.linear.EigenDecomposition;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -98,6 +102,14 @@ public class Main {
                     covarianzaMatrix[j][i] = fillMatrix(i, j, countriesMatrix, media);
                 }
             }
+
+            RealMatrix mx = MatrixUtils.createRealMatrix(countriesMatrix);
+
+            EigenDecomposition eigenDecomposition = new EigenDecomposition(mx);
+
+            double[] eigenValues = eigenDecomposition.getRealEigenvalues();
+
+            RealMatrix eigenVectors = eigenDecomposition.getV();
 
         }
 
