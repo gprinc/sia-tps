@@ -2,6 +2,7 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+import org.apache.commons.math3.linear.EigenDecomposition;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -108,7 +109,16 @@ public class Main {
                 }
             }*/
 
+
             plotData(countries, normalizeCountries);
+
+
+            EigenDecomposition eigenDecomposition = new EigenDecomposition(mx);
+
+            double[] eigenValues = eigenDecomposition.getRealEigenvalues();
+
+            RealMatrix eigenVectors = eigenDecomposition.getV();
+
         }
 
         return;
