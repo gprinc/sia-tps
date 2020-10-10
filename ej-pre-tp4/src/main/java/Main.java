@@ -113,11 +113,14 @@ public class Main {
             plotData(countries, normalizeCountries);
 
 
-            EigenDecomposition eigenDecomposition = new EigenDecomposition(mx);
+            EigenDecomposition eigenDecompositionCov = new EigenDecomposition(cov);
+            double[] eigenValuesCov = eigenDecompositionCov.getRealEigenvalues();
+            RealMatrix eigenVectorsCov = eigenDecompositionCov.getV();
 
-            double[] eigenValues = eigenDecomposition.getRealEigenvalues();
+            EigenDecomposition eigenDecompositionCorr = new EigenDecomposition(corr);
+            double[] eigenValuesCorr = eigenDecompositionCorr.getRealEigenvalues();
+            RealMatrix eigenVectorsCorr = eigenDecompositionCorr.getV();
 
-            RealMatrix eigenVectors = eigenDecomposition.getV();
 
         }
 
