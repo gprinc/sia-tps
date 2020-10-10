@@ -13,9 +13,7 @@ public class BoxPlot {
 
     private static final String ROW_KEY = "Countries";
 
-    public BoxPlot(){}
-
-    public void display(ArrayList<Double> areas, ArrayList<Double> gdps, ArrayList<Double> inflations, ArrayList<Double> lifeExpects, ArrayList<Double> militaries, ArrayList<Double> popGrowths, ArrayList<Double> unemployments) {
+    public static void display(ArrayList<Double> areas, ArrayList<Double> gdps, ArrayList<Double> inflations, ArrayList<Double> lifeExpects, ArrayList<Double> militaries, ArrayList<Double> popGrowths, ArrayList<Double> unemployments) {
         JFrame f = new JFrame("BoxPlot");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         DefaultBoxAndWhiskerCategoryDataset data = new DefaultBoxAndWhiskerCategoryDataset();

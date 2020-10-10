@@ -141,8 +141,7 @@ public class Main {
             unemployments.add(c.getUnemployment());
         }
 
-        BoxPlot b = new BoxPlot();
-        b.display(areas, gdps, inflations, lifeExpects, militaries, popGrowths, unemployments);
+        BoxPlot.display(areas, gdps, inflations, lifeExpects, militaries, popGrowths, unemployments);
 
         areas = new ArrayList<>();
         gdps = new ArrayList<>();
@@ -161,6 +160,6 @@ public class Main {
             unemployments.add(c.getUnemployment());
         }
 
-        b.display(areas, gdps, inflations, lifeExpects, militaries, popGrowths, unemployments);
+        BoxPlot.display(areas, gdps, inflations, lifeExpects, militaries, popGrowths, unemployments);
     }
 }
