@@ -109,8 +109,17 @@ public class Main {
             }
 
             RealMatrix mx = MatrixUtils.createRealMatrix(countriesMatrix);
+            System.out.println("Matriz:");
+            printRealMatrix(mx);
+            
             RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
+            System.out.println("Matriz de covarianza:");
+            printRealMatrix(cov)
+            ;
             RealMatrix corr  = new PearsonsCorrelation(countriesMatrix).getCorrelationMatrix();
+            System.out.println("Matriz de correlaciones:");
+            printRealMatrix(corr);
+
             /*double[][] covarianzaMatrix = new double[7][countries.size()];
             for (int i = 0; i < countries.size(); i++) {
                 for (int j = 0; j < 7; j++) {
@@ -127,10 +136,24 @@ public class Main {
             EigenDecomposition eigenDecompositionCov = new EigenDecomposition(cov);
             double[] eigenValuesCov = eigenDecompositionCov.getRealEigenvalues();
             RealMatrix eigenVectorsCov = eigenDecompositionCov.getV();
+            System.out.println("Autovalores de la matriz de covarianza:");
+            for (int i = 0; i < eigenValuesCov.length; i++) {
+                System.out.print(eigenValuesCov[i] + " ");
+            }
+            System.out.println();
+            System.out.println("Autovectores de la matriz de covarianza:");
+            printRealMatrix(eigenVectorsCov);
 
             EigenDecomposition eigenDecompositionCorr = new EigenDecomposition(corr);
             double[] eigenValuesCorr = eigenDecompositionCorr.getRealEigenvalues();
             RealMatrix eigenVectorsCorr = eigenDecompositionCorr.getV();
+            System.out.println("Autovalores de la matriz de correlaciones:");
+            for (int j = 0; j < eigenValuesCorr.length; j++) {
+                System.out.print(eigenValuesCorr[j] + " ");
+            }
+            System.out.println();
+            System.out.println("Autovectores de la matriz de correlaciones:");
+            printRealMatrix(eigenVectorsCorr);
 
 
             // COmponentes Principales
@@ -139,6 +162,15 @@ public class Main {
 
         return;
 
+    }
+    
+   private static void printRealMatrix(RealMatrix mx){
+        for (int i = 0; i < mx.getRowDimension(); i++) {
+            for (int j = 0; j < mx.getColumnDimension(); j++) {
+                System.out.print(mx.getEntry(i,j) + " ");
+            }
+            System.out.println();
+        }
     }
 
     private static double fillMatrix(int i, int k, double[][] matrix, Country media, int size) {
