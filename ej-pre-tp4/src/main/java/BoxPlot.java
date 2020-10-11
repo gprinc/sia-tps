@@ -26,12 +26,12 @@ public class BoxPlot {
         data.add(unemployments, ROW_KEY, "Unemployment");
 
         JFreeChart chart = ChartFactory.createBoxAndWhiskerChart(
-                "Box and Whisker Chart", ROW_KEY, "Temperature", data, false);
+                "BoxPlot Chart", ROW_KEY, "Data", data, false);
         f.add(new ChartPanel(chart) {
 
             @Override
             public Dimension getPreferredSize() {
-                return new Dimension(320, 480);
+                return new Dimension(640, 480);
             }
         });
         f.pack();

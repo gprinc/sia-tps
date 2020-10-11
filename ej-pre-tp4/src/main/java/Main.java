@@ -4,6 +4,15 @@ import org.apache.commons.math3.stat.correlation.Covariance;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.linear.EigenDecomposition;
 
+import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.mllib.linalg.Matrix;
+import org.apache.spark.mllib.linalg.Vector;
+import org.apache.spark.mllib.linalg.Vectors;
+import org.apache.spark.mllib.linalg.distributed.RowMatrix;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -110,9 +119,11 @@ public class Main {
             }*/
 
 
-            plotData(countries, normalizeCountries);
+            // BoxPlot
+            // plotData(countries, normalizeCountries);
 
 
+            // Autovaloes y Autovectores
             EigenDecomposition eigenDecompositionCov = new EigenDecomposition(cov);
             double[] eigenValuesCov = eigenDecompositionCov.getRealEigenvalues();
             RealMatrix eigenVectorsCov = eigenDecompositionCov.getV();
@@ -122,6 +133,8 @@ public class Main {
             RealMatrix eigenVectorsCorr = eigenDecompositionCorr.getV();
 
 
+            // COmponentes Principales
+            PCAejs.showPCA();
         }
 
         return;
