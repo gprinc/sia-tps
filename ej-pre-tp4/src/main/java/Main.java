@@ -120,7 +120,7 @@ public class Main {
 
 
             // BoxPlot
-            // plotData(countries, normalizeCountries);
+            plotData(countries, normalizeCountries);
 
 
             // Autovaloes y Autovectores
@@ -133,8 +133,8 @@ public class Main {
             RealMatrix eigenVectorsCorr = eigenDecompositionCorr.getV();
 
 
-            // COmponentes Principales
-            PCAejs.showPCA();
+            // Componentes Principales
+            // PCAejs.showPCA();
         }
 
         return;
