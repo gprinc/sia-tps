@@ -87,6 +87,7 @@ public class Main {
             ArrayList<Country> normalizeCountries = new ArrayList<>();
             for (Country c : countries) {
                 area = (c.getArea() - media.getArea()) / covarianza.getArea();
+                System.out.print(area + " ");
                 gdp = (c.getGdp() - media.getGdp()) / covarianza.getGdp();
                 inflation = (c.getInflation() - media.getInflation()) / covarianza.getInflation();
                 lifeExpect = (c.getLifeExpect() - media.getLifeExpect()) / covarianza.getLifeExpect();
@@ -108,17 +109,29 @@ public class Main {
                 countriesMatrix[6][i] = aux.getUnemployment();
             }
 
+            System.out.println("1)");
+            System.out.println("El conjunto de datos cuenta con 8 conjuntos de datos, 7 numéricos y un índice que sería el nombre del país. Hay 28 registros.");
+            System.out.println("Las variables son el nombre del país, el área, el GDP, la inflación, la expectativa de vida, el poder militar, el incremento de la población y el desempleo");
+            System.out.print('\n');
+
+            // BoxPlot
+            plotData(countries, normalizeCountries);
+
             RealMatrix mx = MatrixUtils.createRealMatrix(countriesMatrix);
+            System.out.println("3)");
             System.out.println("Matriz:");
             printRealMatrix(mx);
-            
+            System.out.print('\n');
+
             RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
             System.out.println("Matriz de covarianza:");
-            printRealMatrix(cov)
-            ;
+            printRealMatrix(cov);
+            System.out.print('\n');
+
             RealMatrix corr  = new PearsonsCorrelation(countriesMatrix).getCorrelationMatrix();
             System.out.println("Matriz de correlaciones:");
             printRealMatrix(corr);
+            System.out.print('\n');
 
             /*double[][] covarianzaMatrix = new double[7][countries.size()];
             for (int i = 0; i < countries.size(); i++) {
@@ -126,10 +139,6 @@ public class Main {
                     covarianzaMatrix[j][i] = fillMatrix(i, j, countriesMatrix, media, countries.size());
                 }
             }*/
-
-
-            // BoxPlot
-            plotData(countries, normalizeCountries);
 
 
             // Autovaloes y Autovectores
