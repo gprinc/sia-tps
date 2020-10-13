@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,25 +14,29 @@ import org.apache.spark.mllib.linalg.distributed.RowMatrix;
 
 public class PCAejs {
     public static void showPCA(RealMatrix mx) {
-        SparkConf conf = new SparkConf().setAppName("PCA Example").setMaster("local[2]").set("spark.executor.memory","1g");
+        SparkConf conf = new SparkConf().setAppName("PCA").setMaster("local[2]").set("spark.executor.memory","1g");
         SparkContext sc = new SparkContext(conf);
         JavaSparkContext jsc = JavaSparkContext.fromSparkContext(sc);
 
-        // $example on$
-        List<Vector> data = Arrays.asList(
-                Vectors.sparse(5, new int[] {1, 3}, new double[] {1.0, 7.0}),
+        List<Vector> dataAux = new ArrayList<>();
+        for (int i = 0; i < mx.getColumnDimension(); i++) {
+            double[] aux = mx.getColumn(i);
+            dataAux.add(Vectors.dense(aux));
+        }
+
+        /*List<Vector> data = Arrays.asList(
                 Vectors.dense(2.0, 0.0, 3.0, 4.0, 5.0),
                 Vectors.dense(4.0, 0.0, 0.0, 6.0, 7.0)
-        );
+        );*/
 
-        JavaRDD<Vector> rows = jsc.parallelize(data);
+        JavaRDD<Vector> rows = jsc.parallelize(dataAux);
 
         // Create a RowMatrix from JavaRDD<Vector>.
         RowMatrix mat = new RowMatrix(rows.rdd());
 
         // Compute the top 4 principal components.
         // Principal components are stored in a local dense matrix.
-        Matrix pc = mat.computePrincipalComponents(4);
+        Matrix pc = mat.computePrincipalComponents(7);
 
         // Project the rows to the linear space spanned by the top 4 principal components.
         RowMatrix projected = mat.multiply(pc);

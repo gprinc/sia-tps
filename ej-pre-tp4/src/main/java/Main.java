@@ -3,19 +3,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.linear.EigenDecomposition;
-
-import org.apache.spark.SparkConf;
-import org.apache.spark.SparkContext;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.mllib.linalg.Matrix;
-import org.apache.spark.mllib.linalg.Vector;
-import org.apache.spark.mllib.linalg.Vectors;
-import org.apache.spark.mllib.linalg.distributed.RowMatrix;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Main {
 
@@ -109,6 +98,7 @@ public class Main {
                 countriesMatrix[i][6] = aux.getUnemployment();
             }
 
+            System.out.print('\n');
             System.out.println("1)");
             System.out.println("El conjunto de datos cuenta con 8 conjuntos de datos, 7 numéricos y un índice que sería el nombre del país. Hay 28 registros.");
             System.out.println("Las variables son el nombre del país, el área, el GDP, la inflación, la expectativa de vida, el poder militar, el incremento de la población y el desempleo");
@@ -164,9 +154,11 @@ public class Main {
             System.out.println("Autovectores de la matriz de correlaciones:");
             printRealMatrix(eigenVectorsCorr);
 
-
+            System.out.println("\n\n\n\n");
             // Componentes Principales
-            // PCAejs.showPCA();
+            PCAejs.showPCA(corr);
+            /*PCA pca = new PCA(mx);
+            printRealMatrix(pca.getPrincipalComponents());*/
         }
 
         return;
