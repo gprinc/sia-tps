@@ -76,7 +76,6 @@ public class Main {
             ArrayList<Country> normalizeCountries = new ArrayList<>();
             for (Country c : countries) {
                 area = (c.getArea() - media.getArea()) / Math.sqrt(covarianza.getArea());
-                System.out.println(area);
                 gdp = (c.getGdp() - media.getGdp()) / Math.sqrt(covarianza.getGdp());
                 inflation = (c.getInflation() - media.getInflation()) / Math.sqrt(covarianza.getInflation());
                 lifeExpect = (c.getLifeExpect() - media.getLifeExpect()) / Math.sqrt(covarianza.getLifeExpect());
