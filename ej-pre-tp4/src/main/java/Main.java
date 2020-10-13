@@ -98,6 +98,18 @@ public class Main {
                 countriesMatrix[i][6] = aux.getUnemployment();
             }
 
+            double[][] normalizedMatrix = new double[countries.size()][7];
+            for (int i = 0; i < normalizeCountries.size(); i++) {
+                Country aux = normalizeCountries.get(i);
+                normalizedMatrix[i][0] = aux.getArea();
+                normalizedMatrix[i][1] = aux.getGdp();
+                normalizedMatrix[i][2] = aux.getInflation();
+                normalizedMatrix[i][3] = aux.getLifeExpect();
+                normalizedMatrix[i][4] = aux.getMilitary();
+                normalizedMatrix[i][5] = aux.getPopGrowth();
+                normalizedMatrix[i][6] = aux.getUnemployment();
+            }
+
             System.out.print('\n');
             System.out.println("1)");
             System.out.println("El conjunto de datos cuenta con 8 conjuntos de datos, 7 numéricos y un índice que sería el nombre del país. Hay 28 registros.");
@@ -156,7 +168,7 @@ public class Main {
 
             System.out.println("\n\n\n\n");
             // Componentes Principales
-            PCAejs.showPCA(corr);
+            PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
             /*PCA pca = new PCA(mx);
             printRealMatrix(pca.getPrincipalComponents());*/
         }
