@@ -97,16 +97,16 @@ public class Main {
                 normalizeCountries.add(new Country(c.getCountry(),area,gdp,inflation,lifeExpect,military,popGrowth,unemployment));
             }
 
-            double[][] countriesMatrix = new double[7][countries.size()];
+            double[][] countriesMatrix = new double[countries.size()][7];
             for (int i = 0; i < countries.size(); i++) {
                 Country aux = countries.get(i);
-                countriesMatrix[0][i] = aux.getArea();
-                countriesMatrix[1][i] = aux.getGdp();
-                countriesMatrix[2][i] = aux.getInflation();
-                countriesMatrix[3][i] = aux.getLifeExpect();
-                countriesMatrix[4][i] = aux.getMilitary();
-                countriesMatrix[5][i] = aux.getPopGrowth();
-                countriesMatrix[6][i] = aux.getUnemployment();
+                countriesMatrix[i][0] = aux.getArea();
+                countriesMatrix[i][1] = aux.getGdp();
+                countriesMatrix[i][2] = aux.getInflation();
+                countriesMatrix[i][3] = aux.getLifeExpect();
+                countriesMatrix[i][4] = aux.getMilitary();
+                countriesMatrix[i][5] = aux.getPopGrowth();
+                countriesMatrix[i][6] = aux.getUnemployment();
             }
 
             System.out.println("1)");

@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
@@ -11,7 +12,7 @@ import org.apache.spark.mllib.linalg.Vectors;
 import org.apache.spark.mllib.linalg.distributed.RowMatrix;
 
 public class PCAejs {
-    public static void showPCA() {
+    public static void showPCA(RealMatrix mx) {
         SparkConf conf = new SparkConf().setAppName("PCA Example").setMaster("local[2]").set("spark.executor.memory","1g");
         SparkContext sc = new SparkContext(conf);
         JavaSparkContext jsc = JavaSparkContext.fromSparkContext(sc);
@@ -41,5 +42,13 @@ public class PCAejs {
             System.out.println("\t" + vector);
         }
         jsc.stop();
+    }
+
+    private static void printRealMatrix(RealMatrix mx, List<Vector> data){
+        for (int i = 0; i < mx.getRowDimension(); i++) {
+            for (int j = 0; j < mx.getColumnDimension(); j++) {
+                mx.getEntry(i,j);
+            }
+        }
     }
 }
