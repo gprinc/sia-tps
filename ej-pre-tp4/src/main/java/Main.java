@@ -75,14 +75,14 @@ public class Main {
 
             ArrayList<Country> normalizeCountries = new ArrayList<>();
             for (Country c : countries) {
-                area = (c.getArea() - media.getArea()) / covarianza.getArea();
-                System.out.print(area + " ");
-                gdp = (c.getGdp() - media.getGdp()) / covarianza.getGdp();
-                inflation = (c.getInflation() - media.getInflation()) / covarianza.getInflation();
-                lifeExpect = (c.getLifeExpect() - media.getLifeExpect()) / covarianza.getLifeExpect();
-                military = (c.getMilitary() - media.getMilitary()) / covarianza.getMilitary();
-                popGrowth = (c.getPopGrowth() - media.getPopGrowth()) / covarianza.getPopGrowth();
-                unemployment = (c.getUnemployment() - media.getUnemployment()) / covarianza.getUnemployment();
+                area = (c.getArea() - media.getArea()) / Math.sqrt(covarianza.getArea());
+                System.out.println(area);
+                gdp = (c.getGdp() - media.getGdp()) / Math.sqrt(covarianza.getGdp());
+                inflation = (c.getInflation() - media.getInflation()) / Math.sqrt(covarianza.getInflation());
+                lifeExpect = (c.getLifeExpect() - media.getLifeExpect()) / Math.sqrt(covarianza.getLifeExpect());
+                military = (c.getMilitary() - media.getMilitary()) / Math.sqrt(covarianza.getMilitary());
+                popGrowth = (c.getPopGrowth() - media.getPopGrowth()) / Math.sqrt(covarianza.getPopGrowth());
+                unemployment = (c.getUnemployment() - media.getUnemployment()) / Math.sqrt(covarianza.getUnemployment());
                 normalizeCountries.add(new Country(c.getCountry(),area,gdp,inflation,lifeExpect,military,popGrowth,unemployment));
             }
 

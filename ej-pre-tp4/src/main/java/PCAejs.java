@@ -36,7 +36,7 @@ public class PCAejs {
 
         // Compute the top 4 principal components.
         // Principal components are stored in a local dense matrix.
-        Matrix pc = mat.computePrincipalComponents(7);
+        Matrix pc = mat.computePrincipalComponents(1);
 
         // Project the rows to the linear space spanned by the top 4 principal components.
         RowMatrix projected = mat.multiply(pc);
