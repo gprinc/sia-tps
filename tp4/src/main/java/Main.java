@@ -3,12 +3,40 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.linear.EigenDecomposition;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.*;
 import java.util.ArrayList;
 
 public class Main {
 
+    private final static String DEFAULT_EJ = "Kohonen";
+    public final static String[] possibleEjs = {"Kohonen", "Oja", "Hopfield"};
+
     public static void main(String[] args) {
+        JSONParser parser = new JSONParser();
+        JSONObject jsonData = null;
+        try {
+            jsonData = (JSONObject) parser.parse(new FileReader("config.json"));
+            boolean correctEj = false;
+            String ej = (String) jsonData.get("ej");
+            for (String s: possibleEjs) {
+                if (s.equals(ej)) {
+                    correctEj = true;
+                    break;
+                }
+            }
+            if (ej == null || !correctEj)
+                ej = DEFAULT_EJ;
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         String country;
         Double area;
         Double gdp;
