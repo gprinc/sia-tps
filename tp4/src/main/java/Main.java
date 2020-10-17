@@ -164,9 +164,14 @@ public class Main {
 
             System.out.println("\n\n\n\n");
             // Componentes Principales
-            PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
+            //PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
             /*PCA pca = new PCA(mx);
             printRealMatrix(pca.getPrincipalComponents());*/
+
+            double[][] normalizedMatrixT = MatrixUtils.createRealMatrix(normalizedMatrix).transpose().getData();
+
+            LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrixT, 0.01);
+            oja.train(100);
         }
 
         return;
