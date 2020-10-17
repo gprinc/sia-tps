@@ -109,64 +109,22 @@ public class Main {
                 normalizedMatrix[i][6] = aux.getUnemployment();
             }
 
-            System.out.print('\n');
-            System.out.println("1)");
-            System.out.println("El conjunto de datos cuenta con 8 conjuntos de datos, 7 numéricos y un índice que sería el nombre del país. Hay 28 registros.");
-            System.out.println("Las variables son el nombre del país, el área, el GDP, la inflación, la expectativa de vida, el poder militar, el incremento de la población y el desempleo");
-            System.out.print('\n');
-
             RealMatrix mx = MatrixUtils.createRealMatrix(countriesMatrix);
-            System.out.println("3)");
-            System.out.println("Matriz:");
-            printRealMatrix(mx);
-            System.out.print('\n');
-
             RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
-            System.out.println("Matriz de covarianza:");
-            printRealMatrix(cov);
-            System.out.print('\n');
-
             RealMatrix corr  = new PearsonsCorrelation(countriesMatrix).getCorrelationMatrix();
-            System.out.println("Matriz de correlaciones:");
-            printRealMatrix(corr);
-            System.out.print('\n');
-
-            /*double[][] covarianzaMatrix = new double[7][countries.size()];
-            for (int i = 0; i < countries.size(); i++) {
-                for (int j = 0; j < 7; j++) {
-                    covarianzaMatrix[j][i] = fillMatrix(i, j, countriesMatrix, media, countries.size());
-                }
-            }*/
 
 
             // Autovaloes y Autovectores
             EigenDecomposition eigenDecompositionCov = new EigenDecomposition(cov);
             double[] eigenValuesCov = eigenDecompositionCov.getRealEigenvalues();
             RealMatrix eigenVectorsCov = eigenDecompositionCov.getV();
-            System.out.println("Autovalores de la matriz de covarianza:");
-            for (int i = 0; i < eigenValuesCov.length; i++) {
-                System.out.print(eigenValuesCov[i] + " ");
-            }
-            System.out.println();
-            System.out.println("Autovectores de la matriz de covarianza:");
-            printRealMatrix(eigenVectorsCov);
 
             EigenDecomposition eigenDecompositionCorr = new EigenDecomposition(corr);
             double[] eigenValuesCorr = eigenDecompositionCorr.getRealEigenvalues();
             RealMatrix eigenVectorsCorr = eigenDecompositionCorr.getV();
-            System.out.println("Autovalores de la matriz de correlaciones:");
-            for (int j = 0; j < eigenValuesCorr.length; j++) {
-                System.out.print(eigenValuesCorr[j] + " ");
-            }
-            System.out.println();
-            System.out.println("Autovectores de la matriz de correlaciones:");
-            printRealMatrix(eigenVectorsCorr);
 
-            System.out.println("\n\n\n\n");
             // Componentes Principales
-            PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
-            /*PCA pca = new PCA(mx);
-            printRealMatrix(pca.getPrincipalComponents());*/
+            // PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
         }
 
         return;

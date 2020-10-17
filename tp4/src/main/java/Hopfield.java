@@ -8,7 +8,6 @@ class Hopfield {
 
     /**
      * Hopfield class constructor
-     * @param patternLength
      */
     public Hopfield(int patternLength) {
         Hopfield.patternLength = patternLength;
@@ -18,8 +17,6 @@ class Hopfield {
 
     /**
      * Generates the appropriate output for the given patterns.
-     * @param Hopfield run
-     * @param float[] pattern
      */
     static void generateOutput(Hopfield run, float[] pattern) {
         float[] data = new float[patternLength];
@@ -56,7 +53,6 @@ class Hopfield {
 
     /**
      * Takes the input text from the file as a String and returns as an array of Floats
-     * @param String patternString
      * @return float[] patten
      */
     public static float[] getPattern(String patternString) {
@@ -76,7 +72,6 @@ class Hopfield {
 
     /**
      * Takes the stored pattern and runs the training algorithm.
-     * @param float[] pattern
      */
     public void learn(float[] pattern) {
         trainingPattern.addElement(pattern);
@@ -103,9 +98,6 @@ class Hopfield {
 
     /**
      * Builds the Hopfield network for the given pattern and returns an array of nodes.
-     * @param float[] pattern
-     * @param int numIterations
-     * @return nodes
      */
     public float[] makeNetwork(float[] pattern, int numIterations) {
         float[] nodes = new float[patternLength];
@@ -129,9 +121,6 @@ class Hopfield {
 
     /**
      * Delta energy function.
-     * @param int index
-     * @param float[] inputNodes
-     * @return
      */
     private float energy(int index, float[] inputNodes) {
         float temp = 0.0f;
