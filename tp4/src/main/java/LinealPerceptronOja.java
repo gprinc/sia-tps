@@ -47,7 +47,7 @@ public class LinealPerceptronOja {
         for (int i = 0; i < weights.length; i++) {
             weights[i] += this.rate * ((y * inputs[x_i][i]) - (Math.pow(y, 2) * weights[i]));
         }
-        this.bias += this.rate * y;
+        this.bias += this.rate * (Math.pow(y, 2) * this.bias) * (-1);
     }
 
     public void train(int iterations) {
