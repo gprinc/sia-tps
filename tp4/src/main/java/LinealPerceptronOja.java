@@ -62,11 +62,15 @@ public class LinealPerceptronOja {
                 sum += this.bias;
                 yi = sum;
                 calculateWeight(index, yi);
-                System.out.print("Output " + index + " = " + yi + "\n");
+                //System.out.print("Output " + index + " = " + weights[index] + "\n");
                 index++;
             }
             index = 0;
             iterations--;
+        }
+
+        for (int i = 0; i < weights.length; i++) {
+            System.out.print("Output " + i + " = " + weights[i] + "\n");
         }
     }
 }

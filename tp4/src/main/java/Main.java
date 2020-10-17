@@ -170,8 +170,8 @@ public class Main {
 
             double[][] normalizedMatrixT = MatrixUtils.createRealMatrix(normalizedMatrix).transpose().getData();
 
-            LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrixT, 0.01);
-            oja.train(100);
+            LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrix, 0.001);
+            oja.train(10);
         }
 
         return;
