@@ -18,7 +18,7 @@ public class hopf {
         //String[] ip = Reader.readFile(incompletePatternInput);
 
         float[] storedPattern1 = {-1,  -1,  1,  1};
-        trainingPattern = new Hopfield(4);
+        trainingPattern = new Hopfield(storedPattern1.length);
         trainingPattern.add(storedPattern1);
         float[] storedPattern2 = {1,  1,  -1,  -1};
         //trainingPattern = new Hopfield(4);
@@ -26,10 +26,11 @@ public class hopf {
         trainingPattern.learn();
         for (int i = 0; i < 1; i++) {
             // Get the patterns into int array format
-            float[] incompletePattern = {-1,  -1,  -1,  1};
+            float[] incompletePattern = {-1,  -1,  1,  -1};
 
             // Generate the network output.
-            Hopfield.generateOutput(trainingPattern, incompletePattern);
+            //Hopfield.generateOutput(trainingPattern, incompletePattern);
+            trainingPattern.test(incompletePattern);
         }
     }
 }

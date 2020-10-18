@@ -20,22 +20,14 @@ class Hopfield {
      * Generates the appropriate output for the given patterns.
      */
     static void generateOutput(Hopfield run, float[] pattern) {
-        float[] data = new float[patternLength];
-
-        for (int i = 0; i < patternLength; i++) {
-            data[i] = pattern[i];
-        }
-
         float[] node = run.makeNetwork(pattern, patternLength);
         int output = 0;
-
         for (int i = 0; i < patternLength; i++) {
             if (node[i] > 0.1f) {
                 output = 1;
             } else {
                 output = -1;
             }
-
             System.out.print(output + " ");
         }
         System.out.println();
@@ -50,7 +42,6 @@ class Hopfield {
                 for (int n = 0; n < trainingPattern.size(); n++) {
                     float[] data = (float[]) trainingPattern.elementAt(n);
                     float temp = data[i] * data[j] / patternLength + weights[j][i];
-
                     weights[i][j] = weights[j][i] = temp;
                 }
             }
@@ -82,7 +73,9 @@ class Hopfield {
                 } else {
                     nodes[j] = -1.0f;
                 }
+                System.out.print(nodes[j] + " ");
             }
+            System.out.println();
         }
 
         return nodes;
@@ -99,5 +92,40 @@ class Hopfield {
         }
 
         return 2.0f * temp - tempStorage[index];
+    }
+
+    public void test(float[] pattern) {
+        boolean stability = false;
+        float[] nodes = new float[patternLength];
+
+        for (int i = 0; i < patternLength; i++) {
+            nodes[i] = pattern[i];
+        }
+
+        while (!stability) {
+            float[] auxNodes = new float[patternLength];
+            stability = true;
+            for (int i = 0; i < patternLength; i++) {
+                auxNodes[i] = 0;
+            }
+            for (int i = 0; i < patternLength; i++) {
+                for (int j = 0; j < weights.length; j++) {
+                    auxNodes[i] += pattern[j] * weights[j][i];
+                }
+                System.out.print(auxNodes[i] + " ");
+            }
+            System.out.println();
+
+            for (int i = 0; i < patternLength; i++) {
+                if (Math.signum(auxNodes[i]) != nodes[i]) {
+                    stability=false;
+                }
+            }
+
+            for (int i = 0; i < patternLength; i++) {
+                nodes[i] = Math.signum(auxNodes[i]);
+            }
+        }
+
     }
 }
