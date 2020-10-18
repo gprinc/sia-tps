@@ -1,5 +1,5 @@
 {
-  "ej": "Kohonen",
+  "ej": "Hopfield",
   "rate": "0.01",
   "iterations": "1000",
   "letter1": "a",

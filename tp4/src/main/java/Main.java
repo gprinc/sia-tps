@@ -81,6 +81,12 @@ public class Main {
             }
         }
 
+        if (ej.equals("Hopfield")) {
+            System.out.println("Hopfield Ejs:");
+            hopf.startHopfield(letters);
+            return;
+        }
+
         String country;
         Double area;
         Double gdp;
