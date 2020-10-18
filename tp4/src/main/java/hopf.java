@@ -92,6 +92,7 @@ public class hopf {
 
     private static boolean containsArray(ArrayList<float []> patterns, float [] pattern) {
         boolean aux = true;
+        int index = 1;
         for (float [] pattern1: patterns) {
             aux = true;
             for (int i = 0; i < pattern.length; i++) {
@@ -100,7 +101,11 @@ public class hopf {
                 }
             }
 
-            if (aux == true) return aux;
+            if (aux == true) {
+                System.out.println("Pattern:  " + index);
+                return aux;
+            }
+            index++;
         }
         return aux;
     }
