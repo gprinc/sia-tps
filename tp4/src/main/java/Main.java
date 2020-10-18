@@ -152,7 +152,12 @@ public class Main {
             RealMatrix eigenVectorsCorr = eigenDecompositionCorr.getV();
 
             // Componentes Principales
-            // PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
+            //PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
+
+            double[][] normalizedMatrixT = MatrixUtils.createRealMatrix(normalizedMatrix).transpose().getData();
+
+            LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrix, 0.001);
+            oja.train(1000);
         }
 
         return;
