@@ -21,23 +21,48 @@ public class hopf {
         //String[] sp = Reader.readFile(storedPatternInput);
         //String[] ip = Reader.readFile(incompletePatternInput);
         trainingPattern = new Hopfield(LETTER_LENGTH);
+        float [] espureo = new float[25];
+        ArrayList<float []> patterns = new ArrayList<>();
+        int lettersIndex = 0;
         for (ArrayList<Integer> letter: letters) {
             float [] letterPattern = new float[25];
             int index = 0;
-            for (Integer i: letter) {
-                letterPattern[index++] = i;
+            if (lettersIndex != 3) {
+                for (Integer i: letter) {
+                    letterPattern[index++] = i;
+                }
+                patterns.add(letterPattern);
+            } else {
+                for (Integer i: letter) {
+                    espureo[index++] = i;
+                }
             }
+            lettersIndex++;
+        }
+
+        for (float []letterPattern : patterns) {
             trainingPattern.add(letterPattern);
         }
         trainingPattern.learn();
+        float[] pattern;
+        boolean contains;
         for (int i = 0; i < 1; i++) {
             // Get the patterns into int array format
             float[] incompletePattern = getIncompletePattern(letters);
-
             // Generate the network output.
             //Hopfield.generateOutput(trainingPattern, incompletePattern);
-            trainingPattern.test(incompletePattern);
+            pattern = trainingPattern.test(incompletePattern);
+            System.out.println();
+            contains = containsArray(patterns,pattern);
+            System.out.println("¿El patron esta en los de entrenamiento?  " + contains);
+            System.out.println("---------");
         }
+        System.out.println("Espureo");
+        pattern = trainingPattern.test(espureo);
+        System.out.println();
+        contains = containsArray(patterns,pattern);
+        System.out.println("¿El patron esta en los de entrenamiento?  " + contains);
+        System.out.println("---------");
     }
 
     private static float[] getIncompletePattern(ArrayList<ArrayList<Integer>> letters) {
@@ -56,6 +81,27 @@ public class hopf {
             } else
                 letterPattern[index++] = i;
         }
+        System.out.println("Incomplete Pattern  " + letterIndex);
+        for (float bit : letterPattern) {
+            System.out.print(bit + " ");
+        }
+        System.out.println();
+        System.out.println("---------");
         return letterPattern;
+    }
+
+    private static boolean containsArray(ArrayList<float []> patterns, float [] pattern) {
+        boolean aux = true;
+        for (float [] pattern1: patterns) {
+            aux = true;
+            for (int i = 0; i < pattern.length; i++) {
+                if (pattern[i] != pattern1[i]){
+                    aux = false;
+                }
+            }
+
+            if (aux == true) return aux;
+        }
+        return aux;
     }
 }

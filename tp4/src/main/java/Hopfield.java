@@ -94,7 +94,7 @@ class Hopfield {
         return 2.0f * temp - tempStorage[index];
     }
 
-    public void test(float[] pattern) {
+    public float[] test(float[] pattern) {
         boolean stability = false;
         float[] nodes = new float[patternLength];
 
@@ -112,7 +112,7 @@ class Hopfield {
                 for (int j = 0; j < weights.length; j++) {
                     auxNodes[i] += pattern[j] * weights[j][i];
                 }
-                System.out.print(auxNodes[i] + " ");
+                System.out.print(Math.signum(auxNodes[i]) + " ");
             }
             System.out.println();
 
@@ -126,6 +126,6 @@ class Hopfield {
                 nodes[i] = Math.signum(auxNodes[i]);
             }
         }
-
+        return nodes;
     }
 }

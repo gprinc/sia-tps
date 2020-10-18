@@ -25,6 +25,7 @@ public class Main {
         String letter2;
         String letter3;
         String letter4;
+        String letter5;
         double rate;
         int iterations;
         try {
@@ -34,6 +35,7 @@ public class Main {
             letter2 = InitializerJson.giveLetter((String) jsonData.get("letter2"), "b");
             letter3 = InitializerJson.giveLetter((String) jsonData.get("letter3"), "c");
             letter4 = InitializerJson.giveLetter((String) jsonData.get("letter4"), "d");
+            letter5 = InitializerJson.giveLetter((String) jsonData.get("letter5"), "z");
             rate = InitializerJson.giveDouble((String) jsonData.get("rate"), DEFAULT_RATE);
             iterations = InitializerJson.giveInt((String) jsonData.get("iterations"), DEFAULT_ITERATIONS);
 
@@ -46,7 +48,7 @@ public class Main {
         }
 
         ArrayList<ArrayList<Integer>> letters = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             String[] data;
             ArrayList<Integer> letter = new ArrayList<>();
             try {
@@ -60,8 +62,11 @@ public class Main {
                     case 2:
                         csvReader = new BufferedReader(new FileReader("letters/" + letter3 + ".csv"));
                         break;
-                    default:
+                    case 3:
                         csvReader = new BufferedReader(new FileReader("letters/" + letter4 + ".csv"));
+                        break;
+                    default:
+                        csvReader = new BufferedReader(new FileReader("letters/" + letter5 + ".csv"));
                         break;
                 }
                 String row;
