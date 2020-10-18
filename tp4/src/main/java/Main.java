@@ -11,6 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Main {
+    static Hopfield trainingPattern;
 
     private final static String DEFAULT_EJ = "Kohonen";
     public final static String[] possibleEjs = {"Kohonen", "Oja", "Hopfield"};
@@ -45,7 +46,23 @@ public class Main {
         Double military;
         Double popGrowth;
         Double unemployment;
+        /*
+        for (int trainingPatterns = 0; trainingPatterns < sp.length; trainingPatterns++) {
+            float[] storedPattern = Hopfield.getPattern(sp[trainingPatterns]);
 
+            // Get training pattern and run the learning function.
+            trainingPattern = new Hopfield(storedPattern.length);
+            trainingPattern.learn(storedPattern);
+        }
+
+        for (int i = 0; i < ip.length; i++) {
+            // Get the patterns into int array format
+            float[] incompletePattern = Hopfield.getPattern(ip[i]);
+
+            // Generate the network output.
+            Hopfield.generateOutput(trainingPattern, incompletePattern);
+        }
+        */
         File csvFile = new File("europe.csv");
         BufferedReader csvReader;
         String[] data;

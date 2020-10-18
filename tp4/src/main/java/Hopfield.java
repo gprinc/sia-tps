@@ -6,13 +6,14 @@ class Hopfield {
     float[] tempStorage;
     Vector<float[]> trainingPattern = new Vector<float[]>();
 
-    /**
-     * Hopfield class constructor
-     */
     public Hopfield(int patternLength) {
         Hopfield.patternLength = patternLength;
         weights = new float[patternLength][patternLength];
         tempStorage = new float[patternLength];
+    }
+
+    public void add(float[] pattern) {
+        trainingPattern.addElement(pattern);
     }
 
     /**
@@ -25,18 +26,7 @@ class Hopfield {
             data[i] = pattern[i];
         }
 
-        for (int i = 0; i < 1; i++) {
-            int index = (int) ((patternLength - 1) * (float) Math.random());
-            data[index] = -data[index];
-
-            if (data[index] < 0.0f) {
-                data[index] = 1.0f;
-            } else {
-                data[index] = -1.0f;
-            }
-        }
-
-        float[] node = run.makeNetwork(data, patternLength);
+        float[] node = run.makeNetwork(pattern, patternLength);
         int output = 0;
 
         for (int i = 0; i < patternLength; i++) {
@@ -52,35 +42,14 @@ class Hopfield {
     }
 
     /**
-     * Takes the input text from the file as a String and returns as an array of Floats
-     * @return float[] patten
-     */
-    public static float[] getPattern(String patternString) {
-        String[] patternNodes = patternString.split(" ");
-        float[] pattern = new float[patternNodes.length];
-
-        for(int i = 0; i < patternNodes.length; i++) {
-            try {
-                pattern[i] = Integer.parseInt(patternNodes[i]);
-            } catch (NumberFormatException nfe) {
-                //Not an integer
-            }
-        }
-
-        return pattern;
-    }
-
-    /**
      * Takes the stored pattern and runs the training algorithm.
      */
-    public void learn(float[] pattern) {
-        trainingPattern.addElement(pattern);
-
+    public void learn() {
         for (int i = 1; i < patternLength; i++) {
             for (int j = 0; j < i; j++) {
                 for (int n = 0; n < trainingPattern.size(); n++) {
                     float[] data = (float[]) trainingPattern.elementAt(n);
-                    float temp = data[i] * data[j] + weights[j][i];
+                    float temp = data[i] * data[j] / patternLength + weights[j][i];
 
                     weights[i][j] = weights[j][i] = temp;
                 }
