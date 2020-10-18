@@ -1,3 +1,9 @@
 {
-  "ej": "Kohonen"
+  "ej": "Kohonen",
+  "rate": "0.01",
+  "iterations": "1000",
+  "letter1": "a",
+  "letter2": "b",
+  "letter3": "c",
+  "letter4": "d"
 }

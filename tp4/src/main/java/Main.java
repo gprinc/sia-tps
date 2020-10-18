@@ -12,30 +12,73 @@ import java.util.ArrayList;
 
 public class Main {
     static Hopfield trainingPattern;
-
-    private final static String DEFAULT_EJ = "Kohonen";
-    public final static String[] possibleEjs = {"Kohonen", "Oja", "Hopfield"};
+    private final static double DEFAULT_RATE = 0.001;
+    private final static int DEFAULT_ITERATIONS = 1000;
 
     public static void main(String[] args) {
+        File csvFile;
+        BufferedReader csvReader;
         JSONParser parser = new JSONParser();
         JSONObject jsonData = null;
+        String ej;
+        String letter1;
+        String letter2;
+        String letter3;
+        String letter4;
+        double rate;
+        int iterations;
         try {
             jsonData = (JSONObject) parser.parse(new FileReader("config.json"));
-            boolean correctEj = false;
-            String ej = (String) jsonData.get("ej");
-            for (String s: possibleEjs) {
-                if (s.equals(ej)) {
-                    correctEj = true;
-                    break;
-                }
-            }
-            if (ej == null || !correctEj)
-                ej = DEFAULT_EJ;
-            
+            ej = InitializerJson.giveEj((String) jsonData.get("ej"));
+            letter1 = InitializerJson.giveLetter((String) jsonData.get("letter1"), "a");
+            letter2 = InitializerJson.giveLetter((String) jsonData.get("letter2"), "b");
+            letter3 = InitializerJson.giveLetter((String) jsonData.get("letter3"), "c");
+            letter4 = InitializerJson.giveLetter((String) jsonData.get("letter4"), "d");
+            rate = InitializerJson.giveDouble((String) jsonData.get("rate"), DEFAULT_RATE);
+            iterations = InitializerJson.giveInt((String) jsonData.get("iterations"), DEFAULT_ITERATIONS);
+
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         } catch (ParseException e) {
             e.printStackTrace();
+            return;
+        }
+
+        ArrayList<ArrayList<Integer>> letters = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            String[] data;
+            ArrayList<Integer> letter = new ArrayList<>();
+            try {
+                switch (i) {
+                    case 0:
+                        csvReader = new BufferedReader(new FileReader("letters/" + letter1 + ".csv"));
+                        break;
+                    case 1:
+                        csvReader = new BufferedReader(new FileReader("letters/" + letter2 + ".csv"));
+                        break;
+                    case 2:
+                        csvReader = new BufferedReader(new FileReader("letters/" + letter3 + ".csv"));
+                        break;
+                    default:
+                        csvReader = new BufferedReader(new FileReader("letters/" + letter4 + ".csv"));
+                        break;
+                }
+                String row;
+                while ((row = csvReader.readLine()) != null) {
+                    data = row.split(",");
+                    for (String s: data) {
+                        letter.add(Integer.parseInt(s.trim()));
+                    }
+                }
+
+                letters.add(letter);
+                csvReader.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         String country;
@@ -63,8 +106,7 @@ public class Main {
             Hopfield.generateOutput(trainingPattern, incompletePattern);
         }
         */
-        File csvFile = new File("europe.csv");
-        BufferedReader csvReader;
+        csvFile = new File("europe.csv");
         String[] data;
         ArrayList<Country> countries = new ArrayList<>();
         if (csvFile.isFile()) {
@@ -173,8 +215,8 @@ public class Main {
 
             double[][] normalizedMatrixT = MatrixUtils.createRealMatrix(normalizedMatrix).transpose().getData();
 
-            LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrix, 0.001);
-            oja.train(1000);
+            LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrix, rate);
+            oja.train(iterations);
         }
 
         return;
