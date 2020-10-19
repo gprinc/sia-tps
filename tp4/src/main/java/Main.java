@@ -224,9 +224,10 @@ public class Main {
                 for (int i = 0; i < normalizedMatrix.length * 500; i++) {
                     Random rand = new Random();
                     // nextInt as provided by Random is exclusive of the top value so you need to add 1
-                    int randomNum = rand.nextInt(normalizedMatrix.length );
+                    int randomNum = rand.nextInt(normalizedMatrix.length);
                     kohonen.learn(normalizedMatrix[randomNum]);
                 }
+                kohonen.printHeatMap(normalizedMatrix,normalizeCountries);
                 return;
             }
 

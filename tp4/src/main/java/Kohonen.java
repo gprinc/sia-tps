@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Kohonen {
     KNode[][] nodes;
     double environment;
@@ -66,5 +68,47 @@ public class Kohonen {
 
     private double learningRateIteration (int iteration) {
         return iteration == 0 ? this.learningRate : this.learningRate * Math.exp((-iteration)/delta);
+    }
+
+    public void printHeatMap(double[][] normalizedMatrix, ArrayList<Country> countries) {
+        System.out.println();
+        int[][] matrix = new int[nodes.length][nodes.length];
+        for (int i = 0; i < nodes.length; i++) {
+            for (int j = 0; j < nodes.length; j++) {
+                matrix[i][j]= 0;
+            }
+        }
+        for (int i = 0; i < normalizedMatrix.length; i++) {
+            int[] aux = this.getNode(normalizedMatrix[i]);
+            matrix[aux[0]][aux[1]]++;
+            System.out.println(countries.get(i).getCountry() + " x= " + aux[0] + " y= " + aux[1]);
+        }
+        System.out.println();
+        for (int i = 0; i < nodes.length; i++) {
+            for (int j = 0; j < nodes.length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private int[] getNode(double[] input) {
+        double distance = 1000000000;
+        int x=0;
+        int y=0;
+        for (int i = 0; i < this.nodes.length; i++) {
+            for (int j = 0; j < this.nodes.length; j++) {
+                double[] auxVector = this.nodes[i][j].getWeights();
+                double auxDistance = distance(input,auxVector);
+                if (auxDistance < distance) {
+                    distance = auxDistance;
+                    x=i;
+                    y=j;
+                }
+
+            }
+        }
+        int[] aux = {x,y};
+        return aux;
     }
 }
