@@ -1,3 +1,4 @@
+import breeze.stats.distributions.Rand;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
@@ -9,6 +10,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Main {
     static Hopfield trainingPattern;
@@ -208,6 +210,18 @@ public class Main {
                 normalizedMatrix[i][4] = aux.getMilitary();
                 normalizedMatrix[i][5] = aux.getPopGrowth();
                 normalizedMatrix[i][6] = aux.getUnemployment();
+            }
+
+            if (ej.equals("Kohonen")) {
+                System.out.println("Kohonen Ejs:");
+                Kohonen kohonen = new Kohonen(5,7, (5+5),0.001,2);
+                for (int i = 0; i < normalizedMatrix.length * 500; i++) {
+                    Random rand = new Random();
+                    // nextInt as provided by Random is exclusive of the top value so you need to add 1
+                    int randomNum = rand.nextInt(normalizedMatrix.length + 1);
+                    kohonen.learn(normalizedMatrix[randomNum]);
+                }
+                return;
             }
 
             RealMatrix mx = MatrixUtils.createRealMatrix(countriesMatrix);
