@@ -35,7 +35,7 @@ public class hopf {
         boolean contains;
         for (int i = 0; i < hopfieldIterations; i++) {
             float[] incompletePattern = getIncompletePattern(letters);
-            pattern = Hopfield.generateOutput(trainingPattern,incompletePattern);
+            pattern = trainingPattern.test(incompletePattern);
             System.out.println();
             contains = containsArray(patterns,pattern);
             System.out.println("¿El patron esta en los de entrenamiento?  " + contains);
@@ -43,7 +43,7 @@ public class hopf {
         }
 
         System.out.println("Espureo");
-        pattern = Hopfield.generateOutput(trainingPattern,espureo);
+        pattern = trainingPattern.test(espureo);
         System.out.println();
         contains = containsArray(patterns,pattern);
         System.out.println("¿El patron esta en los de entrenamiento?  " + contains);

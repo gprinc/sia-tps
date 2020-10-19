@@ -3,11 +3,13 @@ import java.util.*;
 class Hopfield {
     static int patternLength;
     float[][] weights;
+    float[] tempStorage;
     Vector<float[]> trainingPattern = new Vector<float[]>();
 
     public Hopfield(int patternLength) {
         Hopfield.patternLength = patternLength;
         weights = new float[patternLength][patternLength];
+        tempStorage = new float[patternLength];
     }
 
     public void add(float[] pattern) {
@@ -99,18 +101,25 @@ class Hopfield {
                 for (int j = 0; j < weights.length; j++) {
                     auxNodes[i] += nodes[j] * weights[j][i];
                 }
-                System.out.print(Math.signum(auxNodes[i]) + " ");
+                if (auxNodes[i] == 0.0f) {
+                    auxNodes[i] = 1.0f;
+                } else {
+                    auxNodes[i] = Math.signum(auxNodes[i]);
+                }
+                if (i % 5 == 0)
+                    System.out.println();
+                System.out.print((auxNodes[i] == -1 ? 0 : 1) + "\t");
             }
             System.out.println();
 
             for (int i = 0; i < patternLength; i++) {
-                if (Math.signum(auxNodes[i]) != nodes[i]) {
+                if (auxNodes[i] != nodes[i]) {
                     stability=false;
                 }
             }
 
             for (int i = 0; i < patternLength; i++) {
-                nodes[i] = Math.signum(auxNodes[i]);
+                nodes[i] = auxNodes[i];
             }
         }
         return nodes;
