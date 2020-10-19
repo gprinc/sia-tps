@@ -112,9 +112,8 @@ public class Kohonen {
         for (Integer key: mapa.keySet()){
             for (Integer okey: mapa.get(key).keySet()) {
                 System.out.println(" x= " + key + " y= " + okey);
-                System.out.println(mapa.get(key).get(okey));
+                System.out.println(mapa.get(key).get(okey).replace("null", ""));
             }
-            System.out.println();
         }
     }
 
