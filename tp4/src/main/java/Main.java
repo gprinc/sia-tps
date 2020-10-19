@@ -14,6 +14,7 @@ public class Main {
     static Hopfield trainingPattern;
     private final static double DEFAULT_RATE = 0.001;
     private final static int DEFAULT_ITERATIONS = 1000;
+    private final static int DEFAULT_HOP_ITERATIONS = 1;
 
     public static void main(String[] args) {
         File csvFile;
@@ -39,6 +40,7 @@ public class Main {
             letter5 = InitializerJson.giveLetter((String) jsonData.get("letter5"), "z");
             rate = InitializerJson.giveDouble((String) jsonData.get("rate"), DEFAULT_RATE);
             iterations = InitializerJson.giveInt((String) jsonData.get("iterations"), DEFAULT_ITERATIONS);
+            hopfieldIterations = InitializerJson.giveInt((String) jsonData.get("hopfieldIterations"), DEFAULT_HOP_ITERATIONS);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -211,16 +213,6 @@ public class Main {
             RealMatrix mx = MatrixUtils.createRealMatrix(countriesMatrix);
             RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
             RealMatrix corr  = new PearsonsCorrelation(countriesMatrix).getCorrelationMatrix();
-
-
-            // Autovaloes y Autovectores
-            EigenDecomposition eigenDecompositionCov = new EigenDecomposition(cov);
-            double[] eigenValuesCov = eigenDecompositionCov.getRealEigenvalues();
-            RealMatrix eigenVectorsCov = eigenDecompositionCov.getV();
-
-            EigenDecomposition eigenDecompositionCorr = new EigenDecomposition(corr);
-            double[] eigenValuesCorr = eigenDecompositionCorr.getRealEigenvalues();
-            RealMatrix eigenVectorsCorr = eigenDecompositionCorr.getV();
 
             // Componentes Principales
             //PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
