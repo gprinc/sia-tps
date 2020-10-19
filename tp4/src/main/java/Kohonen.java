@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Kohonen {
     KNode[][] nodes;
@@ -71,6 +72,9 @@ public class Kohonen {
     }
 
     public void printHeatMap(double[][] normalizedMatrix, ArrayList<Country> countries) {
+        HashMap<Integer, HashMap<Integer,String>> mapa = new HashMap<>();
+        HashMap<Integer, String> mapaInterno;
+        String auxCountry = "";
         System.out.println();
         int[][] matrix = new int[nodes.length][nodes.length];
         for (int i = 0; i < nodes.length; i++) {
@@ -81,12 +85,28 @@ public class Kohonen {
         for (int i = 0; i < normalizedMatrix.length; i++) {
             int[] aux = this.getNode(normalizedMatrix[i]);
             matrix[aux[0]][aux[1]]++;
+            mapaInterno = new HashMap<Integer, String>();
+            if (mapa.containsKey(aux[0])) {
+                mapaInterno = mapa.get(aux[0]);
+                auxCountry = mapaInterno.get(aux[1]);
+            }
+            mapaInterno.put(aux[1], auxCountry + " " + countries.get(i).getCountry());
+            mapa.put(aux[0], mapaInterno);
             System.out.println(countries.get(i).getCountry() + " x= " + aux[0] + " y= " + aux[1]);
         }
         System.out.println();
         for (int i = 0; i < nodes.length; i++) {
             for (int j = 0; j < nodes.length; j++) {
                 System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        // printing related countries
+        for (Integer key: mapa.keySet()){
+            for (Integer okey: mapa.get(key).keySet()) {
+                System.out.println(" x= " + key + " y= " + okey);
+                System.out.println(mapa.get(key).get(okey));
             }
             System.out.println();
         }
