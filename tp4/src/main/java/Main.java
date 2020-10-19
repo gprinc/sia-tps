@@ -227,6 +227,7 @@ public class Main {
                     kohonen.learn(normalizedMatrix[randomNum]);
                 }
                 kohonen.printHeatMap(normalizedMatrix,normalizeCountries);
+                kohonen.printDistanceMap(normalizedMatrix);
                 return;
             }
 
