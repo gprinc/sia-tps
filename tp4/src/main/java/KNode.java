@@ -2,10 +2,10 @@ public class KNode {
     double[] weights;
 
 
-    public KNode(int length) {
+    public KNode(int length,double[] input) {
         this.weights = new double[length];
         for (int i = 0; i < length; i++) {
-            this.weights[i] = Math.random();
+            this.weights[i] = input[i];
         }
     }
 

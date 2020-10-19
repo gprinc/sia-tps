@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Kohonen {
     KNode[][] nodes;
@@ -8,11 +9,13 @@ public class Kohonen {
     int iteration;
     double delta;
 
-    public Kohonen(int k, int length, double environment, double learningRate, double delta) {
+    public Kohonen(int k, int length, double environment, double learningRate, double delta, double[][] inputs) {
         this.nodes = new KNode[k][k];
+        Random rand = new Random();
         for (int i = 0; i < k; i++) {
             for (int j = 0; j < k; j++) {
-                nodes[i][j] = new KNode(length);
+                int randomNum = rand.nextInt(inputs.length);
+                nodes[i][j] = new KNode(length,inputs[randomNum]);
             }
         }
         this.environment = environment;
@@ -49,6 +52,8 @@ public class Kohonen {
 
             }
         }
+        System.out.println("environmentIteration  "+ this.environmentIteration(this.iteration));
+        System.out.println("learningRateIteration  "+ this.learningRateIteration(this.iteration));
         this.updateNeighbours(x,y,input);
         this.iteration++;
     }
@@ -64,7 +69,8 @@ public class Kohonen {
     }
 
     private double environmentIteration (int iteration) {
-        return iteration == 0 ? this.environment : this.environment * Math.exp((-iteration)/delta);
+        double aux = this.environment * Math.exp((-iteration)/delta);
+        return iteration == 0 ? this.environment : (aux < 1 ? 1 : aux);
     }
 
     private double learningRateIteration (int iteration) {
