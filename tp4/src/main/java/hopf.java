@@ -1,25 +1,12 @@
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Class Main (hopf)
- * @author Daniel Gynn (DJG44)
- * Stores the input values from the console and runs the Hopfield network with the specified patterns.
- */
 public class hopf {
 
     static Hopfield trainingPattern;
     private final static int LETTER_LENGTH = 25;
 
     public static void startHopfield(ArrayList<ArrayList<Integer>> letters) {
-        // Get pattern file paths from command line input
-        //String storedPatternInput = args[0];
-        //String incompletePatternInput = args[1];
-
-        // Store patterns, by line, from file reader
-        //String[] sp = Reader.readFile(storedPatternInput);
-        //String[] ip = Reader.readFile(incompletePatternInput);
         trainingPattern = new Hopfield(LETTER_LENGTH);
         float [] espureo = new float[25];
         ArrayList<float []> patterns = new ArrayList<>();
@@ -47,10 +34,7 @@ public class hopf {
         float[] pattern;
         boolean contains;
         for (int i = 0; i < 1; i++) {
-            // Get the patterns into int array format
             float[] incompletePattern = getIncompletePattern(letters);
-            // Generate the network output.
-            //Hopfield.generateOutput(trainingPattern, incompletePattern);
             pattern = trainingPattern.test(incompletePattern);
             System.out.println();
             contains = containsArray(patterns,pattern);
