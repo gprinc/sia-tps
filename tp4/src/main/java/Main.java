@@ -239,8 +239,10 @@ public class Main {
 
             double[][] normalizedMatrixT = MatrixUtils.createRealMatrix(normalizedMatrix).transpose().getData();
 
-            LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrix, rate);
-            oja.train(iterations);
+            if (ej.equals("Oja")) {
+                LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrix, rate);
+                oja.train(iterations);
+            }
         }
 
         return;
