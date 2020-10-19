@@ -14,7 +14,7 @@ public class hopf {
         for (ArrayList<Integer> letter: letters) {
             float [] letterPattern = new float[25];
             int index = 0;
-            if (lettersIndex != 3) {
+            if (lettersIndex != 4) {
                 for (Integer i: letter) {
                     letterPattern[index++] = i;
                 }
@@ -43,6 +43,15 @@ public class hopf {
         }
 
         System.out.println("Espureo");
+        int i = 0;
+        for (float bit : espureo) {
+            if (i % 5 == 0)
+                System.out.println();
+            System.out.print((bit == -1 ? 0 : 1) + "\t");
+            i++;
+        }
+        System.out.println();
+        System.out.println("---------");
         pattern = trainingPattern.test(espureo);
         System.out.println();
         contains = containsArray(patterns,pattern);
