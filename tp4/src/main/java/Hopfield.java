@@ -16,9 +16,9 @@ class Hopfield {
         trainingPattern.addElement(pattern);
     }
 
-    static void generateOutput(Hopfield run, float[] pattern) {
+    static float[] generateOutput(Hopfield run, float[] pattern) {
         float[] node = run.makeNetwork(pattern, patternLength);
-        int output = 0;
+        float output = 0;
         for (int i = 0; i < patternLength; i++) {
             if (node[i] > 0.1f) {
                 output = 1;
@@ -28,6 +28,7 @@ class Hopfield {
             System.out.print(output + " ");
         }
         System.out.println();
+        return node;
     }
 
     public void learn() {
@@ -71,7 +72,7 @@ class Hopfield {
 
         return nodes;
     }
-    
+
     private float energy(int index, float[] inputNodes) {
         float temp = 0.0f;
 
@@ -98,7 +99,7 @@ class Hopfield {
             }
             for (int i = 0; i < patternLength; i++) {
                 for (int j = 0; j < weights.length; j++) {
-                    auxNodes[i] += pattern[j] * weights[j][i];
+                    auxNodes[i] += nodes[j] * weights[j][i];
                 }
                 System.out.print(Math.signum(auxNodes[i]) + " ");
             }
