@@ -5,7 +5,7 @@ public class hopf {
 
     static Hopfield trainingPattern;
     private final static int LETTER_LENGTH = 25;
-    
+
     public static void startHopfield(ArrayList<ArrayList<Integer>> letters, int hopfieldIterations) {
         trainingPattern = new Hopfield(LETTER_LENGTH);
         float [] espureo = new float[25];
