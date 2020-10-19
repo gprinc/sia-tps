@@ -17,6 +17,9 @@ public class Main {
     private final static double DEFAULT_RATE = 0.001;
     private final static int DEFAULT_ITERATIONS = 1000;
     private final static int DEFAULT_HOP_ITERATIONS = 1;
+    private final static int DEFAULT_K = 5;
+    private final static int DEFAULT_DELTA = 2;
+    private final static int COUNTRIES_DATA_AMOUNT = 7;
 
     public static void main(String[] args) {
         File csvFile;
@@ -31,7 +34,9 @@ public class Main {
         String letter5;
         double rate;
         int iterations;
-        int hopfieldIterations = 1;
+        int hopfieldIterations;
+        int k;
+        int delta;
         try {
             jsonData = (JSONObject) parser.parse(new FileReader("config.json"));
             ej = InitializerJson.giveEj((String) jsonData.get("ej"));
@@ -43,7 +48,8 @@ public class Main {
             rate = InitializerJson.giveDouble((String) jsonData.get("rate"), DEFAULT_RATE);
             iterations = InitializerJson.giveInt((String) jsonData.get("iterations"), DEFAULT_ITERATIONS);
             hopfieldIterations = InitializerJson.giveInt((String) jsonData.get("hopfieldIterations"), DEFAULT_HOP_ITERATIONS);
-
+            k = InitializerJson.giveInt((String) jsonData.get("k"), DEFAULT_K);
+            delta = InitializerJson.giveInt((String) jsonData.get("delta"), DEFAULT_DELTA);
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -214,11 +220,11 @@ public class Main {
 
             if (ej.equals("Kohonen")) {
                 System.out.println("Kohonen Ejs:");
-                Kohonen kohonen = new Kohonen(5,7, (5+5),0.001,2);
+                Kohonen kohonen = new Kohonen(k,COUNTRIES_DATA_AMOUNT, Math.sqrt(k*k + k*k),rate,delta);
                 for (int i = 0; i < normalizedMatrix.length * 500; i++) {
                     Random rand = new Random();
                     // nextInt as provided by Random is exclusive of the top value so you need to add 1
-                    int randomNum = rand.nextInt(normalizedMatrix.length + 1);
+                    int randomNum = rand.nextInt(normalizedMatrix.length );
                     kohonen.learn(normalizedMatrix[randomNum]);
                 }
                 return;

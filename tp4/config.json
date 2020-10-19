@@ -1,5 +1,5 @@
 {
-  "ej": "Hopfield",
+  "ej": "Kohonen",
   "rate": "0.01",
   "iterations": "1000",
   "letter1": "a",
@@ -7,5 +7,7 @@
   "letter3": "c",
   "letter4": "d",
   "letter5": "t",
-  "hopfieldIterations": "2"
+  "hopfieldIterations": "2",
+  "k": "5",
+  "delta": "2"
 }
