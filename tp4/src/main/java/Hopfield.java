@@ -16,9 +16,6 @@ class Hopfield {
         trainingPattern.addElement(pattern);
     }
 
-    /**
-     * Generates the appropriate output for the given patterns.
-     */
     static void generateOutput(Hopfield run, float[] pattern) {
         float[] node = run.makeNetwork(pattern, patternLength);
         int output = 0;
@@ -33,9 +30,6 @@ class Hopfield {
         System.out.println();
     }
 
-    /**
-     * Takes the stored pattern and runs the training algorithm.
-     */
     public void learn() {
         for (int i = 1; i < patternLength; i++) {
             for (int j = 0; j < i; j++) {
@@ -56,9 +50,6 @@ class Hopfield {
         }
     }
 
-    /**
-     * Builds the Hopfield network for the given pattern and returns an array of nodes.
-     */
     public float[] makeNetwork(float[] pattern, int numIterations) {
         float[] nodes = new float[patternLength];
 
@@ -80,10 +71,7 @@ class Hopfield {
 
         return nodes;
     }
-
-    /**
-     * Delta energy function.
-     */
+    
     private float energy(int index, float[] inputNodes) {
         float temp = 0.0f;
 
