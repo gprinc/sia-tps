@@ -28,6 +28,7 @@ public class Main {
         String letter5;
         double rate;
         int iterations;
+        int hopfieldIterations = 1;
         try {
             jsonData = (JSONObject) parser.parse(new FileReader("config.json"));
             ej = InitializerJson.giveEj((String) jsonData.get("ej"));
@@ -88,7 +89,7 @@ public class Main {
 
         if (ej.equals("Hopfield")) {
             System.out.println("Hopfield Ejs:");
-            hopf.startHopfield(letters);
+            hopf.startHopfield(letters, hopfieldIterations);
             return;
         }
 

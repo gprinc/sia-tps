@@ -12,7 +12,7 @@ public class hopf {
     static Hopfield trainingPattern;
     private final static int LETTER_LENGTH = 25;
 
-    public static void startHopfield(ArrayList<ArrayList<Integer>> letters) {
+    public static void startHopfield(ArrayList<ArrayList<Integer>> letters, int hopfieldIterations) {
         // Get pattern file paths from command line input
         //String storedPatternInput = args[0];
         //String incompletePatternInput = args[1];
@@ -46,7 +46,7 @@ public class hopf {
         trainingPattern.learn();
         float[] pattern;
         boolean contains;
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < hopfieldIterations; i++) {
             // Get the patterns into int array format
             float[] incompletePattern = getIncompletePattern(letters);
             // Generate the network output.
@@ -82,6 +82,7 @@ public class hopf {
                 letterPattern[index++] = i;
         }
         System.out.println("Incomplete Pattern  " + letterIndex);
+        System.out.println("Index Modfied  " + changedByte);
         for (float bit : letterPattern) {
             System.out.print(bit + " ");
         }
@@ -98,10 +99,12 @@ public class hopf {
             for (int i = 0; i < pattern.length; i++) {
                 if (pattern[i] != pattern1[i]){
                     aux = false;
+                    break;
                 }
             }
 
             if (aux == true) {
+                System.out.println("Found same pattern");
                 System.out.println("Pattern:  " + index);
                 return aux;
             }
