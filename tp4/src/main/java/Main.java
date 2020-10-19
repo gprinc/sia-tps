@@ -220,10 +220,9 @@ public class Main {
 
             if (ej.equals("Kohonen")) {
                 System.out.println("Kohonen Ejs:");
-                Kohonen kohonen = new Kohonen(k,COUNTRIES_DATA_AMOUNT, Math.sqrt(k*k + k*k),rate,delta);
-                for (int i = 0; i < normalizedMatrix.length * 500; i++) {
+                Kohonen kohonen = new Kohonen(k,COUNTRIES_DATA_AMOUNT, Math.sqrt(k*k + k*k),rate,delta,normalizedMatrix);
+                for (int i = 0; i < k * 500; i++) {
                     Random rand = new Random();
-                    // nextInt as provided by Random is exclusive of the top value so you need to add 1
                     int randomNum = rand.nextInt(normalizedMatrix.length);
                     kohonen.learn(normalizedMatrix[randomNum]);
                 }
