@@ -68,8 +68,12 @@ public class hopf {
         }
         System.out.println("Incomplete Pattern  " + letterIndex);
         System.out.println("Index Modfied  " + changedByte);
+        int i = 0;
         for (float bit : letterPattern) {
-            System.out.print(bit + " ");
+            if (i % 5 == 0)
+                System.out.println();
+            System.out.print((bit == -1 ? 0 : 1) + "\t");
+            i++;
         }
         System.out.println();
         System.out.println("---------");
