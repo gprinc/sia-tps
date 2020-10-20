@@ -24,6 +24,19 @@ public class Kohonen {
         this.delta = delta;
     }
 
+    public Kohonen(int k, int length, double environment, double learningRate, double delta) {
+        this.nodes = new KNode[k][k];
+        for (int i = 0; i < k; i++) {
+            for (int j = 0; j < k; j++) {
+                nodes[i][j] = new KNode(length);
+            }
+        }
+        this.environment = environment;
+        this.learningRate = learningRate;
+        this.iteration = 0;
+        this.delta = delta;
+    }
+
     private double distance(double[] a, double[] b) {
         double diff_square_sum = 0.0;
         for (int i = 0; i < a.length; i++) {
