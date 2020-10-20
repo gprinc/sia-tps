@@ -6,7 +6,7 @@ public class Hopf {
     static Hopfield trainingPattern;
     private final static int LETTER_LENGTH = 25;
 
-    public static void startHopfield(ArrayList<ArrayList<Integer>> letters, int hopfieldIterations) {
+    public static void startHopfield(ArrayList<ArrayList<Integer>> letters, int hopfieldIterations, int hopfieldBits) {
         trainingPattern = new Hopfield(LETTER_LENGTH);
         float [] espureo = new float[25];
         ArrayList<float []> patterns = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Hopf {
         float[] pattern;
         boolean contains;
         for (int i = 0; i < hopfieldIterations; i++) {
-            float[] incompletePattern = getIncompletePattern(letters);
+            float[] incompletePattern = getIncompletePattern(letters, hopfieldBits);
             pattern = trainingPattern.test(incompletePattern);
             System.out.println();
             contains = containsArray(patterns,pattern);
@@ -59,24 +59,32 @@ public class Hopf {
         System.out.println("---------");
     }
 
-    private static float[] getIncompletePattern(ArrayList<ArrayList<Integer>> letters) {
+    private static float[] getIncompletePattern(ArrayList<ArrayList<Integer>> letters, int hopfieldBits) {
         Random r = new Random();
         int letterIndex = r.nextInt(4 - 1) + 1;
         ArrayList<Integer> letter = (ArrayList<Integer>) letters.get(letterIndex - 1).clone();
-        int changedByte = r.nextInt(25 - 1) + 1;
         float [] letterPattern = new float[25];
-        int index = 0;
-        for (Integer i: letter) {
-            if (index + 1 == changedByte) {
-                if (i < 0)
-                    letterPattern[index++] = 1;
-                else
-                    letterPattern[index++] = -1;
-            } else
-                letterPattern[index++] = i;
+        int[] changedBytes = new int[hopfieldBits];
+        for (int j = 0; j < hopfieldBits; j++) {
+            int changedByte = r.nextInt(25 - 1) + 1;
+            changedBytes[j]  = changedByte;
+            int index = 0;
+            for (Integer i: letter) {
+                if (index + 1 == changedByte) {
+                    if (i < 0)
+                        letterPattern[index++] = 1;
+                    else
+                        letterPattern[index++] = -1;
+                } else
+                    letterPattern[index++] = i;
+            }
         }
         System.out.println("Incomplete Pattern  " + letterIndex);
-        System.out.println("Index Modfied  " + changedByte);
+        System.out.print("Modified indexes: ");
+        for (int j = 0; j < hopfieldBits; j++) {
+            System.out.print(changedBytes[j] + " ");
+        }
+        System.out.println();
         int i = 0;
         for (float bit : letterPattern) {
             if (i % 5 == 0)

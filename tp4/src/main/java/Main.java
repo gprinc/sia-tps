@@ -19,6 +19,7 @@ public class Main {
     private final static int DEFAULT_K = 5;
     private final static int DEFAULT_DELTA = 2;
     private final static int COUNTRIES_DATA_AMOUNT = 7;
+    private final static int DEFAULT_HOP_BITS = 1;
 
     public static void main(String[] args) {
         File csvFile;
@@ -34,6 +35,7 @@ public class Main {
         double rate;
         int iterations;
         int hopfieldIterations;
+        int hopfieldBits;
         int k;
         int delta;
         try {
@@ -47,6 +49,9 @@ public class Main {
             rate = InitializerJson.giveDouble((String) jsonData.get("rate"), DEFAULT_RATE);
             iterations = InitializerJson.giveInt((String) jsonData.get("iterations"), DEFAULT_ITERATIONS);
             hopfieldIterations = InitializerJson.giveInt((String) jsonData.get("hopfieldIterations"), DEFAULT_HOP_ITERATIONS);
+            hopfieldBits = InitializerJson.giveInt((String) jsonData.get("hopfieldBits"), DEFAULT_HOP_BITS);
+            if (hopfieldBits > 25)
+                hopfieldBits = DEFAULT_HOP_BITS;
             k = InitializerJson.giveInt((String) jsonData.get("k"), DEFAULT_K);
             delta = InitializerJson.giveInt((String) jsonData.get("delta"), DEFAULT_DELTA);
         } catch (IOException e) {
@@ -98,7 +103,7 @@ public class Main {
 
         if (ej.equals("Hopfield")) {
             System.out.println("Hopfield Ejs:");
-            Hopf.startHopfield(letters, hopfieldIterations);
+            Hopf.startHopfield(letters, hopfieldIterations, hopfieldBits);
             return;
         }
 
