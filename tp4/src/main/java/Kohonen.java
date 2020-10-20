@@ -77,10 +77,10 @@ public class Kohonen {
         return iteration == 0 ? this.learningRate : this.learningRate * Math.exp((-iteration)/delta);
     }
 
-    public void printHeatMap(double[][] normalizedMatrix, ArrayList<Country> countries) {
+    public int[][] printHeatMap(double[][] normalizedMatrix, ArrayList<Country> countries) {
         HashMap<Integer, HashMap<Integer,String>> mapa = new HashMap<>();
         HashMap<Integer, String> mapaInterno;
-        String auxCountry = "";
+        String auxCountry;
         System.out.println();
         int[][] matrix = new int[nodes.length][nodes.length];
         for (int i = 0; i < nodes.length; i++) {
@@ -89,6 +89,7 @@ public class Kohonen {
             }
         }
         for (int i = 0; i < normalizedMatrix.length; i++) {
+            auxCountry = "";
             int[] aux = this.getNode(normalizedMatrix[i]);
             matrix[aux[0]][aux[1]]++;
             mapaInterno = new HashMap<Integer, String>();
@@ -115,6 +116,7 @@ public class Kohonen {
                 System.out.println(mapa.get(key).get(okey).replace("null", ""));
             }
         }
+        return matrix;
     }
 
     private int[] getNode(double[] input) {

@@ -50,7 +50,11 @@ public class LinealPerceptronOja {
         this.bias += this.rate * (Math.pow(y, 2) * this.bias) * (-1);
     }
 
-    public void train(int iterations) {
+    public double[] getWeights() {
+        return weights;
+    }
+
+    public void train(int iterations, boolean shouldPrint) {
         int index = 0;
         double yi = 0;
         while (iterations!=0) {
@@ -69,8 +73,11 @@ public class LinealPerceptronOja {
             iterations--;
         }
 
-        for (int i = 0; i < weights.length; i++) {
-            System.out.print("Output " + i + " = " + weights[i] + "\n");
+        if (shouldPrint) {
+            for (int i = 0; i < weights.length; i++) {
+                System.out.print("Output " + i + " = " + weights[i] + "\n");
+            }
         }
+        System.out.println();
     }
 }

@@ -9,8 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 public class Main {
     static Hopfield trainingPattern;
@@ -99,7 +98,7 @@ public class Main {
 
         if (ej.equals("Hopfield")) {
             System.out.println("Hopfield Ejs:");
-            hopf.startHopfield(letters, hopfieldIterations);
+            Hopf.startHopfield(letters, hopfieldIterations);
             return;
         }
 
@@ -226,7 +225,8 @@ public class Main {
                     int randomNum = rand.nextInt(normalizedMatrix.length);
                     kohonen.learn(normalizedMatrix[randomNum]);
                 }
-                kohonen.printHeatMap(normalizedMatrix,normalizeCountries);
+                int[][] heatmapMatrix = kohonen.printHeatMap(normalizedMatrix,normalizeCountries);
+                TableHeatmap.showHeatmap(heatmapMatrix);
                 return;
             }
 
@@ -237,11 +237,25 @@ public class Main {
             // Componentes Principales
             //PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
 
-            double[][] normalizedMatrixT = MatrixUtils.createRealMatrix(normalizedMatrix).transpose().getData();
-
             if (ej.equals("Oja")) {
                 LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrix, rate);
-                oja.train(iterations);
+                oja.train(iterations, true);
+
+                double[] pca = oja.getWeights();
+                double aux;
+                HashMap<Double, String> mapaAux = new HashMap<>();
+                ArrayList<Double> values = new ArrayList<>();
+                for(Country c: normalizeCountries) {
+                    aux = pca[0] * c.getArea() + pca[1] * c.getGdp() + pca[2] * c.getInflation() + pca[3] * c.getLifeExpect() + pca[4] * c.getMilitary() + pca[5] * c.getPopGrowth() + pca[6] * c.getUnemployment();
+                    mapaAux.put(aux, c.getCountry());
+                    values.add(aux);
+                }
+                Collections.sort(values);
+                System.out.println();
+                System.out.println();
+                for (Double d: values) {
+                    System.out.println(mapaAux.get(d) + ": " + d);
+                }
             }
         }
 

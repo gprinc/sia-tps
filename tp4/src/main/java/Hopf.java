@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class hopf {
+public class Hopf {
 
     static Hopfield trainingPattern;
     private final static int LETTER_LENGTH = 25;
