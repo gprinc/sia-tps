@@ -24,6 +24,19 @@ public class Kohonen {
         this.delta = delta;
     }
 
+    public Kohonen(int k, int length, double environment, double learningRate, double delta) {
+        this.nodes = new KNode[k][k];
+        for (int i = 0; i < k; i++) {
+            for (int j = 0; j < k; j++) {
+                nodes[i][j] = new KNode(length);
+            }
+        }
+        this.environment = environment;
+        this.learningRate = learningRate;
+        this.iteration = 0;
+        this.delta = delta;
+    }
+
     private double distance(double[] a, double[] b) {
         double diff_square_sum = 0.0;
         for (int i = 0; i < a.length; i++) {
@@ -85,7 +98,7 @@ public class Kohonen {
         int[][] matrix = new int[nodes.length][nodes.length];
         for (int i = 0; i < nodes.length; i++) {
             for (int j = 0; j < nodes.length; j++) {
-                matrix[i][j]= 0;
+                matrix[i][j] = 0;
             }
         }
         for (int i = 0; i < normalizedMatrix.length; i++) {
@@ -102,12 +115,14 @@ public class Kohonen {
             System.out.println(countries.get(i).getCountry() + " x= " + aux[0] + " y= " + aux[1]);
         }
         System.out.println();
+        System.out.println("Heat Map");
         for (int i = 0; i < nodes.length; i++) {
             for (int j = 0; j < nodes.length; j++) {
                 System.out.print(matrix[i][j] + " ");
             }
             System.out.println();
         }
+        System.out.println();
 
         // printing related countries
         for (Integer key: mapa.keySet()){
@@ -117,6 +132,45 @@ public class Kohonen {
             }
         }
         return matrix;
+    }
+
+    public void printDistanceMap(double[][] normalizedMatrix) {
+        System.out.println();
+        double[][] matrix = new double[nodes.length][nodes.length];
+        for (int i = 0; i < nodes.length; i++) {
+            for (int j = 0; j < nodes.length; j++) {
+                matrix[i][j]= 0;
+            }
+        }
+        for (int i = 0; i < normalizedMatrix.length; i++) {
+            int[] aux = this.getNode(normalizedMatrix[i]);
+            matrix[aux[0]][aux[1]] = this.getDistanceAverage(aux[0],aux[1]);
+        }
+
+        System.out.println();
+        System.out.println("Distance Map");
+        for (int i = 0; i < nodes.length; i++) {
+            for (int j = 0; j < nodes.length; j++) {
+                System.out.print((int) (matrix[i][j] * 10) + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    private double getDistanceAverage(int x, int y) {
+        int neighbours = 0;
+        double average = 0;
+        for (int i = 0; i < this.nodes.length; i++) {
+            for (int j = 0; j < this.nodes.length ; j++) {
+                double distance = twoPointDistance(x,y,i,j);
+                if (distance <= this.environmentIteration(this.iteration)) {
+                    average += distance;
+                    neighbours++;
+                }
+            }
+        }
+        return average / (neighbours == 0  ? 1 : neighbours);
     }
 
     private int[] getNode(double[] input) {

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class KNode {
     double[] weights;
 
@@ -6,6 +8,14 @@ public class KNode {
         this.weights = new double[length];
         for (int i = 0; i < length; i++) {
             this.weights[i] = input[i];
+        }
+    }
+
+    public KNode(int length) {
+        Random rand = new Random();
+        this.weights = new double[length];
+        for (int i = 0; i < length; i++) {
+            this.weights[i] = rand.nextDouble();
         }
     }
 
