@@ -220,7 +220,13 @@ public class Main {
 
             if (ej.equals("Kohonen")) {
                 System.out.println("Kohonen Ejs:");
-                Kohonen kohonen = new Kohonen(k,COUNTRIES_DATA_AMOUNT, Math.sqrt(k*k + k*k),rate,delta,normalizedMatrix);
+                Kohonen kohonen;
+                if (true) {
+                    kohonen = new Kohonen(k,COUNTRIES_DATA_AMOUNT, Math.sqrt(k*k + k*k),rate,delta,normalizedMatrix);
+                } else {
+                    kohonen = new Kohonen(k,COUNTRIES_DATA_AMOUNT, Math.sqrt(k*k + k*k),rate,delta);
+                }
+
                 for (int i = 0; i < k * 500; i++) {
                     Random rand = new Random();
                     int randomNum = rand.nextInt(normalizedMatrix.length);
