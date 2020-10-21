@@ -46,7 +46,7 @@ public class Kohonen {
     }
 
     private double twoPointDistance(int x1, int y1, int x2, int y2) {
-        return Math.sqrt(Math.pow(2,x1-x2)+Math.pow(2,y1-y2));
+        return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 
     public void learn(double[] input) {
@@ -134,7 +134,7 @@ public class Kohonen {
         return matrix;
     }
 
-    public void printDistanceMap(double[][] normalizedMatrix) {
+    public void printDistanceMap() {
         System.out.println();
         double[][] matrix = new double[nodes.length][nodes.length];
         for (int i = 0; i < nodes.length; i++) {
@@ -142,16 +142,17 @@ public class Kohonen {
                 matrix[i][j]= 0;
             }
         }
-        for (int i = 0; i < normalizedMatrix.length; i++) {
-            int[] aux = this.getNode(normalizedMatrix[i]);
-            matrix[aux[0]][aux[1]] = this.getDistanceAverage(aux[0],aux[1]);
+        for (int i = 0; i < nodes.length; i++) {
+            for (int j = 0; j < nodes.length; j++) {
+                matrix[i][j] = this.getDistanceAverage(i,j);
+            }
         }
 
         System.out.println();
         System.out.println("Distance Map");
         for (int i = 0; i < nodes.length; i++) {
             for (int j = 0; j < nodes.length; j++) {
-                System.out.print((int) (matrix[i][j] * 10) + " ");
+                System.out.print(roundAvoid(matrix[i][j], 1) + " ");
             }
             System.out.println();
         }
@@ -161,11 +162,15 @@ public class Kohonen {
     private double getDistanceAverage(int x, int y) {
         int neighbours = 0;
         double average = 0;
+        double[] vector = this.nodes[x][y].getWeights();
         for (int i = 0; i < this.nodes.length; i++) {
             for (int j = 0; j < this.nodes.length ; j++) {
                 double distance = twoPointDistance(x,y,i,j);
-                if (distance <= this.environmentIteration(this.iteration)) {
-                    average += distance;
+                double auxDist = this.environmentIteration(this.iteration);
+                if ((i != x || y!=j) && distance <= auxDist) {
+                    double[] auxVector = this.nodes[i][j].getWeights();
+                    double auxDistance = distance(auxVector,vector);
+                    average += auxDistance;
                     neighbours++;
                 }
             }
@@ -191,5 +196,10 @@ public class Kohonen {
         }
         int[] aux = {x,y};
         return aux;
+    }
+
+    public static double roundAvoid(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
     }
 }

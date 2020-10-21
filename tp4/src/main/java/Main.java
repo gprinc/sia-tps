@@ -234,7 +234,7 @@ public class Main {
                     kohonen.learn(normalizedMatrix[randomNum]);
                 }
                 int[][] heatmapMatrix = kohonen.printHeatMap(normalizedMatrix,normalizeCountries);
-                kohonen.printDistanceMap(normalizedMatrix);
+                kohonen.printDistanceMap();
                 TableHeatmap.showHeatmap(heatmapMatrix);
                 return;
             }
