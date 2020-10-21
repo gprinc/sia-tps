@@ -1,19 +1,15 @@
 {
-  "ej": "Kohonen",
+  "ej": "Hopfield",
   "rate": "0.01",
   "iterations": "1000",
   "letter1": "a",
-  "letter2": "b",
+  "letter2": "j",
   "letter3": "c",
   "letter4": "d",
-  "letter5": "t",
-  "hopfieldIterations": "2",
-<<<<<<< refs/remotes/origin/tp4
+  "hopfieldIterations": "5",
+  "letter5": "x",
   "k": "2",
-=======
-  "k": "5",
->>>>>>> Fix distance map
   "delta": "2",
-  "hopfieldBits": "3",
+  "hopfieldBits": "7",
   "initialized": "true"
 }
