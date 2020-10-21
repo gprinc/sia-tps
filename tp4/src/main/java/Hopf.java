@@ -64,6 +64,9 @@ public class Hopf {
         int letterIndex = r.nextInt(4 - 1) + 1;
         ArrayList<Integer> letter = (ArrayList<Integer>) letters.get(letterIndex - 1).clone();
         float [] letterPattern = new float[25];
+        for (int i = 0; i < letterPattern.length; i++) {
+            letterPattern[i] = letter.get(i);
+        }
         int[] changedBytes = new int[hopfieldBits];
         for (int j = 0; j < hopfieldBits; j++) {
             int changedByte = r.nextInt(25 - 1) + 1;
@@ -76,7 +79,7 @@ public class Hopf {
                     else
                         letterPattern[index++] = -1;
                 } else
-                    letterPattern[index++] = i;
+                    index++;
             }
         }
         System.out.println("Incomplete Pattern  " + letterIndex);
