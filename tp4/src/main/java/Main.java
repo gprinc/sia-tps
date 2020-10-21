@@ -1,9 +1,4 @@
-import breeze.stats.distributions.Rand;
-import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.stat.correlation.Covariance;
-import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
-import org.apache.commons.math3.linear.EigenDecomposition;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,7 +8,7 @@ import java.util.*;
 
 public class Main {
     static Hopfield trainingPattern;
-    private final static double DEFAULT_RATE = 0.001;
+    private final static double DEFAULT_RATE = 0.01;
     private final static int DEFAULT_ITERATIONS = 1000;
     private final static int DEFAULT_HOP_ITERATIONS = 1;
     private final static int DEFAULT_K = 5;
