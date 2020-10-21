@@ -23,6 +23,12 @@ public class InitializerJson {
         return def;
     }
 
+    public static boolean giveBoolean(String s) {
+        if (s == null || !s.equals("true") || !s.equals("false"))
+            return false;
+        return s.equals("true") ? true : false;
+    }
+
     public static int giveInt(String s, int def) {
         if (s == null || Integer.parseInt(s) < 0)
             return def;
@@ -33,11 +39,5 @@ public class InitializerJson {
         if (s == null || Double.parseDouble(s) < 0)
             return def;
         return Double.parseDouble(s);
-    }
-
-    public static double givePercentageWithDef(String stringValue, double def){
-        if (stringValue == null || Double.parseDouble(stringValue) < 0 || Double.parseDouble(stringValue) > 1)
-            return def;
-        return Double.parseDouble(stringValue);
     }
 }

@@ -38,6 +38,7 @@ public class Main {
         int hopfieldBits;
         int k;
         int delta;
+        boolean initialized = true;
         try {
             jsonData = (JSONObject) parser.parse(new FileReader("config.json"));
             ej = InitializerJson.giveEj((String) jsonData.get("ej"));
@@ -50,6 +51,7 @@ public class Main {
             iterations = InitializerJson.giveInt((String) jsonData.get("iterations"), DEFAULT_ITERATIONS);
             hopfieldIterations = InitializerJson.giveInt((String) jsonData.get("hopfieldIterations"), DEFAULT_HOP_ITERATIONS);
             hopfieldBits = InitializerJson.giveInt((String) jsonData.get("hopfieldBits"), DEFAULT_HOP_BITS);
+            initialized = InitializerJson.giveBoolean((String) jsonData.get("initialized"));
             if (hopfieldBits > 25)
                 hopfieldBits = DEFAULT_HOP_BITS;
             k = InitializerJson.giveInt((String) jsonData.get("k"), DEFAULT_K);
@@ -225,7 +227,7 @@ public class Main {
             if (ej.equals("Kohonen")) {
                 System.out.println("Kohonen Ejs:");
                 Kohonen kohonen;
-                if (true) {
+                if (initialized) {
                     kohonen = new Kohonen(k,COUNTRIES_DATA_AMOUNT, Math.sqrt(k*k + k*k),rate,delta,normalizedMatrix);
                 } else {
                     kohonen = new Kohonen(k,COUNTRIES_DATA_AMOUNT, Math.sqrt(k*k + k*k),rate,delta);
@@ -241,13 +243,6 @@ public class Main {
                 TableHeatmap.showHeatmap(heatmapMatrix);
                 return;
             }
-
-            RealMatrix mx = MatrixUtils.createRealMatrix(countriesMatrix);
-            RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
-            RealMatrix corr  = new PearsonsCorrelation(countriesMatrix).getCorrelationMatrix();
-
-            // Componentes Principales
-            //PCAejs.showPCA(MatrixUtils.createRealMatrix(normalizedMatrix));
 
             if (ej.equals("Oja")) {
                 LinealPerceptronOja oja = new LinealPerceptronOja(normalizedMatrix, rate);
