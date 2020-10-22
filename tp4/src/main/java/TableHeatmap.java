@@ -20,7 +20,7 @@ public class TableHeatmap {
 
         // set our custom TableCellRenderer
         table.setDefaultRenderer(Object.class, (TableCellRenderer) new HeatmapCellRenderer());
-        table.setRowHeight(30);
+        table.setRowHeight(600 / data.length);
 
         // show the window
         frame.pack();
