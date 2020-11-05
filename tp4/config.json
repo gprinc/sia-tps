@@ -1,15 +1,15 @@
 {
-  "ej": "Kohonen",
+  "ej": "Hopfield",
   "rate": "0.01",
   "iterations": "1000",
   "letter1": "a",
-  "letter2": "j",
+  "letter2": "b",
   "letter3": "c",
   "letter4": "d",
-  "hopfieldIterations": "5",
+  "hopfieldIterations": "7",
   "letter5": "x",
-  "k": "6",
+  "k": "3",
   "delta": "2",
-  "hopfieldBits": "7",
+  "hopfieldBits": "5",
   "initialized": "false"
 }
