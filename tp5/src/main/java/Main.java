@@ -72,7 +72,7 @@ public class Main {
 
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
-        aux3 = new ArrayList<Integer[]>();
+        aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
 
         System.out.println("\n\n=======\nMultiLayer Perceptron");
 
@@ -181,6 +181,8 @@ public class Main {
                 output1.get(0).length
         };
 
+        nn_neurons2 = LayerCreator.generateLayer(input1.get(0).length);
+
         MultiLayerPerceptron mlp1 = new MultiLayerPerceptron(nn_neurons2);
 
         try {
@@ -199,9 +201,9 @@ public class Main {
             ArrayList<Float> testErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp1.learn(input1, output1, mlp_lrate_even, mlp_iter_even, threshold);
-                float error1 = mlp1.evaluateAccuracy(input1, output1, accuracy);
-                float error2 = mlp1.evaluateAccuracy(input2, output2,accuracy);
+                mlp1.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
+                float error1 = mlp1.evaluateAccuracy(input1, input1, accuracy);
+                float error2 = mlp1.evaluateAccuracy(input2, input2, accuracy);
                 trainErrors.add(error1);
                 testErrors.add(error2);
                 System.out.println(i + " -> error : " + error2);
@@ -259,11 +261,7 @@ public class Main {
         }
 
 
-        int nn_neurons3[] = {
-                input1.get(0).length,
-                input1.get(0).length,
-                output1.get(0).length
-        };
+        int nn_neurons3[] = LayerCreator.generateLayer(input1.get(0).length);
 
         MultiLayerPerceptron mlp2 = new MultiLayerPerceptron(nn_neurons3);
 
@@ -282,9 +280,9 @@ public class Main {
             ArrayList<Float> trainErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp2.learn(input1, output1, mlp_lrate_even, mlp_iter_even, threshold);
-                float error1 = mlp2.evaluateAccuracy(input1, output1, accuracy);
-                float error2 = mlp2.evaluateAccuracy(input2, output2,accuracy);
+                mlp2.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
+                float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
+                float error2 = mlp2.evaluateAccuracy(input2, input2,accuracy);
                 trainErrors.add(error1);
                 System.out.println(i + " -> Error : " + error1);
             }
