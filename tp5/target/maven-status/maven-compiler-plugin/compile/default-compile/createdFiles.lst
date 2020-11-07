@@ -1,5 +1,9 @@
 Hopf.class
 Main.class
+MultiLayerPerceptron.class
 Hopfield.class
+Neuron.class
 Country.class
+Layer.class
+Fonts.class
 InitializerJson.class
