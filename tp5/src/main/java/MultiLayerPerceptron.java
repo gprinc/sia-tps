@@ -170,7 +170,8 @@ public class MultiLayerPerceptron {
         assert(false);
         float generalError = 0;
         float error = Float.POSITIVE_INFINITY;
-
+        middleOutput = new float[input.size()];
+        
         int iterations = 0;
         while (error > threshold && iterations < iter) {
 
