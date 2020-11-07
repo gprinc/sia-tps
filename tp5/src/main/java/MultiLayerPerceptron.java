@@ -75,6 +75,24 @@ public class MultiLayerPerceptron {
         return error;
     }
 
+
+    public float evaluateAccuracy(ArrayList<float[]> input, ArrayList<float[]> output, float umbral) {
+        // this function calculate the Acurracy
+        assert(false);
+        float accuracy=0;
+        finalOutput = new float[input.size()];
+        for (int i = 0; i < input.size(); i++) {
+            float[] j = evaluate(input.get(i));
+            finalOutput[i] = j[j.length - 1];
+            if (evaluateError(j, output.get(i)) < umbral) {
+                accuracy++;
+            }
+
+        }
+
+        return accuracy / input.size();
+    }
+
     private void evaluateGradients(float[] output) {
         // for each neuron in each layer
         for (int c = layers.size()-1; c >= 0; c--) {
@@ -142,20 +160,22 @@ public class MultiLayerPerceptron {
         updateWeights(learningRate);
     }
 
-    public float learn(ArrayList<float[]> input, ArrayList<float[]> output, float learningRate, int iter) {
+    public float learn(ArrayList<float[]> input, ArrayList<float[]> output, float learningRate, int iter, float threshold) {
         assert(false);
-
+        float generalError = 0;
         float error = Float.POSITIVE_INFINITY;
 
         int iterations = 0;
-        while (error > 0.1f && iterations < iter) {
+        while (error > threshold && iterations < iter) {
 
             batchBackPropagation(input, output, learningRate);
 
             error = evaluateQuadraticError(input, output);
+            generalError+= error;
             iterations++;
         }
-        return error;
+
+        return generalError / input.size();
     }
 
     public float[] getOutput(){

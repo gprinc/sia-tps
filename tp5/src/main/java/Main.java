@@ -1,233 +1,312 @@
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Main {
-    static Hopfield trainingPattern;
-    private final static double DEFAULT_RATE = 0.01;
-    private final static int DEFAULT_ITERATIONS = 1000;
-    private final static int DEFAULT_HOP_ITERATIONS = 1;
-    private final static int DEFAULT_K = 5;
-    private final static int DEFAULT_DELTA = 2;
-    private final static int COUNTRIES_DATA_AMOUNT = 7;
-    private final static int DEFAULT_HOP_BITS = 1;
+    private static final float DEFAULT_LRATE_XOR = 0.3f;
+    private static final float DEFAULT_LRATE_EVEN = 0.1f;
+    private static final int DEFAULT_ITER_XOR = 100;
+    private static final int DEFAULT_ITER_EVEN = 5;
+    private static final int DEFAULT_EVEN_PARTITION = 5;
+    private static final float DEFAULT_THRESHOLD = 0.1f;
+    private static final float DEFAULT_ACCURACY = 0.001f;
 
     public static void main(String[] args) {
-        File csvFile;
-        BufferedReader csvReader;
         JSONParser parser = new JSONParser();
-        JSONObject jsonData = null;
-        String ej;
-        String letter1;
-        String letter2;
-        String letter3;
-        String letter4;
-        String letter5;
-        double rate;
-        int iterations;
-        int hopfieldIterations;
-        int hopfieldBits;
-        int k;
-        int delta;
-        boolean initialized = true;
+        JSONObject data;
         try {
-            jsonData = (JSONObject) parser.parse(new FileReader("config.json"));
-            ej = InitializerJson.giveEj((String) jsonData.get("ej"));
-            letter1 = InitializerJson.giveLetter((String) jsonData.get("letter1"), "a");
-            letter2 = InitializerJson.giveLetter((String) jsonData.get("letter2"), "b");
-            letter3 = InitializerJson.giveLetter((String) jsonData.get("letter3"), "c");
-            letter4 = InitializerJson.giveLetter((String) jsonData.get("letter4"), "d");
-            letter5 = InitializerJson.giveLetter((String) jsonData.get("letter5"), "z");
-            rate = InitializerJson.giveDouble((String) jsonData.get("rate"), DEFAULT_RATE);
-            iterations = InitializerJson.giveInt((String) jsonData.get("iterations"), DEFAULT_ITERATIONS);
-            hopfieldIterations = InitializerJson.giveInt((String) jsonData.get("hopfieldIterations"), DEFAULT_HOP_ITERATIONS);
-            hopfieldBits = InitializerJson.giveInt((String) jsonData.get("hopfieldBits"), DEFAULT_HOP_BITS);
-            initialized = InitializerJson.giveBoolean((String) jsonData.get("initialized"));
-            if (hopfieldBits > 25)
-                hopfieldBits = DEFAULT_HOP_BITS;
-            k = InitializerJson.giveInt((String) jsonData.get("k"), DEFAULT_K);
-            delta = InitializerJson.giveInt((String) jsonData.get("delta"), DEFAULT_DELTA);
+            data = (JSONObject) parser.parse(new FileReader("config.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error reading config in TP2");
+            return;
+        }
+        String auxData = (String) data.get("mlp_lrate_xor");
+        float mlp_lrate_xor;
+        if (auxData == null)
+            mlp_lrate_xor = DEFAULT_LRATE_XOR;
+        else
+            mlp_lrate_xor = Float.parseFloat(auxData);
+        auxData = (String) data.get("mlp_lrate_even");
+        float mlp_lrate_even;
+        if (auxData == null)
+            mlp_lrate_even = DEFAULT_LRATE_EVEN;
+        else
+            mlp_lrate_even = Float.parseFloat(auxData);
+        auxData = (String) data.get("mlp_iter_xor");
+        int mlp_iter_xor;
+        if (auxData == null)
+            mlp_iter_xor = DEFAULT_ITER_XOR;
+        else
+            mlp_iter_xor = Integer.parseInt(auxData);
+        auxData = (String) data.get("mlp_iter_even");
+        int mlp_iter_even;
+        if (auxData == null)
+            mlp_iter_even = DEFAULT_ITER_EVEN;
+        else
+            mlp_iter_even = Integer.parseInt(auxData);
+        auxData = (String) data.get("mlp_even_partition");
+        int mlp_even_partition;
+        if (auxData == null)
+            mlp_even_partition = DEFAULT_EVEN_PARTITION;
+        else
+            mlp_even_partition = Integer.parseInt(auxData);
+        float threshold;
+        auxData = (String) data.get("threshold");
+        if (auxData == null)
+            threshold = DEFAULT_THRESHOLD;
+        else
+            threshold = Float.parseFloat(auxData);
+        float accuracy;
+        auxData = (String) data.get("accuracy");
+        if (auxData == null)
+            accuracy = DEFAULT_ACCURACY;
+        else
+            accuracy = Float.parseFloat(auxData);
+
+        long start = System.nanoTime();
+
+        File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
+        ArrayList<Integer[]> aux3 = new ArrayList<>();
+        aux3 = new ArrayList<Integer[]>();
+
+        System.out.println("\n\n=======\nMultiLayer Perceptron");
+
+        System.out.println("\n********** XOR **********\n");
+
+        // initialization
+        ArrayList<float[]> input = new ArrayList<float[]>();
+        ArrayList<float[]> output = new ArrayList<float[]>();
+        for (int i = 0; i < 4; i++) {
+            input.add(new float[2]);
+            output.add(new float[1]);
+        }
+
+        // fill the examples database
+        input.get(0)[0] = -1; input.get(0)[1] = 1;  output.get(0)[0] = 1;
+        input.get(1)[0] = 1;  input.get(1)[1] = 1;  output.get(1)[0] = -1;
+        input.get(2)[0] = 1;  input.get(2)[1] = -1; output.get(2)[0] = 1;
+        input.get(3)[0] = -1; input.get(3)[1] = -1; output.get(3)[0] = -1;
+
+        int nn_neurons[] = {
+                input.get(0).length,
+                input.get(0).length,
+                output.get(0).length
+        };
+
+        MultiLayerPerceptron mlp = new MultiLayerPerceptron(nn_neurons);
+
+        try {
+            FileWriter csvWriter = null;
+            csvWriter = new FileWriter("Ejercicio3-xor.csv");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            long nowSeconds = System.nanoTime();
+            double elapsedTimeInSecond = (double) (nowSeconds - start) / 1000000000;
+            csvWriter.append("Time: " + dtf.format(now));
+            csvWriter.append("\n");
+            csvWriter.append("Execution time: " + elapsedTimeInSecond + " seconds");
+            csvWriter.append("\n");
+
+            for (int i = 0; i < mlp_iter_xor; i++) {
+                mlp.learn(input, output, mlp_lrate_xor, mlp_iter_xor, threshold);
+                float error = mlp.evaluateQuadraticError(input, output);
+                System.out.println(" => Error = " + error);
+                csvWriter.append(error + "\n");
+            }
+
+            csvWriter.flush();
+            csvWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
-            return;
-        } catch (ParseException e) {
+        }
+
+        float[] a = mlp.getOutput();
+        for (int m = 0; m < output.size(); m++){
+            System.out.println("Esperada: " + output.get(m)[0] + ", Calculada: " + a[m]);
+        }
+
+        System.out.println("\n********** Even number **********\n");
+
+        long start2 = System.nanoTime();
+
+        ArrayList<float[]> input1 = new ArrayList<float[]>();
+        ArrayList<float[]> input2 = new ArrayList<float[]>();
+        ArrayList<float[]> output1 = new ArrayList<float[]>();
+        ArrayList<float[]> output2 = new ArrayList<float[]>();
+
+        int[] outputAux = {1, -1, 1, -1, 1, -1, 1, -1, 1, -1};
+
+        // initialization
+        for (int i = 0; i < mlp_even_partition; i++){
+            input1.add(new float[35]);
+            output1.add(new float[1]);
+        }
+
+        for (int i = 0; i < (10 - mlp_even_partition); i++){
+            input2.add(new float[35]);
+            output2.add(new float[1]);
+        }
+
+        // fill the examples database
+        for (int z = 0; z < 10; z++) {
+            for (int i = (z * 7); i < (z+1) * 7 ; i++) {
+                Integer[] auxList = aux3.get(i);
+                for (int j = 0; j < auxList.length; j++) {
+                    if (z < mlp_even_partition) {
+                        input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
+                        //System.out.println(input.get(z)[j + ((i%7) * 5)] + "  input(" + z + ")[" + (j + ((i%7) * 5)) + "]");
+                    }else {
+                        input2.get(z - mlp_even_partition)[j + ((i%7) * 5)] = auxList[j];
+                        //System.out.println(input.get(z-5)[j + ((i%7) * 5)] + "  input(" + (z-5) + ")[" + (j + ((i%7) * 5)) + "]");
+                    }
+                }
+                //System.out.println("\n");
+            }
+            if (z < mlp_even_partition) {
+                output1.get(z)[0] = outputAux[z];
+            }else {
+                output2.get(z - mlp_even_partition)[0] = outputAux[z];
+            }
+        }
+
+
+        int nn_neurons2[] = {
+                input1.get(0).length,
+                input1.get(0).length,
+                output1.get(0).length
+        };
+
+        MultiLayerPerceptron mlp1 = new MultiLayerPerceptron(nn_neurons2);
+
+        try {
+            FileWriter csvWriter2 = null;
+            csvWriter2 = new FileWriter("Ejercicio3-even.csv");
+            DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now2 = LocalDateTime.now();
+            long nowSeconds2 = System.nanoTime();
+            double elapsedTimeInSecond2 = (double) (nowSeconds2 - start2) / 1000000000;
+            csvWriter2.append("Time: " + dtf2.format(now2));
+            csvWriter2.append("\n");
+            csvWriter2.append("Execution time: " + elapsedTimeInSecond2 + " seconds");
+            csvWriter2.append("\n");
+
+            ArrayList<Float> trainErrors = new ArrayList<>();
+            ArrayList<Float> testErrors = new ArrayList<>();
+
+            for (int i = 0; i < 10; i++) {
+                mlp1.learn(input1, output1, mlp_lrate_even, mlp_iter_even, threshold);
+                float error1 = mlp1.evaluateAccuracy(input1, output1, accuracy);
+                float error2 = mlp1.evaluateAccuracy(input2, output2,accuracy);
+                trainErrors.add(error1);
+                testErrors.add(error2);
+                System.out.println(i + " -> error : " + error2);
+            }
+
+            csvWriter2.append("\nTrain Error\n");
+
+            for (float e: trainErrors) {
+                csvWriter2.append(e + "\n");
+            }
+
+            csvWriter2.append("\nTest Error\n");
+
+            for (float e: testErrors) {
+                csvWriter2.append(e + "\n");
+            }
+
+            csvWriter2.flush();
+            csvWriter2.close();
+        } catch (IOException e) {
             e.printStackTrace();
-            return;
         }
 
-        ArrayList<ArrayList<Integer>> letters = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            String[] data;
-            ArrayList<Integer> letter = new ArrayList<>();
-            try {
-                switch (i) {
-                    case 0:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter1 + ".csv"));
-                        break;
-                    case 1:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter2 + ".csv"));
-                        break;
-                    case 2:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter3 + ".csv"));
-                        break;
-                    case 3:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter4 + ".csv"));
-                        break;
-                    default:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter5 + ".csv"));
-                        break;
+        float[] a2 = mlp1.getOutput();
+        for (int m = 0; m < output2.size(); m++){
+            System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
+        }
+
+        System.out.println("\n********** Even number full **********\n");
+
+        long start3 = System.nanoTime();
+
+        input1 = new ArrayList<float[]>();
+        input2 = new ArrayList<float[]>();
+        output1 = new ArrayList<float[]>();
+        output2 = new ArrayList<float[]>();
+
+        // initialization
+        for (int i = 0; i < 7; i++){
+            input1.add(new float[35]);
+            output1.add(new float[1]);
+        }
+
+        // fill the examples database
+        for (int z = 0; z < 7; z++) {
+            for (int i = (z * 7); i < (z+1) * 7 ; i++) {
+                Integer[] auxList = aux3.get(i);
+                for (int j = 0; j < auxList.length; j++) {
+                    input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
+
                 }
-                String row;
-                while ((row = csvReader.readLine()) != null) {
-                    data = row.split(",");
-                    for (String s: data) {
-                        letter.add(Integer.parseInt(s.trim()));
-                    }
-                }
-
-                letters.add(letter);
-                csvReader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                //System.out.println("\n");
             }
+            output1.get(z)[0] = outputAux[z];
         }
 
-        if (ej.equals("Hopfield")) {
-            System.out.println("Hopfield Ejs:");
-            Hopf.startHopfield(letters, hopfieldIterations, hopfieldBits);
-            return;
+
+        int nn_neurons3[] = {
+                input1.get(0).length,
+                input1.get(0).length,
+                output1.get(0).length
+        };
+
+        MultiLayerPerceptron mlp2 = new MultiLayerPerceptron(nn_neurons3);
+
+        try {
+            FileWriter csvWriter3 = null;
+            csvWriter3 = new FileWriter("results3.csv");
+            DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now3 = LocalDateTime.now();
+            long nowSeconds3 = System.nanoTime();
+            double elapsedTimeInSecond3 = (double) (nowSeconds3 - start3) / 1000000000;
+            csvWriter3.append("Time: " + dtf3.format(now3));
+            csvWriter3.append("\n");
+            csvWriter3.append("Execution time: " + elapsedTimeInSecond3 + " seconds");
+            csvWriter3.append("\n");
+
+            ArrayList<Float> trainErrors = new ArrayList<>();
+
+            for (int i = 0; i < 10; i++) {
+                mlp2.learn(input1, output1, mlp_lrate_even, mlp_iter_even, threshold);
+                float error1 = mlp2.evaluateAccuracy(input1, output1, accuracy);
+                float error2 = mlp2.evaluateAccuracy(input2, output2,accuracy);
+                trainErrors.add(error1);
+                System.out.println(i + " -> Error : " + error1);
+            }
+
+            csvWriter3.append("\nTrain Error\n");
+
+            for (float e: trainErrors) {
+                csvWriter3.append(e + "\n");
+            }
+
+
+            csvWriter3.flush();
+            csvWriter3.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        String country;
-        Double area;
-        Double gdp;
-        Double inflation;
-        Double lifeExpect;
-        Double military;
-        Double popGrowth;
-        Double unemployment;
-        /*
-        for (int trainingPatterns = 0; trainingPatterns < sp.length; trainingPatterns++) {
-            float[] storedPattern = Hopfield.getPattern(sp[trainingPatterns]);
-
-            // Get training pattern and run the learning function.
-            trainingPattern = new Hopfield(storedPattern.length);
-            trainingPattern.learn(storedPattern);
-        }
-
-        for (int i = 0; i < ip.length; i++) {
-            // Get the patterns into int array format
-            float[] incompletePattern = Hopfield.getPattern(ip[i]);
-
-            // Generate the network output.
-            Hopfield.generateOutput(trainingPattern, incompletePattern);
-        }
-        */
-        csvFile = new File("europe.csv");
-        String[] data;
-        ArrayList<Country> countries = new ArrayList<>();
-        if (csvFile.isFile()) {
-            try {
-                csvReader = new BufferedReader(new FileReader("europe.csv"));
-                String row;
-                boolean isFirstLine = true;
-                while ((row = csvReader.readLine()) != null) {
-                    data = row.split(",");
-                    if (isFirstLine) {
-                        isFirstLine = false;
-                    } else {
-                        data = row.split(",");
-                        country = data[0];
-                        area = Double.parseDouble(data[1]);
-                        gdp = Double.parseDouble(data[2]);
-                        inflation = Double.parseDouble(data[3]);
-                        lifeExpect = Double.parseDouble(data[4]);
-                        military = Double.parseDouble(data[5]);
-                        popGrowth = Double.parseDouble(data[6]);
-                        unemployment = Double.parseDouble(data[7]);
-                        countries.add(new Country(country, area, gdp, inflation, lifeExpect, military, popGrowth, unemployment));
-                    }
-                }
-                csvReader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Country media = new Country();
-            for (Country c : countries) {
-                media.setArea(media.getArea() + (c.getArea() / countries.size()));
-                media.setGdp(media.getGdp() + (c.getGdp() / countries.size()));
-                media.setInflation(media.getInflation() + (c.getInflation() / countries.size()));
-                media.setLifeExpect(media.getLifeExpect() + (c.getLifeExpect() / countries.size()));
-                media.setMilitary(media.getMilitary() + (c.getMilitary() / countries.size()));
-                media.setPopGrowth(media.getPopGrowth() + (c.getPopGrowth() / countries.size()));
-                media.setUnemployment(media.getUnemployment() + (c.getUnemployment() / countries.size()));
-            }
-
-            Country covarianza = new Country();
-            for (Country c: countries) {
-                covarianza.setArea(covarianza.getArea() + (Math.pow((c.getArea() - media.getArea()) , 2 ) / (countries.size() - 1)));
-                covarianza.setGdp(covarianza.getGdp() + (Math.pow((c.getGdp() - media.getGdp()) , 2 ) / (countries.size() - 1)));
-                covarianza.setInflation(covarianza.getInflation() + (Math.pow((c.getInflation() - media.getInflation()) , 2 ) / (countries.size() - 1)));
-                covarianza.setLifeExpect(covarianza.getLifeExpect() + (Math.pow((c.getLifeExpect() - media.getLifeExpect()) , 2 ) / (countries.size() - 1)));
-                covarianza.setMilitary(covarianza.getMilitary() + (Math.pow((c.getMilitary() - media.getMilitary()) , 2 ) / (countries.size() - 1)));
-                covarianza.setPopGrowth(covarianza.getPopGrowth() + (Math.pow((c.getPopGrowth() - media.getPopGrowth()) , 2 ) / (countries.size() - 1)));
-                covarianza.setUnemployment(covarianza.getUnemployment() + (Math.pow((c.getUnemployment() - media.getUnemployment()) , 2 ) / (countries.size() - 1)));
-            }
-
-            ArrayList<Country> normalizeCountries = new ArrayList<>();
-            for (Country c : countries) {
-                area = (c.getArea() - media.getArea()) / Math.sqrt(covarianza.getArea());
-                gdp = (c.getGdp() - media.getGdp()) / Math.sqrt(covarianza.getGdp());
-                inflation = (c.getInflation() - media.getInflation()) / Math.sqrt(covarianza.getInflation());
-                lifeExpect = (c.getLifeExpect() - media.getLifeExpect()) / Math.sqrt(covarianza.getLifeExpect());
-                military = (c.getMilitary() - media.getMilitary()) / Math.sqrt(covarianza.getMilitary());
-                popGrowth = (c.getPopGrowth() - media.getPopGrowth()) / Math.sqrt(covarianza.getPopGrowth());
-                unemployment = (c.getUnemployment() - media.getUnemployment()) / Math.sqrt(covarianza.getUnemployment());
-                normalizeCountries.add(new Country(c.getCountry(),area,gdp,inflation,lifeExpect,military,popGrowth,unemployment));
-            }
-
-            double[][] countriesMatrix = new double[countries.size()][7];
-            for (int i = 0; i < countries.size(); i++) {
-                Country aux = countries.get(i);
-                countriesMatrix[i][0] = aux.getArea();
-                countriesMatrix[i][1] = aux.getGdp();
-                countriesMatrix[i][2] = aux.getInflation();
-                countriesMatrix[i][3] = aux.getLifeExpect();
-                countriesMatrix[i][4] = aux.getMilitary();
-                countriesMatrix[i][5] = aux.getPopGrowth();
-                countriesMatrix[i][6] = aux.getUnemployment();
-            }
-
-            double[][] normalizedMatrix = new double[countries.size()][7];
-            for (int i = 0; i < normalizeCountries.size(); i++) {
-                Country aux = normalizeCountries.get(i);
-                normalizedMatrix[i][0] = aux.getArea();
-                normalizedMatrix[i][1] = aux.getGdp();
-                normalizedMatrix[i][2] = aux.getInflation();
-                normalizedMatrix[i][3] = aux.getLifeExpect();
-                normalizedMatrix[i][4] = aux.getMilitary();
-                normalizedMatrix[i][5] = aux.getPopGrowth();
-                normalizedMatrix[i][6] = aux.getUnemployment();
-            }
+        float[] a3 = mlp2.getOutput();
+        for (int m = 0; m < output2.size(); m++){
+            System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a3[m]);
         }
 
         return;
-
-    }
-
-    private static double fillMatrix(int i, int k, double[][] matrix, Country media, int size) {
-        double aux = 0;
-        for (int j = 0; j < size; j++) {
-            aux += (matrix[i][j] - media.getByNumber(i)) * (matrix[k][j] - media.getByNumber(k));
-        }
-        return aux / 7;
     }
 }
