@@ -260,11 +260,45 @@ public class Main {
             output1.get(z)[0] = outputAux[z];
         }
 
+        MultiLayerPerceptron mlp2;
+        int nn_neurons3[];
+        float errAvg = 9999;
 
-        int nn_neurons3[] = LayerCreator.generateLayer(input1.get(0).length);
+        do {
+            nn_neurons3 = LayerCreator.generateLayer(input1.get(0).length);
+            mlp2 = new MultiLayerPerceptron(nn_neurons3);
 
-        MultiLayerPerceptron mlp2 = new MultiLayerPerceptron(nn_neurons3);
+            DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now3 = LocalDateTime.now();
+            long nowSeconds3 = System.nanoTime();
+            double elapsedTimeInSecond3 = (double) (nowSeconds3 - start3) / 1000000000;
+            ArrayList<Float> trainErrors = new ArrayList<>();
 
+
+            for (int i = 0; i < 10; i++) {
+                mlp2.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
+                float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
+                float error2 = mlp2.evaluateAccuracy(input2, input2,accuracy);
+                trainErrors.add(error1);
+                //System.out.println(i + " -> Error : " + error1);
+            }
+
+            errAvg = 0 ;
+
+            for (Float e: trainErrors) {
+                errAvg += e;
+            }
+
+            errAvg = errAvg / trainErrors.size();
+
+        } while (errAvg > 0.000001);
+
+
+
+
+
+
+        /*
         try {
             FileWriter csvWriter3 = null;
             csvWriter3 = new FileWriter("results3.csv");
@@ -303,7 +337,7 @@ public class Main {
         float[] a3 = mlp2.getOutput();
         for (int m = 0; m < output2.size(); m++){
             System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a3[m]);
-        }
+        }*/
 
         return;
     }
