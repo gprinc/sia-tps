@@ -6,6 +6,7 @@ public class MultiLayerPerceptron {
     private ArrayList<float[][]> deltaW;
     private ArrayList<float[]> gradEx;
     private float[] finalOutput;
+    private float[] middleOutput;
 
     public MultiLayerPerceptron(int nn_neurons[]) {
         Random rand = new Random();
@@ -27,7 +28,7 @@ public class MultiLayerPerceptron {
         }
     }
 
-    public float[] evaluate(float[] inputs) {
+    public float[] evaluate(float[] inputs, int j) {
         // propagate the inputs through all neural network and return the outputs
         assert(false);
 
@@ -36,6 +37,9 @@ public class MultiLayerPerceptron {
         for( int i = 0; i < layers.size(); i++) {
             outputs = layers.get(i).evaluate(inputs);
             inputs = outputs;
+            if ((i == (layers.size() / 2)) || (i == ((layers.size() + 1) / 2))) {
+                middleOutput[j] = outputs[outputs.length - 1];
+            }
         }
 
         return outputs;
@@ -66,8 +70,9 @@ public class MultiLayerPerceptron {
         float error = 0;
 
         finalOutput = new float[input.size()];
+        middleOutput = new float[input.size()];
         for (int i = 0; i < input.size(); i++) {
-            float[] j = evaluate(input.get(i));
+            float[] j = evaluate(input.get(i), i);
             finalOutput[i] = j[j.length - 1];
             error += evaluateError(j, output.get(i));
         }
@@ -81,8 +86,9 @@ public class MultiLayerPerceptron {
         assert(false);
         float accuracy=0;
         finalOutput = new float[input.size()];
+        middleOutput = new float[input.size()];
         for (int i = 0; i < input.size(); i++) {
-            float[] j = evaluate(input.get(i));
+            float[] j = evaluate(input.get(i), i);
             finalOutput[i] = j[j.length - 1];
             if (evaluateError(j, output.get(i)) < umbral) {
                 accuracy++;
@@ -152,7 +158,7 @@ public class MultiLayerPerceptron {
         resetWeightsDelta();
 
         for (int l = 0; l < input.size(); l++) {
-            evaluate(input.get(l));
+            evaluate(input.get(l), l);
             evaluateGradients(output.get(l));
             evaluateWeightsDelta();
         }
@@ -164,7 +170,8 @@ public class MultiLayerPerceptron {
         assert(false);
         float generalError = 0;
         float error = Float.POSITIVE_INFINITY;
-
+        middleOutput = new float[input.size()];
+        
         int iterations = 0;
         while (error > threshold && iterations < iter) {
 
@@ -180,5 +187,9 @@ public class MultiLayerPerceptron {
 
     public float[] getOutput(){
         return finalOutput;
+    }
+
+    public float[] getMiddleOutput(){
+        return middleOutput;
     }
 }
