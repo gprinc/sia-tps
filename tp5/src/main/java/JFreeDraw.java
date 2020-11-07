@@ -52,8 +52,8 @@ public class JFreeDraw extends JFrame {
     }
 
     private JFreeChart createChart(XYDataset dataset) {
-        
-        JFreeChart chart = ChartFactory.createXYLineChart(
+
+        JFreeChart chart = ChartFactory.createScatterPlot(
                 "Average salary per age",
                 "X",
                 "Y",
@@ -64,20 +64,6 @@ public class JFreeDraw extends JFrame {
                 false
         );
 
-        XYPlot plot = chart.getXYPlot();
-
-        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        renderer.setSeriesPaint(0, Color.RED);
-        renderer.setSeriesStroke(0, new BasicStroke(2.0f));
-
-        plot.setRenderer(renderer);
-        plot.setBackgroundPaint(Color.white);
-
-        plot.setRangeGridlinesVisible(true);
-        plot.setRangeGridlinePaint(Color.BLACK);
-
-        plot.setDomainGridlinesVisible(true);
-        plot.setDomainGridlinePaint(Color.BLACK);
 
         chart.getLegend().setFrame(BlockBorder.NONE);
 
