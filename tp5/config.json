@@ -4,6 +4,6 @@
   "mlp_lrate_xor": "0.3f",
   "mlp_lrate_even": "0.01f",
   "mlp_iter_xor": "100",
-  "mlp_iter_even": "100",
+  "mlp_iter_even": "1",
   "mlp_even_partition": "6"
 }
