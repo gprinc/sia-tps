@@ -154,7 +154,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        getLetter();
+        getLetters();
         return;
     }
 
@@ -172,7 +172,7 @@ public class Main {
         return aux;
     }
 
-    static ArrayList<String[]> getLetter(){
+    static ArrayList<String[]> getLetters(){
         ArrayList<String[]> letters = new ArrayList<>();
         String[] letterInBinary = new String[7];
         String aux;
@@ -183,7 +183,6 @@ public class Main {
                     aux = aux.substring(aux.length() - 5);
                 aux = completeString(aux);
                 letterInBinary[i] = aux;
-                System.out.println(letterInBinary[i]);
             }
             letters.add(letterInBinary);
         }
