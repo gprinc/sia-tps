@@ -145,6 +145,10 @@ public class Main {
 
             for (int i = 0; i < 10; i++) {
                 mlp2.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
+                float[] middleOutput = mlp2.getMiddleOutput();
+                for (int j = 0; j < middleOutput.length; j++) {
+                    System.out.println("middleOutput[" + j + "] : " + middleOutput[j]);
+                }
                 float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
                 trainErrors.add(error1);
                 System.out.println(i + " -> Error : " + error1);
