@@ -20,8 +20,9 @@ public class JFreeDraw extends JFrame {
     }
 
     private void initUI() {
-        int[][] data = new int[0][0];
-        XYDataset dataset = createDataset(data);
+        float[] data1 = { 1, 2,3,4};
+        float[] data2 = { 1, 2,3,4};
+        XYDataset dataset = createDataset(data1, data2);
         JFreeChart chart = createChart(dataset);
 
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -35,15 +36,13 @@ public class JFreeDraw extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private XYDataset createDataset(int[][] data) {
+    private XYDataset createDataset(float[] data1, float[] data2) {
 
         XYSeries series = new XYSeries("Layer");
-        // TODO use data
-        series.add(18, 567);
-        series.add(18, 612);
-        series.add(25, 612);
-        series.add(25, 567);
-        series.add(18, 567);
+
+        for (int i = 0; i < data1.length && i < data2.length; i++) {
+            series.add(data1[i], data2[i]);
+        }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
@@ -77,10 +76,10 @@ public class JFreeDraw extends JFrame {
 
     public static void main(String[] args) {
 
-        EventQueue.invokeLater(() -> {
+        /*EventQueue.invokeLater(() -> {
 
             JFreeDraw ex = new JFreeDraw();
             ex.setVisible(true);
-        });
+        });*/
     }
 }
