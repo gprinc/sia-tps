@@ -2,9 +2,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Main {
     private static final float DEFAULT_LRATE_XOR = 0.3f;
@@ -15,7 +17,7 @@ public class Main {
     private static final float DEFAULT_THRESHOLD = 0.1f;
     private static final float DEFAULT_ACCURACY = 0.001f;
 
-    public static void main(String[] args) {
+    public static void sarasa(String[] args) {
         JSONParser parser = new JSONParser();
         JSONObject data;
         try {
@@ -149,5 +151,42 @@ public class Main {
         } while (errAvg > 0.000001);
 
         return;
+    }
+
+    public static void main(String[] args) {
+        getLetter();
+        return;
+    }
+
+    static String hexToBin(String s) {
+        return new BigInteger(s, 16).toString(2);
+    }
+
+    static String completeString(String s) {
+        String aux = s;
+        int amount = 5 - aux.length();
+        while (amount > 0) {
+            amount--;
+            aux = '0' + aux;
+        }
+        return aux;
+    }
+
+    static ArrayList<String[]> getLetter(){
+        ArrayList<String[]> letters = new ArrayList<>();
+        String[] letterInBinary = new String[7];
+        String aux;
+        for (int j = 0; j < 32; j++) {
+            for (int i = 0; i < 7; i++) {
+                aux = hexToBin(String.valueOf(Fonts.font1[j][i]));
+                if (aux.length() > 5)
+                    aux = aux.substring(aux.length() - 5);
+                aux = completeString(aux);
+                letterInBinary[i] = aux;
+                System.out.println(letterInBinary[i]);
+            }
+            letters.add(letterInBinary);
+        }
+        return letters;
     }
 }
