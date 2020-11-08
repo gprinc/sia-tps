@@ -6,7 +6,6 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Main {
     private static final float DEFAULT_LRATE_XOR = 0.3f;
@@ -17,7 +16,7 @@ public class Main {
     private static final float DEFAULT_THRESHOLD = 0.1f;
     private static final float DEFAULT_ACCURACY = 0.001f;
 
-    public static void sarasa(String[] args) {
+    public static void main(String[] args) {
         JSONParser parser = new JSONParser();
         JSONObject data;
         try {
@@ -76,9 +75,6 @@ public class Main {
 
         System.out.println("\n\n=======\nMultiLayer Perceptron");
 
-        System.out.println("\n********** Even number **********\n");
-
-
         ArrayList<float[]> input1 = new ArrayList<float[]>();
         ArrayList<float[]> input2 = new ArrayList<float[]>();
         ArrayList<float[]> output1 = new ArrayList<float[]>();
@@ -112,6 +108,20 @@ public class Main {
             }
         }
 
+        ArrayList<ArrayList<Integer>> lettersN = getLetters();
+        input1 = new ArrayList<float[]>();
+
+        for (int i = 0; i < lettersN.size(); i++) {
+            ArrayList<Integer> aux = lettersN.get(i);
+            float[] floatA = new float[aux.size()];
+            for (int j = 0; j < aux.size(); j++) {
+                floatA[j] = aux.get(j);
+            }
+            input1.add(floatA);
+        }
+
+        System.out.println(input1.size());
+
 
         System.out.println("\n********** Even number full **********\n");
 
@@ -119,7 +129,7 @@ public class Main {
 
         MultiLayerPerceptron mlp2;
         int nn_neurons3[];
-        float errAvg = 9999;
+        float errAvg;
 
         do {
             nn_neurons3 = LayerCreator.generateLayer(input1.get(0).length);
@@ -137,7 +147,7 @@ public class Main {
                 mlp2.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
                 float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
                 trainErrors.add(error1);
-                //System.out.println(i + " -> Error : " + error1);
+                System.out.println(i + " -> Error : " + error1);
             }
 
             errAvg = 0 ;
@@ -150,11 +160,6 @@ public class Main {
 
         } while (errAvg > 0.000001);
 
-        return;
-    }
-
-    public static void main(String[] args) {
-        getLetters();
         return;
     }
 
@@ -172,10 +177,10 @@ public class Main {
         return aux;
     }
 
-    static ArrayList<String[]> getLetters(){
-        ArrayList<String[]> letters = new ArrayList<>();
+    static ArrayList<ArrayList<Integer>> getLetters(){
         String[] letterInBinary = new String[7];
         String aux;
+        ArrayList<ArrayList<Integer>> lettersN = new ArrayList<>();
         for (int j = 0; j < 32; j++) {
             for (int i = 0; i < 7; i++) {
                 aux = hexToBin(String.valueOf(Fonts.font1[j][i]));
@@ -184,8 +189,16 @@ public class Main {
                 aux = completeString(aux);
                 letterInBinary[i] = aux;
             }
-            letters.add(letterInBinary);
+            ArrayList<Integer> bite = new ArrayList<>();
+            for (String s: letterInBinary) {
+                char[]c = s.toCharArray();
+
+                for (int i = 0; i < c.length; i++) {
+                    bite.add( c[i] - '0');
+                }
+            }
+            lettersN.add(bite);
         }
-        return letters;
+        return lettersN;
     }
 }
