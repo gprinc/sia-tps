@@ -8,9 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Main {
-    private static final float DEFAULT_LRATE_XOR = 0.3f;
     private static final float DEFAULT_LRATE_EVEN = 0.1f;
-    private static final int DEFAULT_ITER_XOR = 100;
     private static final int DEFAULT_ITER_EVEN = 5;
     private static final int DEFAULT_EVEN_PARTITION = 5;
     private static final float DEFAULT_THRESHOLD = 0.1f;
@@ -26,24 +24,12 @@ public class Main {
             System.out.println("Error reading config in TP2");
             return;
         }
-        String auxData = (String) data.get("mlp_lrate_xor");
-        float mlp_lrate_xor;
-        if (auxData == null)
-            mlp_lrate_xor = DEFAULT_LRATE_XOR;
-        else
-            mlp_lrate_xor = Float.parseFloat(auxData);
-        auxData = (String) data.get("mlp_lrate_even");
+        String auxData = (String) data.get("mlp_lrate_even");
         float mlp_lrate_even;
         if (auxData == null)
             mlp_lrate_even = DEFAULT_LRATE_EVEN;
         else
             mlp_lrate_even = Float.parseFloat(auxData);
-        auxData = (String) data.get("mlp_iter_xor");
-        int mlp_iter_xor;
-        if (auxData == null)
-            mlp_iter_xor = DEFAULT_ITER_XOR;
-        else
-            mlp_iter_xor = Integer.parseInt(auxData);
         auxData = (String) data.get("mlp_iter_even");
         int mlp_iter_even;
         if (auxData == null)
@@ -123,7 +109,7 @@ public class Main {
         System.out.println(input1.size());
 
 
-        System.out.println("\n********** Even number full **********\n");
+        System.out.println("\n********** Initialized font **********\n");
 
         long start3 = System.nanoTime();
 
