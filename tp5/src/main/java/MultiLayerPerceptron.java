@@ -5,8 +5,8 @@ public class MultiLayerPerceptron {
     private ArrayList<Layer> layers;
     private ArrayList<float[][]> deltaW;
     private ArrayList<float[]> gradEx;
-    private float[] finalOutput;
-    private float[] middleOutput;
+    private float[][] finalOutput;
+    private float[][] middleOutput;
 
     public MultiLayerPerceptron(int nn_neurons[]) {
         Random rand = new Random();
@@ -38,7 +38,7 @@ public class MultiLayerPerceptron {
             outputs = layers.get(i).evaluate(inputs);
             inputs = outputs;
             if ((i == (layers.size() / 2)) || (i == ((layers.size() + 1) / 2))) {
-                middleOutput[j] = outputs[outputs.length - 1];
+                middleOutput[j] = outputs;
             }
         }
 
@@ -57,10 +57,36 @@ public class MultiLayerPerceptron {
         assert(nn_output.length == d.length);
 
         float error = 0;
-        for (int i = 0; i < nn_output.length; i++)
-            error += (nn_output[i] - d[i]) * (nn_output[i] - d[i]);
+        for (int i = 0; i < nn_output.length; i++){
+            if (nn_output[i] != d[i]) {
+                error++;
 
-        return error;
+            }
+        }
+        //System.out.println(error / nn_output.length);
+
+        return error / nn_output.length;
+    }
+
+    private float evaluateError(float nn_output[], float desiredOutput[], float accuracy) {
+        float d[];
+
+        // add bias to input if necessary
+        if (desiredOutput.length != nn_output.length)
+            d = Layer.add_bias(desiredOutput);
+        else
+            d = desiredOutput;
+
+        assert(nn_output.length == d.length);
+
+        float error = 0;
+        for (int i = 0; i < nn_output.length; i++){
+            if (Math.abs(nn_output[i] - d[i]) > accuracy) {
+                error++;
+            }
+        }
+
+        return error / nn_output.length;
     }
 
     public float evaluateQuadraticError(ArrayList<float[]> input, ArrayList<float[]> output) {
@@ -69,11 +95,11 @@ public class MultiLayerPerceptron {
 
         float error = 0;
 
-        finalOutput = new float[input.size()];
-        middleOutput = new float[input.size()];
+        finalOutput = new float[input.size()][];
+        middleOutput = new float[input.size()][];
         for (int i = 0; i < input.size(); i++) {
             float[] j = evaluate(input.get(i), i);
-            finalOutput[i] = j[j.length - 1];
+            finalOutput[i] = j;
             error += evaluateError(j, output.get(i));
         }
 
@@ -85,15 +111,14 @@ public class MultiLayerPerceptron {
         // this function calculate the Acurracy
         assert(false);
         float accuracy=0;
-        finalOutput = new float[input.size()];
-        middleOutput = new float[input.size()];
+        finalOutput = new float[input.size()][];
+        middleOutput = new float[input.size()][];
         for (int i = 0; i < input.size(); i++) {
             float[] j = evaluate(input.get(i), i);
             finalOutput[i] = j[j.length - 1];
-            if (evaluateError(j, output.get(i)) < umbral) {
+            if (evaluateError(j, output.get(i), umbral) < umbral) {
                 accuracy++;
             }
-
         }
 
         return accuracy / input.size();
@@ -170,7 +195,7 @@ public class MultiLayerPerceptron {
         assert(false);
         float generalError = 0;
         float error = Float.POSITIVE_INFINITY;
-        middleOutput = new float[input.size()];
+        middleOutput = new float[input.size()][];
         
         int iterations = 0;
         while (error > threshold && iterations < iter) {
@@ -185,11 +210,11 @@ public class MultiLayerPerceptron {
         return generalError / input.size();
     }
 
-    public float[] getOutput(){
+    public float[][] getOutput(){
         return finalOutput;
     }
 
-    public float[] getMiddleOutput(){
+    public float[][] getMiddleOutput(){
         return middleOutput;
     }
 }

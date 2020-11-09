@@ -131,9 +131,11 @@ public class Main {
 
             for (int i = 0; i < 10; i++) {
                 mlp2.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
-                float[] middleOutput = mlp2.getMiddleOutput();
+                float[][] middleOutput = mlp2.getMiddleOutput();
                 for (int j = 0; j < middleOutput.length; j++) {
-                    System.out.println("middleOutput[" + j + "] : " + middleOutput[j]);
+                    for (int k = 0; k < middleOutput[0].length; k++) {
+                        System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
+                    }
                 }
                 float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
                 trainErrors.add(error1);
@@ -148,7 +150,13 @@ public class Main {
 
             errAvg = errAvg / trainErrors.size();
 
-        } while (errAvg > 0.000001);
+
+            float[] a2 = mlp2.getOutput();
+            for (int m = 0; m < output2.size(); m++){
+                //System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
+            }
+
+        } while (errAvg < 0.8); // en realidad es la accuracy
 
         return;
     }
