@@ -150,7 +150,13 @@ public class Main {
 
             errAvg = errAvg / trainErrors.size();
 
-        } while (errAvg > 0.000001);
+
+            float[] a2 = mlp2.getOutput();
+            for (int m = 0; m < output2.size(); m++){
+                //System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
+            }
+
+        } while (errAvg < 0.8); // en realidad es la accuracy
 
         return;
     }
