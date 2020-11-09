@@ -3,8 +3,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -15,13 +13,11 @@ import java.awt.*;
 
 public class JFreeDraw extends JFrame {
 
-    public JFreeDraw() {
-        initUI();
+    public JFreeDraw(float[] data1, float[] data2) {
+        initUI(data1, data2);
     }
 
-    private void initUI() {
-        float[] data1 = { 1, 2,3,4};
-        float[] data2 = { 1, 2,3,4};
+    private void initUI(float[] data1, float[] data2) {
         XYDataset dataset = createDataset(data1, data2);
         JFreeChart chart = createChart(dataset);
 
@@ -31,7 +27,7 @@ public class JFreeDraw extends JFrame {
         add(chartPanel);
 
         pack();
-        setTitle("Line chart");
+        setTitle("Neurons");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -53,7 +49,7 @@ public class JFreeDraw extends JFrame {
     private JFreeChart createChart(XYDataset dataset) {
 
         JFreeChart chart = ChartFactory.createScatterPlot(
-                "Average salary per age",
+                "TP5",
                 "X",
                 "Y",
                 dataset,
