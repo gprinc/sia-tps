@@ -117,7 +117,7 @@ public class Main {
         int nn_neurons3[];
         float errAvg;
 
-        do {
+        //do {
             nn_neurons3 = LayerCreator.generateLayer(input1.get(0).length);
             System.out.println(input1.get(0).length);
             mlp2 = new MultiLayerPerceptron(nn_neurons3);
@@ -134,12 +134,14 @@ public class Main {
                 float[][] middleOutput = mlp2.getMiddleOutput();
                 for (int j = 0; j < middleOutput.length; j++) {
                     for (int k = 0; k < middleOutput[0].length; k++) {
-                        System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
+                        //System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
                     }
                 }
-                float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
-                trainErrors.add(error1);
-                System.out.println(i + " -> Error : " + error1);
+                //float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
+                //trainErrors.add(error1);
+                //System.out.println(i + " -> Error : " + error1);
+                float error = mlp2.evaluateQuadraticError(input1, input1);
+                System.out.println(" => Error = " + error);
             }
 
             errAvg = 0 ;
@@ -156,7 +158,7 @@ public class Main {
                 //System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
             }
 
-        } while (errAvg < 0.8); // en realidad es la accuracy
+        //} while (errAvg < 0.8); // en realidad es la accuracy
 
         return;
     }
