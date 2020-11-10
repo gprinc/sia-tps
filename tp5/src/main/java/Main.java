@@ -15,6 +15,10 @@ public class Main {
     private static final float DEFAULT_ACCURACY = 0.001f;
 
     public static void main(String[] args) {
+
+        ArrayList<ArrayList<Integer>> asd = getLetters();
+        if (asd != null)
+            return;
         JSONParser parser = new JSONParser();
         JSONObject data;
         try {
@@ -151,7 +155,7 @@ public class Main {
             errAvg = errAvg / trainErrors.size();
 
 
-            float[] a2 = mlp2.getOutput();
+            float[][] a2 = mlp2.getOutput();
             for (int m = 0; m < output2.size(); m++){
                 //System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
             }

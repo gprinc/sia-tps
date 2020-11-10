@@ -10,11 +10,11 @@ public class EjTwo {
     private static final char boxChar = '$';
     private static final char playerChar = '@';
 
-    private static final int spaceInt = 0;
-    private static final int wallInt = 1;
-    private static final int winPointInt = 2;
-    private static final int boxInt = 3;
-    private static final int playerInt = 4;
+    private static final int spaceInt = 0x00;
+    private static final int wallInt = 0x01;
+    private static final int winPointInt = 0x02;
+    private static final int boxInt = 0x03;
+    private static final int playerInt = 0x04;
 
     public EjTwo(String mapa){
         this.map = new ArrayList<>();

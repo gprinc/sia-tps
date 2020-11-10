@@ -115,7 +115,9 @@ public class MultiLayerPerceptron {
         middleOutput = new float[input.size()][];
         for (int i = 0; i < input.size(); i++) {
             float[] j = evaluate(input.get(i), i);
-            finalOutput[i] = j[j.length - 1];
+            // TODO rodri esto esta bien?
+            // finalOutput[i] = j[j.length - 1];
+            finalOutput[i] = j;
             if (evaluateError(j, output.get(i), umbral) < umbral) {
                 accuracy++;
             }
