@@ -8,11 +8,10 @@ public class LayerCreator {
         int[] aux = new int[3+(layers*2)];
         for (int i = 0; i < aux.length; i++) {
             aux[i]= r.nextInt(n - (int)(n * 0.2)) + (int)(n * 0.2);
-            aux[i] = n;
         }
         aux[0]= n;
         aux[aux.length-1] = n;
-        aux[layers+1] = n;
+        aux[layers+1] = 2;
 
         System.out.println("\n********** Layers **********\n");
         for (int i = 0; i < aux.length; i++) {
