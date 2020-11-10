@@ -57,15 +57,10 @@ public class MultiLayerPerceptron {
         assert(nn_output.length == d.length);
 
         float error = 0;
-        for (int i = 0; i < nn_output.length; i++){
-            if (nn_output[i] != d[i]) {
-                error++;
-
-            }
-        }
-        //System.out.println(error / nn_output.length);
-
-        return error / nn_output.length;
+        for (int i = 0; i < nn_output.length; i++)
+            error += (nn_output[i] - d[i]) * (nn_output[i] - d[i]);
+        //System.out.println(error/(nn_output.length* nn_output.length));
+        return error;
     }
 
     private float evaluateError(float nn_output[], float desiredOutput[], float accuracy) {
@@ -118,7 +113,7 @@ public class MultiLayerPerceptron {
             // TODO rodri esto esta bien?
             // finalOutput[i] = j[j.length - 1];
             finalOutput[i] = j;
-            if (evaluateError(j, output.get(i), umbral) < umbral) {
+            if (evaluateError(j, output.get(i))/input.size() < umbral) {
                 accuracy++;
             }
         }

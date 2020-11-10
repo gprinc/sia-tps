@@ -106,9 +106,6 @@ public class Main {
             input1.add(floatA);
         }
 
-        System.out.println(input1.size());
-
-
         System.out.println("\n********** Initialized font **********\n");
 
         long start3 = System.nanoTime();
@@ -119,7 +116,7 @@ public class Main {
 
         do {
             nn_neurons3 = LayerCreator.generateLayer(input1.get(0).length);
-            System.out.println(input1.get(0).length);
+            //System.out.println(input1.get(0).length);
             mlp2 = new MultiLayerPerceptron(nn_neurons3);
 
             DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -134,12 +131,15 @@ public class Main {
                 float[][] middleOutput = mlp2.getMiddleOutput();
                 for (int j = 0; j < middleOutput.length; j++) {
                     for (int k = 0; k < middleOutput[0].length; k++) {
-                        System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
+                        //System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
                     }
                 }
-                float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
-                trainErrors.add(error1);
-                System.out.println(i + " -> Error : " + error1);
+                //float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
+                //trainErrors.add(error1);
+                //System.out.println(i + " -> Error : " + error1);
+                float error = mlp2.evaluateQuadraticError(input1, input1) / (input1.size() * input1.size());
+                trainErrors.add(error);
+                System.out.println(" => Error = " + error);
             }
 
             errAvg = 0 ;
@@ -156,7 +156,9 @@ public class Main {
                 //System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
             }
 
-        } while (errAvg < 0.8); // en realidad es la accuracy
+            System.out.println(" => Error Average = " + errAvg);
+
+        } while (errAvg > 0.2); // en realidad es la accuracy
 
         return;
     }

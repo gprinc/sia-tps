@@ -87,7 +87,6 @@ public class MultiLayerPerceptron {
             if (evaluateError(j, output.get(i)) < umbral) {
                 accuracy++;
             }
-
         }
 
         return accuracy / input.size();
