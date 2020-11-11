@@ -22,7 +22,7 @@ public class Neuron {
 
         for (int i = 0; i < inputs.length; i++)
             _activation += inputs[i] * _synapticWeights[i];
-        
+
         //return 2.0 / (1.0 + Math.exp((-_activation) * lambda)) - 1.0;
         switch (auxM) {
             case 0:

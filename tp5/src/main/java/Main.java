@@ -103,7 +103,7 @@ public class Main {
         ArrayList<ArrayList<Integer>> lettersN = getLetters(font);
         input1 = new ArrayList<double[]>();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < lettersN.size(); i++) {
             ArrayList<Integer> aux = lettersN.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
@@ -159,12 +159,22 @@ public class Main {
 
             double[][] output = mlp2.getOutput();
 
+            for (int i = 0; i < input1.size(); i++) {
+                for (int j = 0; j < input1.get(0).length; j++) {
+                    System.out.print((output[i][j] < 0.5 ? 0 : 1 ) + " ");
+                }
+                System.out.println();
+                for (int j = 0; j < input1.get(0).length; j++) {
+                    System.out.print(((int) input1.get(i)[j]) + " ");
+                }
+                System.out.println();
+            }
+
             System.out.println(" => Error Average = " + errAvg);
 
-        } while (errAvg > 0.2); // en realidad es la accuracy
+        } while (errAvg > 0.002); // en realidad es la accuracy
 
         long start4 = System.nanoTime();
-
 
         return;
     }

@@ -69,12 +69,15 @@ public class MultiLayerPerceptron {
 
         double error = 0;
 
-        finalOutput = new double[input.size()][];
+        finalOutput = new double[input.size()][input.get(0).length];
         middleOutput = new double[input.size()][];
         for (int i = 0; i < input.size(); i++) {
             double[] j = evaluate(input.get(i), i);
-            finalOutput[i] = j;
-            error += evaluateError(j, output.get(i));
+            finalOutput[i] = new double[j.length];
+            for (int k = 0; k < j.length; k++) {
+                finalOutput[i][k] = j[k];
+            }
+            error += evaluateError(finalOutput[i], output.get(i));
         }
 
         return error / input.size();
@@ -174,7 +177,7 @@ public class MultiLayerPerceptron {
         middleOutput = new double[input.size()][];
         
         int iterations = 0;
-        while (error > threshold && iterations < iter) {
+        while (iterations < iter) {
 
             batchBackPropagation(input, output, learningRate);
 
