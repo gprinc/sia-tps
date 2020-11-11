@@ -4,7 +4,7 @@
   "mlp_lrate_xor": "0.3",
   "mlp_lrate_even": "0.01",
   "mlp_iter_xor": "100",
-  "mlp_iter_even": "1000",
+  "mlp_iter_even": "500",
   "noise_percentage": "1",
   "ej": "2",
   "font": "1",

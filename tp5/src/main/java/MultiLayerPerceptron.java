@@ -71,11 +71,12 @@ public class MultiLayerPerceptron {
 
         finalOutput = new double[input.size()][input.get(0).length];
         middleOutput = new double[input.size()][];
+
         for (int i = 0; i < input.size(); i++) {
             double[] j = evaluate(input.get(i), i);
             finalOutput[i] = new double[j.length];
             for (int k = 0; k < j.length; k++) {
-                finalOutput[i][k] = j[k];
+                finalOutput[i][k] = j[k] - 0;
             }
             error += evaluateError(finalOutput[i], output.get(i));
         }

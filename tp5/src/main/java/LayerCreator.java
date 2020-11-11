@@ -12,18 +12,18 @@ public class LayerCreator {
 
     private void generateLayer(int n) {
         Random r = new Random();
-        int layers = 3;
-        aux = new int[3];
+        int layers = r.nextInt(20) + 5;
+        aux = new int[3+(layers*2)];
         auxInv = new int[3+(layers*2)];
         for (int i = 0; i < (aux.length - 1) / 2; i++) {
-            int auxR = r.nextInt(n - (int)(n * 0.8)) + (int)(n * 0.8);
+            int auxR = r.nextInt(n - (int)(n * 0.6)) + (int)(n * 0.6);
             aux[i] = n;
             aux[aux.length - (i+1)] = n;
 
         }
         aux[0]= n;
         aux[aux.length-1] = n;
-        aux[1] = n;
+        aux[layers+1] = n;
     }
 
     private void generateReverseLayer() {
