@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Main {
     private static final float DEFAULT_LRATE_EVEN = 0.1f;
@@ -13,6 +14,9 @@ public class Main {
     private static final int DEFAULT_EVEN_PARTITION = 5;
     private static final float DEFAULT_THRESHOLD = 0.1f;
     private static final float DEFAULT_ACCURACY = 0.001f;
+
+    private static final int DEF_NOISE_PERCENTAGE = 1;
+    private static final int DEF_FONT = 1;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -55,6 +59,8 @@ public class Main {
         else
             accuracy = Float.parseFloat(auxData);
 
+        int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
+
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
         aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
@@ -94,7 +100,7 @@ public class Main {
             }
         }
 
-        ArrayList<ArrayList<Integer>> lettersN = getLetters();
+        ArrayList<ArrayList<Integer>> lettersN = getLetters(font);
         input1 = new ArrayList<float[]>();
 
         for (int i = 0; i < lettersN.size(); i++) {
@@ -177,13 +183,25 @@ public class Main {
         return aux;
     }
 
-    static ArrayList<ArrayList<Integer>> getLetters(){
+    static ArrayList<ArrayList<Integer>> getLetters(int fontNumber){
+        int[][] font;
+        switch (fontNumber) {
+            case 3:
+                font = Fonts.font3;
+                break;
+            case 2:
+                font = Fonts.font2;
+                break;
+            default:
+                font = Fonts.font1;
+                break;
+        }
         String[] letterInBinary = new String[7];
         String aux;
         ArrayList<ArrayList<Integer>> lettersN = new ArrayList<>();
         for (int j = 0; j < 32; j++) {
             for (int i = 0; i < 7; i++) {
-                aux = hexToBin(String.valueOf(Fonts.font1[j][i]));
+                aux = hexToBin(String.valueOf(font[j][i]));
                 if (aux.length() > 5)
                     aux = aux.substring(aux.length() - 5);
                 aux = completeString(aux);
@@ -200,5 +218,36 @@ public class Main {
             lettersN.add(bite);
         }
         return lettersN;
+    }
+
+    static ArrayList<Integer> saltAndPepperLetter(ArrayList<Integer> letter) {
+        JSONParser parser = new JSONParser();
+        JSONObject data;
+        try {
+            data = (JSONObject) parser.parse(new FileReader("config.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error reading config");
+            return null;
+        }
+        int noisePercentage = InitializerJson.giveInt((String) data.get("noise_percentage"), DEF_NOISE_PERCENTAGE);
+        int amountOfBits = letter.size() * (noisePercentage / 100);
+        Random r = new Random();
+        ArrayList<Integer> aux = new ArrayList<>();
+        ArrayList<Integer> indexesToChange = new ArrayList<>();
+        for (int i = 0; i < amountOfBits; i++) {
+            indexesToChange.add(r.nextInt(letter.size()-1) + 1);
+        }
+        int index = 0;
+        for (Integer i: letter) {
+            if (indexesToChange.contains(index)) {
+                if (i.equals(1)) aux.add(0);
+                else aux.add(1);
+            } else {
+                aux.add(i);
+            }
+            index++;
+        }
+        return aux;
     }
 }

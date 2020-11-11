@@ -5,5 +5,12 @@
   "mlp_lrate_even": "0.01f",
   "mlp_iter_xor": "100",
   "mlp_iter_even": "500",
-  "mlp_even_partition": "6"
+  "noise_percentage": "1",
+  "ej": "2",
+  "font": "1",
+  "activation_method": "TODO",
+  "mid_layer": "TODO",
+  "layer_size": "TODO",
+  "min_neurons": "TODO",
+  "input_amount": "TODO"
 }
