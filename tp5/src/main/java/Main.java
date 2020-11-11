@@ -131,7 +131,6 @@ public class Main {
             double elapsedTimeInSecond3 = (double) (nowSeconds3 - start3) / 1000000000;
             ArrayList<Float> trainErrors = new ArrayList<>();
 
-
             for (int i = 0; i < 10; i++) {
                 mlp2.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
                 float[][] middleOutput = mlp2.getMiddleOutput();
@@ -157,14 +156,51 @@ public class Main {
             errAvg = errAvg / trainErrors.size();
 
 
-            float[][] a2 = mlp2.getOutput();
-            for (int m = 0; m < output2.size(); m++){
-                //System.out.println("Esperada: " + output2.get(m)[0] + ", Calculada: " + a2[m]);
-            }
-
             System.out.println(" => Error Average = " + errAvg);
 
         } while (errAvg > 0.2); // en realidad es la accuracy
+
+        long start4 = System.nanoTime();
+
+        float[][] output = mlp2.getOutput();
+
+        do {
+            mlp2.reverseMLP();
+
+            DateTimeFormatter dtf4 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now4 = LocalDateTime.now();
+            long nowSeconds4 = System.nanoTime();
+            double elapsedTimeInSecond4 = (double) (nowSeconds4 - start4) / 1000000000;
+            ArrayList<Float> trainErrors2 = new ArrayList<>();
+
+            for (int i = 0; i < 10; i++) {
+                mlp2.learn(toArrayList(output), input1, mlp_lrate_even, mlp_iter_even, threshold);
+                float[][] middleOutput = mlp2.getMiddleOutput();
+                for (int j = 0; j < middleOutput.length; j++) {
+                    for (int k = 0; k < middleOutput[0].length; k++) {
+                        //System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
+                    }
+                }
+                //float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
+                //trainErrors.add(error1);
+                //System.out.println(i + " -> Error : " + error1);
+                float error = mlp2.evaluateQuadraticError(toArrayList(output), input1) / (toArrayList(output).size() * input1.size());
+                trainErrors2.add(error);
+                System.out.println(" => Error = " + error);
+            }
+
+            errAvg = 0 ;
+
+            for (Float e: trainErrors2) {
+                errAvg += e;
+            }
+
+            errAvg = errAvg / trainErrors2.size();
+
+            System.out.println(" => Error Average = " + errAvg);
+
+        } while (errAvg > 0.2);
+
 
         return;
     }
@@ -249,5 +285,13 @@ public class Main {
             index++;
         }
         return aux;
+    }
+
+    static ArrayList<float[]> toArrayList(float[][] a) {
+        ArrayList<float[]> b = new ArrayList<>();
+        for (int i = 0; i < a.length; i++) {
+            b.add(a[i]);
+        }
+        return b;
     }
 }

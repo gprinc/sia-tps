@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class MultiLayerPerceptron {
@@ -25,6 +26,36 @@ public class MultiLayerPerceptron {
         gradEx = new ArrayList<float[]>();
         for (int i =  0; i < nn_neurons.length; i++) {
             gradEx.add(new float[layers.get(i).size()]);
+        }
+    }
+
+    public void reverseMLP(){
+        for (int i = 0; i < layers.size(); i++) {
+            this.reverseNeurons(i);
+            this.reverseGrad(i);
+            Collections.reverse(layers.get(i).get_neurons());
+        }
+    }
+
+    private void reverseNeurons(int t) {
+        int n = layers.get(t).size();
+        float[][] b = deltaW.get(t);
+        int j = n;
+        for (int i = 0; i < n; i++) {
+            for (int k = 0; k < layers.get(t).getWeights(i).length; k++) {
+                deltaW.get(t)[j - 1][k] = b[i][k];
+            }
+            j = j - 1;
+        }
+    }
+
+    private void reverseGrad(int t) {
+        int n = layers.get(t).size();
+        float[] b = gradEx.get(t);
+        int j = n;
+        for (int i = 0; i < n; i++) {
+            gradEx.get(t)[j - 1] = b[i];
+            j = j - 1;
         }
     }
 
