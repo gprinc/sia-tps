@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
-    private static final float DEFAULT_LRATE_EVEN = 0.1f;
+    private static final double DEFAULT_LRATE_EVEN = 0.1;
     private static final int DEFAULT_ITER_EVEN = 5;
     private static final int DEFAULT_EVEN_PARTITION = 5;
-    private static final float DEFAULT_THRESHOLD = 0.1f;
-    private static final float DEFAULT_ACCURACY = 0.001f;
+    private static final double DEFAULT_THRESHOLD = 0.1;
+    private static final double DEFAULT_ACCURACY = 0.001;
 
     private static final int DEF_NOISE_PERCENTAGE = 1;
     private static final int DEF_FONT = 1;
@@ -29,11 +29,11 @@ public class Main {
             return;
         }
         String auxData = (String) data.get("mlp_lrate_even");
-        float mlp_lrate_even;
+        double mlp_lrate_even;
         if (auxData == null)
             mlp_lrate_even = DEFAULT_LRATE_EVEN;
         else
-            mlp_lrate_even = Float.parseFloat(auxData);
+            mlp_lrate_even = Double.parseDouble(auxData);
         auxData = (String) data.get("mlp_iter_even");
         int mlp_iter_even;
         if (auxData == null)
@@ -46,18 +46,18 @@ public class Main {
             mlp_even_partition = DEFAULT_EVEN_PARTITION;
         else
             mlp_even_partition = Integer.parseInt(auxData);
-        float threshold;
+        double threshold;
         auxData = (String) data.get("threshold");
         if (auxData == null)
             threshold = DEFAULT_THRESHOLD;
         else
-            threshold = Float.parseFloat(auxData);
-        float accuracy;
+            threshold = Double.parseDouble(auxData);
+        double accuracy;
         auxData = (String) data.get("accuracy");
         if (auxData == null)
             accuracy = DEFAULT_ACCURACY;
         else
-            accuracy = Float.parseFloat(auxData);
+            accuracy = Double.parseDouble(auxData);
 
         int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
 
@@ -67,20 +67,20 @@ public class Main {
 
         System.out.println("\n\n=======\nMultiLayer Perceptron");
 
-        ArrayList<float[]> input1 = new ArrayList<float[]>();
-        ArrayList<float[]> input2 = new ArrayList<float[]>();
-        ArrayList<float[]> output1 = new ArrayList<float[]>();
-        ArrayList<float[]> output2 = new ArrayList<float[]>();
+        ArrayList<double[]> input1 = new ArrayList<double[]>();
+        ArrayList<double[]> input2 = new ArrayList<double[]>();
+        ArrayList<double[]> output1 = new ArrayList<double[]>();
+        ArrayList<double[]> output2 = new ArrayList<double[]>();
 
         // initialization
         for (int i = 0; i < mlp_even_partition; i++){
-            input1.add(new float[35]);
-            output1.add(new float[1]);
+            input1.add(new double[35]);
+            output1.add(new double[1]);
         }
 
         for (int i = 0; i < (10 - mlp_even_partition); i++){
-            input2.add(new float[35]);
-            output2.add(new float[1]);
+            input2.add(new double[35]);
+            output2.add(new double[1]);
         }
 
         // fill the examples database
@@ -101,15 +101,15 @@ public class Main {
         }
 
         ArrayList<ArrayList<Integer>> lettersN = getLetters(font);
-        input1 = new ArrayList<float[]>();
+        input1 = new ArrayList<double[]>();
 
-        for (int i = 0; i < lettersN.size(); i++) {
+        for (int i = 0; i < 5; i++) {
             ArrayList<Integer> aux = lettersN.get(i);
-            float[] floatA = new float[aux.size()];
+            double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
-                floatA[j] = aux.get(j);
+                doubleA[j] = aux.get(j);
             }
-            input1.add(floatA);
+            input1.add(doubleA);
         }
 
         System.out.println("\n********** Initialized font **********\n");
@@ -118,7 +118,7 @@ public class Main {
 
         MultiLayerPerceptron mlp2;
         int nn_neurons3[];
-        float errAvg;
+        double errAvg;
         LayerCreator lc;
 
         do {
@@ -131,33 +131,33 @@ public class Main {
             LocalDateTime now3 = LocalDateTime.now();
             long nowSeconds3 = System.nanoTime();
             double elapsedTimeInSecond3 = (double) (nowSeconds3 - start3) / 1000000000;
-            ArrayList<Float> trainErrors = new ArrayList<>();
+            ArrayList<Double> trainErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
                 mlp2.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
-                float[][] middleOutput = mlp2.getMiddleOutput();
+                double[][] middleOutput = mlp2.getMiddleOutput();
                 for (int j = 0; j < middleOutput.length; j++) {
                     for (int k = 0; k < middleOutput[0].length; k++) {
                         //System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
                     }
                 }
-                //float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
+                //double error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
                 //trainErrors.add(error1);
                 //System.out.println(i + " -> Error : " + error1);
-                float error = mlp2.evaluateQuadraticError(input1, input1) / (input1.size() * input1.size());
+                double error = mlp2.evaluateQuadraticError(input1, input1);
                 trainErrors.add(error);
                 System.out.println(" => Error = " + error);
             }
 
             errAvg = 0 ;
 
-            for (Float e: trainErrors) {
+            for (double e: trainErrors) {
                 errAvg += e;
             }
 
             errAvg = errAvg / trainErrors.size();
 
-            float[][] output = mlp2.getOutput();
+            double[][] output = mlp2.getOutput();
 
             System.out.println(" => Error Average = " + errAvg);
 
@@ -251,8 +251,8 @@ public class Main {
         return aux;
     }
 
-    static ArrayList<float[]> toArrayList(float[][] a) {
-        ArrayList<float[]> b = new ArrayList<>();
+    static ArrayList<double[]> toArrayList(double[][] a) {
+        ArrayList<double[]> b = new ArrayList<>();
         for (int i = 0; i < a.length; i++) {
             b.add(a[i]);
         }
