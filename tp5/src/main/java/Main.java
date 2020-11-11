@@ -119,9 +119,11 @@ public class Main {
         MultiLayerPerceptron mlp2;
         int nn_neurons3[];
         float errAvg;
+        LayerCreator lc;
 
         do {
-            nn_neurons3 = LayerCreator.generateLayer(input1.get(0).length);
+            lc = new LayerCreator(input1.get(0).length);
+            nn_neurons3 = lc.getLayer();
             //System.out.println(input1.get(0).length);
             mlp2 = new MultiLayerPerceptron(nn_neurons3);
 
@@ -155,51 +157,13 @@ public class Main {
 
             errAvg = errAvg / trainErrors.size();
 
+            float[][] output = mlp2.getOutput();
 
             System.out.println(" => Error Average = " + errAvg);
 
         } while (errAvg > 0.2); // en realidad es la accuracy
 
         long start4 = System.nanoTime();
-
-        float[][] output = mlp2.getOutput();
-
-        do {
-            mlp2.reverseMLP();
-
-            DateTimeFormatter dtf4 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime now4 = LocalDateTime.now();
-            long nowSeconds4 = System.nanoTime();
-            double elapsedTimeInSecond4 = (double) (nowSeconds4 - start4) / 1000000000;
-            ArrayList<Float> trainErrors2 = new ArrayList<>();
-
-            for (int i = 0; i < 10; i++) {
-                mlp2.learn(toArrayList(output), input1, mlp_lrate_even, mlp_iter_even, threshold);
-                float[][] middleOutput = mlp2.getMiddleOutput();
-                for (int j = 0; j < middleOutput.length; j++) {
-                    for (int k = 0; k < middleOutput[0].length; k++) {
-                        //System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
-                    }
-                }
-                //float error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
-                //trainErrors.add(error1);
-                //System.out.println(i + " -> Error : " + error1);
-                float error = mlp2.evaluateQuadraticError(toArrayList(output), input1) / (toArrayList(output).size() * input1.size());
-                trainErrors2.add(error);
-                System.out.println(" => Error = " + error);
-            }
-
-            errAvg = 0 ;
-
-            for (Float e: trainErrors2) {
-                errAvg += e;
-            }
-
-            errAvg = errAvg / trainErrors2.size();
-
-            System.out.println(" => Error Average = " + errAvg);
-
-        } while (errAvg > 0.2);
 
 
         return;

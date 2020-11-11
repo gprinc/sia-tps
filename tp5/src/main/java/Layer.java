@@ -55,5 +55,4 @@ public class Layer {
     public float[] getWeights(int i) { return _neurons.get(i).getSynapticWeights(); }
     public float getWeight(int i, int j) { return _neurons.get(i).getSynapticWeight(j); }
     public void setWeight(int i, int j, float v) { _neurons.get(i).setSynapticWeight(j, v); }
-    public ArrayList<Neuron> get_neurons() {return _neurons;}
 }
