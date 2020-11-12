@@ -108,11 +108,11 @@ public class MultiLayerPerceptron {
     private void evaluateGradients(double[] output) {
         // for each neuron in each layer
         for (int c = layers.size()-1; c >= 0; c--) {
-            for (int i = 0; i < layers.get(c).size(); i++) {
+            for (int i = 0; i < layers.get(c).size()-1; i++) {
                 // if it's output layer neuron
                 if (c == layers.size()-1) {
                     gradEx.get(c)[i] =
-                            2 * (layers.get(c).getOutput(i) - output[0])
+                            2 * (layers.get(c).getOutput(i) - output[i])
                                     * layers.get(c).getActivationDerivative(i);
                 }
                 else { // if it's neuron of the previous layers

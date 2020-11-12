@@ -94,8 +94,9 @@ public class Main {
 
         int nn_neurons[] = {
                 input.get(0).length,
-                input.get(0).length,
-                output.get(0).length
+                input.get(0).length/2,
+                input.get(0).length/2,
+                input.get(0).length
         };
 
         MultiLayerPerceptron mlp = new MultiLayerPerceptron(nn_neurons);
@@ -113,8 +114,8 @@ public class Main {
             csvWriter.append("\n");
 
             for (int i = 0; i < mlp_iter_xor; i++) {
-                mlp.learn(input, output, mlp_lrate_xor, mlp_iter_xor, threshold);
-                float error = mlp.evaluateQuadraticError(input, output);
+                mlp.learn(input, input, mlp_lrate_xor, mlp_iter_xor, threshold);
+                float error = mlp.evaluateQuadraticError(input, input);
                 System.out.println(" => Error = " + error);
                 csvWriter.append(error + "\n");
             }
