@@ -17,8 +17,8 @@ public class LayerCreator {
         auxInv = new int[3+(layers*2)];
         for (int i = 0; i < (aux.length - 1) / 2; i++) {
             int auxR = r.nextInt(n - (int)(n * 0.6)) + (int)(n * 0.6);
-            aux[i] = n;
-            aux[aux.length - (i+1)] = n;
+            aux[i] = auxR;
+            aux[aux.length - (i+1)] = auxR;
 
         }
         aux[0]= n;
