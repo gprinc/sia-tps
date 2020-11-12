@@ -60,7 +60,7 @@ public class MultiLayerPerceptron {
         for (int i = 0; i < nn_output.length; i++)
             error += (nn_output[i] - d[i]) * (nn_output[i] - d[i]);
         //System.out.println(error/(nn_output.length* nn_output.length));
-        return error / nn_output.length;
+        return error;
     }
 
     public double evaluateQuadraticError(ArrayList<double[]> input, ArrayList<double[]> output) {
@@ -81,7 +81,7 @@ public class MultiLayerPerceptron {
             error += evaluateError(finalOutput[i], output.get(i));
         }
 
-        return error / input.size();
+        return error;
     }
 
 
@@ -93,9 +93,10 @@ public class MultiLayerPerceptron {
         middleOutput = new double[input.size()][];
         for (int i = 0; i < input.size(); i++) {
             double[] j = evaluate(input.get(i), i);
-            // TODO rodri esto esta bien?
-            // finalOutput[i] = j[j.length - 1];
-            finalOutput[i] = j;
+            finalOutput[i] = new double[j.length];
+            for (int k = 0; k < j.length; k++) {
+                finalOutput[i][k] = j[k] - 0;
+            }
             if (evaluateError(j, output.get(i))/input.size() < umbral) {
                 accuracy++;
             }

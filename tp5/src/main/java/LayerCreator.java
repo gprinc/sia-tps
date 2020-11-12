@@ -23,7 +23,7 @@ public class LayerCreator {
         }
         aux[0]= n;
         aux[aux.length-1] = n;
-        aux[layers+1] = n;
+        aux[layers+1] = 2;
     }
 
     private void generateReverseLayer() {
