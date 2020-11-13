@@ -7,8 +7,8 @@ public class Layer {
 
     public Layer(int prev_n_neurons, int n_neurons, java.util.Random rand) {
         // all the layers/neurons must use the same random number generator
-        _n_neurons = n_neurons + 1;
-        _prev_n_neurons = prev_n_neurons + 1;
+        _n_neurons = n_neurons;
+        _prev_n_neurons = prev_n_neurons;
 
         // allocate everything
         _neurons = new ArrayList<Neuron>();
@@ -20,10 +20,9 @@ public class Layer {
 
     // add 1 in front of the out vector
     public static double[] add_bias(double[] in) {
-        double out[] = new double[in.length + 1];
+        double out[] = new double[in.length];
         for (int i = 0; i < in.length; i++)
-            out[i + 1] = in[i];
-        out[0] = 1.0f;
+            out[i] = in[i];
         return out;
     }
 
@@ -40,11 +39,11 @@ public class Layer {
         assert(getWeights(0).length == inputs.length);
 
         // stimulate each neuron of the layer and get its output
-        for (int i = 1; i < _n_neurons; i++)
+        for (int i = 0; i < _n_neurons; i++)
             _outputs[i] = _neurons.get(i).activate(inputs);
 
         // bias treatment
-        _outputs[0] = 1.0;
+        //_outputs[0] = 1.0;
 
         return _outputs;
     }
