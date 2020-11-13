@@ -103,7 +103,7 @@ public class Main {
         ArrayList<ArrayList<Integer>> lettersN = getLetters(font);
         input1 = new ArrayList<double[]>();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < lettersN.size() / 2; i++) {
             ArrayList<Integer> aux = lettersN.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {

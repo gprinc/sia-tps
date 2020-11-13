@@ -2,7 +2,7 @@
   "threshold": "0.1",
   "accuracy": "0.001",
   "mlp_lrate_xor": "0.3",
-  "mlp_lrate_even": "0.05",
+  "mlp_lrate_even": "0.001",
   "mlp_iter_xor": "100",
   "mlp_iter_even": "1000",
   "noise_percentage": "1",

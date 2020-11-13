@@ -1,7 +1,7 @@
 public class Neuron {
     private double _activation;
     private double[] _synapticWeights;
-    private int auxM = 1;
+    private int auxM = 0;
 
     // parameter of the sigmoid
     static final double lambda = 1.5;
