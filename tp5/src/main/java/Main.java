@@ -18,6 +18,7 @@ public class Main {
     private static final int DEF_NOISE_PERCENTAGE = 1;
     private static final int DEF_FONT = 1;
     private static final String DEF_EJ_NOISE = "1-noise";
+    public static final int DEF_ACTIVATON_METHOD = 0;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -62,6 +63,7 @@ public class Main {
 
         int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
         String ej = InitializerJson.giveEj((String) data.get("ej"));
+        int activationMethod = InitializerJson.giveInt((String) data.get("activation_method"), DEF_ACTIVATON_METHOD);
 
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
@@ -69,10 +71,10 @@ public class Main {
 
         System.out.println("\n\n=======\nMultiLayer Perceptron");
 
-        ArrayList<double[]> input1 = new ArrayList<double[]>();
-        ArrayList<double[]> input2 = new ArrayList<double[]>();
-        ArrayList<double[]> output1 = new ArrayList<double[]>();
-        ArrayList<double[]> output2 = new ArrayList<double[]>();
+        ArrayList<double[]> input1 = new ArrayList();
+        ArrayList<double[]> input2 = new ArrayList();
+        ArrayList<double[]> output1 = new ArrayList();
+        ArrayList<double[]> output2 = new ArrayList();
 
         // initialization
         for (int i = 0; i < mlp_even_partition; i++){
@@ -104,7 +106,7 @@ public class Main {
 
         boolean withNoise = ej.equals(DEF_EJ_NOISE);
         ArrayList<ArrayList<Integer>> lettersN = getLetters(font, withNoise);
-        input1 = new ArrayList<double[]>();
+        input1 = new ArrayList();
 
         for (int i = 0; i < lettersN.size() / 2; i++) {
             ArrayList<Integer> aux = lettersN.get(i);
@@ -128,7 +130,7 @@ public class Main {
             lc = new LayerCreator(input1.get(0).length);
             nn_neurons3 = lc.getLayer();
             //System.out.println(input1.get(0).length);
-            mlp2 = new MultiLayerPerceptron(nn_neurons3);
+            mlp2 = new MultiLayerPerceptron(nn_neurons3, activationMethod);
 
             DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now3 = LocalDateTime.now();

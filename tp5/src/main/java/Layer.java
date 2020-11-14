@@ -6,6 +6,10 @@ public class Layer {
     private double _outputs[];
 
     public Layer(int prev_n_neurons, int n_neurons, java.util.Random rand) {
+        this(prev_n_neurons, n_neurons, rand, Main.DEF_ACTIVATON_METHOD);
+    }
+
+    public Layer(int prev_n_neurons, int n_neurons, java.util.Random rand, int activationMethod) {
         // all the layers/neurons must use the same random number generator
         _n_neurons = n_neurons;
         _prev_n_neurons = prev_n_neurons;
@@ -15,7 +19,7 @@ public class Layer {
         _outputs = new double[_n_neurons];
 
         for (int i = 0; i < _n_neurons; i++)
-            _neurons.add(new Neuron(_prev_n_neurons, rand));
+            _neurons.add(new Neuron(_prev_n_neurons, rand, activationMethod));
     }
 
     // add 1 in front of the out vector

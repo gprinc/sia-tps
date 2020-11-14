@@ -8,9 +8,9 @@
   "noise_percentage": "1",
   "ej": "2",
   "font": "1",
-  "activation_method": "TODO",
-  "mid_layer": "TODO",
+  "activation_method": "0",
   "layer_size": "TODO",
+  "mid_layer": "TODO",
   "min_neurons": "TODO",
   "input_amount": "TODO"
 }

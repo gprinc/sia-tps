@@ -1,18 +1,23 @@
 public class Neuron {
     private double _activation;
     private double[] _synapticWeights;
-    private int auxM = 0;
+    private int activationMethod;
 
     // parameter of the sigmoid
     static final double lambda = 1.5;
 
     public Neuron(int prev_n_neurons, java.util.Random rand) {
+        this(prev_n_neurons, rand, Main.DEF_ACTIVATON_METHOD);
+    }
+
+    public Neuron(int prev_n_neurons, java.util.Random rand, int activationMethod) {
         // each neuron knows the weights of each connection with neurons of the previous layer
         _synapticWeights = new double[prev_n_neurons];
 
         // set default weights
         for (int i = 0; i < prev_n_neurons; i++)
             _synapticWeights[i] = rand.nextDouble() - 0.5;
+        this.activationMethod = activationMethod;
     }
 
     // activate the neuron with given inputs, return the output
@@ -24,7 +29,7 @@ public class Neuron {
             _activation += inputs[i] * _synapticWeights[i];
 
         //return 2.0 / (1.0 + Math.exp((-_activation) * lambda)) - 1.0;
-        switch (auxM) {
+        switch (activationMethod) {
             case 0:
                 return Math.tanh((_activation) * lambda);
             case 1:
@@ -38,7 +43,7 @@ public class Neuron {
 
     // dphi(_activation)
     public double getActivationDerivative() {
-        switch (auxM) {
+        switch (activationMethod) {
             case 0:
                 double expmlx = Math.exp(lambda * _activation);
                 return 2 * lambda * expmlx / ((1 + expmlx) * (1 + expmlx));

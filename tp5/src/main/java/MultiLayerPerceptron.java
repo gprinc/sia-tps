@@ -9,12 +9,16 @@ public class MultiLayerPerceptron {
     private double[][] middleOutput;
 
     public MultiLayerPerceptron(int nn_neurons[]) {
+        this(nn_neurons, Main.DEF_ACTIVATON_METHOD);
+    }
+
+    public MultiLayerPerceptron(int nn_neurons[], int activationMethod) {
         Random rand = new Random();
 
         // create the required layers
         layers = new ArrayList<Layer>();
         for (int i = 0; i < nn_neurons.length; i++){
-            layers.add(new Layer(i == 0 ? nn_neurons[i] : nn_neurons[i - 1], nn_neurons[i], rand));
+            layers.add(new Layer(i == 0 ? nn_neurons[i] : nn_neurons[i - 1], nn_neurons[i], rand, activationMethod));
         }
 
         deltaW = new ArrayList<double[][]>();
