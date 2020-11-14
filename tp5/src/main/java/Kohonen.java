@@ -9,6 +9,21 @@ public class Kohonen {
     int iteration;
     double delta;
 
+    public Kohonen(int k, int length, double environment, double learningRate, double delta, ArrayList<ArrayList<Integer>> inputs) {
+        this.nodes = new KNode[k][k];
+        Random rand = new Random();
+        for (int i = 0; i < k; i++) {
+            for (int j = 0; j < k; j++) {
+                int randomNum = rand.nextInt(inputs.size());
+                nodes[i][j] = new KNode(length,inputs.get(randomNum));
+            }
+        }
+        this.environment = environment;
+        this.learningRate = learningRate;
+        this.iteration = 0;
+        this.delta = delta;
+    }
+
     public Kohonen(int k, int length, double environment, double learningRate, double delta, double[][] inputs) {
         this.nodes = new KNode[k][k];
         Random rand = new Random();
