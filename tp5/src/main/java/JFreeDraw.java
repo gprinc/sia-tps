@@ -13,11 +13,18 @@ import java.awt.*;
 
 public class JFreeDraw extends JFrame {
 
-    public JFreeDraw(float[] data1, float[] data2) {
+    private static double[] empty = {0};
+
+    public JFreeDraw(double[] data1, double[] data2) {
         initUI(data1, data2);
     }
 
-    private void initUI(float[] data1, float[] data2) {
+    public JFreeDraw(double[][] data) {
+        if (data.length > 1) initUI(data[0], data[1]);
+        else initUI(empty, empty);
+    }
+
+    private void initUI(double[] data1, double[] data2) {
         XYDataset dataset = createDataset(data1, data2);
         JFreeChart chart = createChart(dataset);
 
@@ -32,7 +39,7 @@ public class JFreeDraw extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private XYDataset createDataset(float[] data1, float[] data2) {
+    private XYDataset createDataset(double[] data1, double[] data2) {
 
         XYSeries series = new XYSeries("Layer");
 
@@ -70,12 +77,12 @@ public class JFreeDraw extends JFrame {
         return chart;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
-        /*EventQueue.invokeLater(() -> {
+        EventQueue.invokeLater(() -> {
 
             JFreeDraw ex = new JFreeDraw();
             ex.setVisible(true);
-        });*/
-    }
+        });
+    }*/
 }

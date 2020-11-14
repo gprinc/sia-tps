@@ -41,7 +41,7 @@ public class MultiLayerPerceptron {
         for( int i = 0; i < layers.size(); i++) {
             outputs = layers.get(i).evaluate(inputs);
             inputs = outputs;
-            if ((i == (layers.size() / 2)) || (i == ((layers.size() + 1) / 2))) {
+            if ((i == ((layers.size() - 3) / 2) +1)) {
                 middleOutput[j] = outputs;
             }
         }

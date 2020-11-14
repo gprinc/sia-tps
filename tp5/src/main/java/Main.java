@@ -181,6 +181,9 @@ public class Main {
 
         } while (errAvg > 1.5); // en realidad es la accuracy
 
+        JFreeDraw draw = new JFreeDraw(mlp2.getMiddleOutput());
+        draw.setVisible(true);
+
         long start4 = System.nanoTime();
 
         return;

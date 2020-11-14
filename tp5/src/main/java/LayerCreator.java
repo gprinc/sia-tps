@@ -24,6 +24,7 @@ public class LayerCreator {
         aux[0]= n;
         aux[aux.length-1] = n;
         aux[layers+1] = 2;
+
         aux= new int[3];
         aux[0] = n;
         aux[1] = n;
