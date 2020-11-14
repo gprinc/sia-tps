@@ -17,6 +17,7 @@ public class Main {
 
     private static final int DEF_NOISE_PERCENTAGE = 1;
     private static final int DEF_FONT = 1;
+    private static final String DEF_EJ_NOISE = "1-noise";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -60,6 +61,7 @@ public class Main {
             accuracy = Double.parseDouble(auxData);
 
         int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
+        String ej = InitializerJson.giveEj((String) data.get("ej"));
 
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
@@ -100,7 +102,8 @@ public class Main {
             }
         }
 
-        ArrayList<ArrayList<Integer>> lettersN = getLetters(font);
+        boolean withNoise = ej.equals(DEF_EJ_NOISE);
+        ArrayList<ArrayList<Integer>> lettersN = getLetters(font, withNoise);
         input1 = new ArrayList<double[]>();
 
         for (int i = 0; i < lettersN.size() / 2; i++) {
@@ -195,7 +198,7 @@ public class Main {
         return aux;
     }
 
-    static ArrayList<ArrayList<Integer>> getLetters(int fontNumber){
+    static ArrayList<ArrayList<Integer>> getLetters(int fontNumber, boolean withNoise){
         int[][] font;
         switch (fontNumber) {
             case 3:
@@ -227,7 +230,11 @@ public class Main {
                     bite.add( c[i] - '0');
                 }
             }
-            lettersN.add(bite);
+            if (withNoise) {
+                ArrayList<Integer> auxBite = saltAndPepperLetter(bite);
+                lettersN.add(auxBite);
+            } else
+                lettersN.add(bite);
         }
         return lettersN;
     }
