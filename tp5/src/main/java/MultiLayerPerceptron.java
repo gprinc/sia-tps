@@ -113,16 +113,21 @@ public class MultiLayerPerceptron {
         return error;
     }
 
-    public double[] decode(ArrayList<double[]> input) {
+    public double[][] decode(ArrayList<double[]> input) {
         assert(false);
 
-        double[] aux = new double[1];
-
+        ArrayList<double[]> auxes = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
-            aux = evaluateDecoder(input.get(i));
+            auxes.add(evaluateDecoder(input.get(i)));
         }
 
-        return aux;
+        double[][] finalAuxes = new double[auxes.size()][auxes.get(0).length];
+        for (double[] dob : auxes) {
+            int j = 0;
+            for (int i = 0; i < dob.length; i++) finalAuxes[j][i] = dob[i];
+            j++;
+        }
+        return finalAuxes;
     }
 
 
