@@ -8,12 +8,19 @@ public class MultiLayerPerceptron {
     private ArrayList<double[]> gradEx;
     private double[][] finalOutput;
     private double[][] middleOutput;
+    private double learningRate;
+    private double bigE;
 
-    public MultiLayerPerceptron(int nn_neurons[]) {
-        this(nn_neurons, Main.DEF_ACTIVATON_METHOD);
+    private static double a = 0.01;
+    private static double b = 0.001;
+
+    public MultiLayerPerceptron(int nn_neurons[], double learningRate) {
+        this(nn_neurons, learningRate, Main.DEF_ACTIVATON_METHOD);
     }
 
-    public MultiLayerPerceptron(int nn_neurons[], int activationMethod) {
+    public MultiLayerPerceptron(int nn_neurons[], double learningRate, int activationMethod) {
+        this.learningRate = learningRate;
+        this.bigE = 0;
         Random rand = new Random();
 
         // create the required layers
@@ -204,7 +211,7 @@ public class MultiLayerPerceptron {
         updateWeights(learningRate);
     }
 
-    public double learn(ArrayList<double[]> input, ArrayList<double[]> output, double learningRate, int iter, double threshold) {
+    public double learn(ArrayList<double[]> input, ArrayList<double[]> output, int iter, double threshold) {
         assert(false);
         double generalError = 0;
         double error = Double.POSITIVE_INFINITY;
@@ -216,11 +223,18 @@ public class MultiLayerPerceptron {
             batchBackPropagation(input, output, learningRate);
 
             error = evaluateQuadraticError(input, output);
+            updateLearningRate(error);
             generalError += error;
             iterations++;
         }
 
         return generalError / input.size();
+    }
+
+    private void updateLearningRate(double e) {
+        if ((e - bigE) < 0) this.learningRate += a;
+        else if ((e - bigE) > 0) this.learningRate -= b * this.learningRate;
+        this.bigE = e;
     }
 
     public double[][] getOutput(){

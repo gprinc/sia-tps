@@ -30,36 +30,12 @@ public class Main {
             System.out.println("Error reading config in TP2");
             return;
         }
-        String auxData = (String) data.get("mlp_lrate_even");
-        double mlp_lrate_even;
-        if (auxData == null)
-            mlp_lrate_even = DEFAULT_LRATE_EVEN;
-        else
-            mlp_lrate_even = Double.parseDouble(auxData);
-        auxData = (String) data.get("mlp_iter_even");
-        int mlp_iter_even;
-        if (auxData == null)
-            mlp_iter_even = DEFAULT_ITER_EVEN;
-        else
-            mlp_iter_even = Integer.parseInt(auxData);
-        auxData = (String) data.get("mlp_even_partition");
-        int mlp_even_partition;
-        if (auxData == null)
-            mlp_even_partition = DEFAULT_EVEN_PARTITION;
-        else
-            mlp_even_partition = Integer.parseInt(auxData);
-        double threshold;
-        auxData = (String) data.get("threshold");
-        if (auxData == null)
-            threshold = DEFAULT_THRESHOLD;
-        else
-            threshold = Double.parseDouble(auxData);
-        double accuracy;
-        auxData = (String) data.get("accuracy");
-        if (auxData == null)
-            accuracy = DEFAULT_ACCURACY;
-        else
-            accuracy = Double.parseDouble(auxData);
+        double mlp_lrate_even = InitializerJson.giveDouble((String) data.get("mlp_lrate_even"), DEFAULT_LRATE_EVEN);
+        int mlp_iter_even = InitializerJson.giveInt((String) data.get("mlp_iter_even"), DEFAULT_ITER_EVEN);
+        int mlp_even_partition = InitializerJson.giveInt((String) data.get("mlp_even_partition"), DEFAULT_EVEN_PARTITION);
+        double threshold = InitializerJson.giveDouble((String) data.get("threshold"), DEFAULT_THRESHOLD);
+        double accuracy = InitializerJson.giveDouble((String) data.get("accuracy"), DEFAULT_ACCURACY);
+
 
         int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
         String ej = InitializerJson.giveEj((String) data.get("ej"));
@@ -131,7 +107,7 @@ public class Main {
             lc = new LayerCreator(input1.get(0).length);
             nn_neurons3 = lc.getLayer();
             //System.out.println(input1.get(0).length);
-            mlp2 = new MultiLayerPerceptron(nn_neurons3, activationMethod);
+            mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, activationMethod);
 
             DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now3 = LocalDateTime.now();
@@ -140,7 +116,7 @@ public class Main {
             ArrayList<Double> trainErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
-                mlp2.learn(input1, input1, mlp_lrate_even, mlp_iter_even, threshold);
+                mlp2.learn(input1, input1, mlp_iter_even, threshold);
                 double[][] middleOutput = mlp2.getMiddleOutput();
                 for (int j = 0; j < middleOutput.length; j++) {
                     for (int k = 0; k < middleOutput[0].length; k++) {
