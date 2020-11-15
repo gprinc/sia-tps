@@ -4,6 +4,7 @@ import java.util.Random;
 public class MultiLayerPerceptron {
     private ArrayList<Layer> layers;
     private ArrayList<double[][]> deltaW;
+    private ArrayList<double[][]> oldDeltaW;
     private ArrayList<double[]> gradEx;
     private double[][] finalOutput;
     private double[][] middleOutput;
@@ -22,9 +23,13 @@ public class MultiLayerPerceptron {
         }
 
         deltaW = new ArrayList<double[][]>();
+        oldDeltaW = new ArrayList<double[][]>();
         for (int i = 0; i < nn_neurons.length; i++) {
             deltaW.add(new double [layers.get(i).size()] [layers.get(i).getWeights(0).length]);
+            oldDeltaW.add(new double [layers.get(i).size()] [layers.get(i).getWeights(0).length]);
         }
+
+        initOldWeightsDelta();
 
         gradEx = new ArrayList<double[]>();
         for (int i =  0; i < nn_neurons.length; i++) {
@@ -111,18 +116,17 @@ public class MultiLayerPerceptron {
 
     private void evaluateGradients(double[] output) {
         // for each neuron in each layer
-        for (int c = layers.size()-1; c >= 0; c--) {
-            for (int i = 0; i < layers.get(c).size()-1; i++) {
+        for (int c = layers.size() - 1; c >= 0; c--) {
+            for (int i = 0; i < layers.get(c).size() - 1; i++) {
                 // if it's output layer neuron
-                if (c == layers.size()-1) {
-                    gradEx.get(c)[i] =
-                            2 * (layers.get(c).getOutput(i) - output[i])
-                                    * layers.get(c).getActivationDerivative(i);
+                if (c == layers.size() - 1) {
+                    gradEx.get(c)[i] = (layers.get(c).getOutput(i) - output[i]) * layers.get(c).getActivationDerivative(i);
                 }
                 else { // if it's neuron of the previous layers
                     double sum = 0;
-                    for (int k = 1; k < layers.get(c+1).size(); k++)
+                    for (int k = 1; k < layers.get(c+1).size(); k++) {
                         sum += layers.get(c+1).getWeight(k, i) * gradEx.get(c+1)[k];
+                    }
                     gradEx.get(c)[i] = layers.get(c).getActivationDerivative(i) * sum;
                 }
             }
@@ -134,8 +138,22 @@ public class MultiLayerPerceptron {
         for (int c = 0; c < layers.size(); c++) {
             for (int i = 0; i < layers.get(c).size(); i++) {
                 double weights[] = layers.get(c).getWeights(i);
-                for (int j = 0; j < weights.length; j++)
+                for (int j = 0; j < weights.length; j++) {
+                    oldDeltaW.get(c)[i][j] = deltaW.get(c)[i][j];
                     deltaW.get(c)[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    private void initOldWeightsDelta() {
+        // reset delta values for each weight
+        for (int c = 0; c < layers.size(); c++) {
+            for (int i = 0; i < layers.get(c).size(); i++) {
+                double weights[] = layers.get(c).getWeights(i);
+                for (int j = 0; j < weights.length; j++) {
+                    oldDeltaW.get(c)[i][j] = 0;
+                }
             }
         }
     }
@@ -145,21 +163,31 @@ public class MultiLayerPerceptron {
         for (int c = 1; c < layers.size(); c++) {
             for (int i = 0; i < layers.get(c).size(); i++) {
                 double weights[] = layers.get(c).getWeights(i);
-                for (int j = 0; j < weights.length; j++)
-                    deltaW.get(c)[i][j] += gradEx.get(c)[i]
-                            * layers.get(c-1).getOutput(j);
+                for (int j = 0; j < weights.length; j++) {
+                    deltaW.get(c)[i][j] += gradEx.get(c)[i] * layers.get(c-1).getOutput(j);
+                    if (deltaW.get(c)[i][j] == 0 ) {
+                        //System.out.println(i + " " + " "  + j + " " + c);
+                    }
+                }
             }
+
         }
     }
 
     private void updateWeights(double learningRate) {
+        double momentum = 0.8;
+        double oldWwegight;
+        double newWeight;
         // update values for each weight
         for (int c = 0; c < layers.size(); c++) {
             for (int i = 0; i < layers.get(c).size(); i++) {
                 double weights[] = layers.get(c).getWeights(i);
-                for (int j = 0; j < weights.length; j++)
-                    layers.get(c).setWeight(i, j, layers.get(c).getWeight(i, j)
-                            - (learningRate * deltaW.get(c)[i][j]));
+                for (int j = 0; j < weights.length; j++) {
+                    oldWwegight = layers.get(c).getWeight(i, j);
+                    newWeight = oldWwegight - (learningRate * deltaW.get(c)[i][j]);
+                    newWeight+= (oldDeltaW.get(c)[i][j] * momentum);
+                    layers.get(c).setWeight(i, j, newWeight);
+                }
             }
         }
     }

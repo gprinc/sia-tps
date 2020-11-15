@@ -4,6 +4,9 @@ public class LayerCreator {
 
     private int[] aux;
     private int[] auxInv;
+    private static double error = 0;
+    private static int length;
+    private static int min;
 
     public LayerCreator(int n){
         this.generateLayer(n);
@@ -24,11 +27,6 @@ public class LayerCreator {
         aux[0]= n;
         aux[aux.length-1] = n;
         aux[layers+1] = 2;
-
-        aux= new int[3];
-        aux[0] = n;
-        aux[1] = n;
-        aux[2] = n;
     }
 
     private void generateReverseLayer() {
@@ -56,5 +54,16 @@ public class LayerCreator {
         }
         System.out.println();
         return auxInv;
+    }
+
+    public static void update(double err) {
+        if (err > LayerCreator.error) {
+            LayerCreator.length += LayerCreator.length * 0.1;
+            LayerCreator.min -= LayerCreator.min * 0.1;
+        } else {
+            LayerCreator.length -= LayerCreator.length * 0.1;
+            LayerCreator.min += LayerCreator.min * 0.1;
+        }
+        LayerCreator.error = err;
     }
 }

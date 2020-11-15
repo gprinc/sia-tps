@@ -108,7 +108,7 @@ public class Main {
         ArrayList<ArrayList<Integer>> lettersN = getLetters(font, withNoise);
         input1 = new ArrayList();
 
-        for (int i = 0; i < lettersN.size() / 2; i++) {
+        for (int i = 0; i < 9; i++) {
             ArrayList<Integer> aux = lettersN.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
@@ -179,7 +179,9 @@ public class Main {
 
             System.out.println(" => Error Average = " + errAvg);
 
-        } while (errAvg > 1.5); // en realidad es la accuracy
+            LayerCreator.update(errAvg);
+
+        } while (errAvg > 1); // en realidad es la accuracy
 
         JFreeDraw draw = new JFreeDraw(mlp2.getMiddleOutput());
         draw.setVisible(true);
