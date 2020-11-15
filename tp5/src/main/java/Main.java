@@ -108,7 +108,7 @@ public class Main {
         ArrayList<ArrayList<Integer>> lettersN = getLetters(font, withNoise);
         input1 = new ArrayList();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < lettersN.size(); i++) {
             ArrayList<Integer> aux = lettersN.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
@@ -181,6 +181,8 @@ public class Main {
             System.out.println(" => Error Average = " + errAvg);
 
             LayerCreator.update(errAvg);
+
+            errAvg = trainErrors.get(trainErrors.size()-1);
 
         } while (errAvg > 1); // en realidad es la accuracy
 

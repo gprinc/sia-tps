@@ -62,13 +62,17 @@ public class LayerCreator {
     }
 
     public static void update(double err) {
-        if (err > LayerCreator.error) {
+        if (err < LayerCreator.error) {
             LayerCreator.length += 1;
-            LayerCreator.min -= 0.01;
+            LayerCreator.min += 0.01;
         } else {
+            if (LayerCreator.length > 5)
             LayerCreator.length -= 1;
-            LayerCreator.min +=  0.01;
+            if (min > 0.2)
+            LayerCreator.min -=  0.01;
         }
+
+
         LayerCreator.error = err;
     }
 }
