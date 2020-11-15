@@ -1,6 +1,8 @@
 public class InitializerJson {
     private final static String DEFAULT_EJ = "1";
     public final static String[] possibleEjs = {"1", "1-noise", "2"};
+    private final static String DEFAULT_MAP = "1";
+    public final static String[] possibleMaps = {"1", "2", "3", "4", "5"};
 
     public static String giveEj(String method) {
         if (method == null)
@@ -10,6 +12,16 @@ public class InitializerJson {
                 return method;
         }
         return DEFAULT_EJ;
+    }
+
+    public static String giveMap(String map) {
+        if (map == null)
+            return DEFAULT_MAP;
+        for (String s: possibleMaps) {
+            if (s.equals(map))
+                return map;
+        }
+        return DEFAULT_MAP;
     }
 
     public static boolean giveBoolean(String s) {

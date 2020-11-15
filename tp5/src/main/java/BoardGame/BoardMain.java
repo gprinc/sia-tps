@@ -14,7 +14,7 @@ public class BoardMain {
         JSONParser parser = new JSONParser();
 
         try {
-            JSONObject data = (JSONObject) parser.parse(new FileReader(mapa));
+            JSONObject data = (JSONObject) parser.parse(new FileReader("maps/mapa" + mapa + ".json"));
             JSONArray boxesJSON = (JSONArray) data.get("boxes");
             JSONArray winPointsJSON = (JSONArray) data.get("winPoints");
             JSONArray wallsJSON = (JSONArray) data.get("walls");

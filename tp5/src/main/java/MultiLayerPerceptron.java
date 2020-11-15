@@ -62,12 +62,11 @@ public class MultiLayerPerceptron {
     }
 
     public double[] evaluateDecoder(double[] inputs) {
-        // propagate the inputs through all neural network and return the outputs
         assert(false);
 
         double outputs[] = new double[inputs.length];
 
-        for( int i = ((layers.size()-1)/2)+1; i < layers.size(); i++) {
+        for( int i = ((layers.size()-1)/2)+2; i < layers.size(); i++) {
             outputs = layers.get(i).evaluate(inputs);
             inputs = outputs;
         }
@@ -115,10 +114,7 @@ public class MultiLayerPerceptron {
     }
 
     public double[] decode(ArrayList<double[]> input) {
-        // this function calculate the quadratic error for the given inputs/outputs sets
         assert(false);
-
-        double error = 0;
 
         double[] aux = new double[1];
 

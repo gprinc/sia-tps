@@ -19,6 +19,7 @@ public class Main {
     private static final int DEF_FONT = 1;
     private static final String DEF_EJ_NOISE = "1-noise";
     public static final int DEF_ACTIVATON_METHOD = 0;
+    private static final String EJ_TWO = "2";
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -80,12 +81,19 @@ public class Main {
             }
         }
 
-        boolean withNoise = ej.equals(DEF_EJ_NOISE);
-        ArrayList<ArrayList<Integer>> lettersN = getLetters(font, withNoise);
+        ArrayList<ArrayList<Integer>> mlpData;
+        if (ej.equals(EJ_TWO)) {
+            String mapa = InitializerJson.giveMap((String) data.get("map"));
+            EjTwo ejTwo = new EjTwo(mapa);
+            mlpData = ejTwo.getMap();
+        } else {
+            boolean withNoise = ej.equals(DEF_EJ_NOISE);
+            mlpData = getLetters(font, withNoise);
+        }
         input1 = new ArrayList();
 
-        for (int i = 0; i < lettersN.size(); i++) {
-            ArrayList<Integer> aux = lettersN.get(i);
+        for (int i = 0; i < mlpData.size(); i++) {
+            ArrayList<Integer> aux = mlpData.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
                 doubleA[j] = aux.get(j);
