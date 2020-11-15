@@ -11,8 +11,8 @@ public class MultiLayerPerceptron {
     private double learningRate;
     private double bigE;
 
-    private static double a = 0.01;
-    private static double b = 0.5;
+    private static double a = 0.001;
+    private static double b = 0.1;
 
     public MultiLayerPerceptron(int nn_neurons[], double learningRate) {
         this(nn_neurons, learningRate, Main.DEF_ACTIVATON_METHOD);
@@ -92,6 +92,28 @@ public class MultiLayerPerceptron {
         return error;
     }
 
+    private double accuracy(double nn_output[], double desiredOutput[]) {
+        double d[];
+
+        // add bias to input if necessary
+        if (desiredOutput.length != nn_output.length)
+            d = Layer.add_bias(desiredOutput);
+        else
+            d = desiredOutput;
+
+        assert(nn_output.length == d.length);
+
+        double error = 0;
+        for (int i = 0; i < nn_output.length; i++) {
+            if ((nn_output[i] - d[i]) < 0.5) {
+                error++;
+            }
+        }
+
+        //System.out.println(error/(nn_output.length* nn_output.length));
+        return error;
+    }
+
     public double evaluateQuadraticError(ArrayList<double[]> input, ArrayList<double[]> output) {
         // this function calculate the quadratic error for the given inputs/outputs sets
         assert(false);
@@ -110,7 +132,7 @@ public class MultiLayerPerceptron {
             error += evaluateError(finalOutput[i], output.get(i));
         }
 
-        return error;
+        return error / input.size();
     }
 
     public double[][] decode(ArrayList<double[]> input) {
@@ -134,7 +156,7 @@ public class MultiLayerPerceptron {
     public double evaluateAccuracy(ArrayList<double[]> input, ArrayList<double[]> output, double umbral) {
         // this function calculate the Acurracy
         assert(false);
-        double accuracy=0;
+        double accuracy = 0;
         finalOutput = new double[input.size()][];
         middleOutput = new double[input.size()][];
         for (int i = 0; i < input.size(); i++) {
@@ -143,9 +165,7 @@ public class MultiLayerPerceptron {
             for (int k = 0; k < j.length; k++) {
                 finalOutput[i][k] = j[k] - 0;
             }
-            if (evaluateError(j, output.get(i))/input.size() < umbral) {
-                accuracy++;
-            }
+            accuracy = accuracy(j, output.get(i));
         }
 
         return accuracy / input.size();
