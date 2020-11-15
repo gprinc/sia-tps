@@ -92,7 +92,7 @@ public class Main {
         }
         input1 = new ArrayList();
 
-        for (int i = 0; i < mlpData.size(); i++) {
+        for (int i = 0; i < 20; i++) {
             ArrayList<Integer> aux = mlpData.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
@@ -136,7 +136,7 @@ public class Main {
                 //System.out.println(i + " -> Error : " + error1);
                 double error = mlp2.evaluateQuadraticError(input1, input1);
                 trainErrors.add(error);
-                System.out.println(" => Error = " + error);
+                System.out.println(" => Error = " + mlp2.evaluateAccuracy(input1, input1,0.5));
             }
 
             errAvg = 0 ;
@@ -149,7 +149,7 @@ public class Main {
 
             double[][] output = mlp2.getOutput();
 
-            System.out.println(output[0].length);
+            //System.out.println(output[0].length);
 
             for (int i = 0; i < input1.size(); i++) {
                 for (int j = 0; j < output[0].length; j++) {
