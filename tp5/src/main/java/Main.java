@@ -108,7 +108,7 @@ public class Main {
         ArrayList<ArrayList<Integer>> lettersN = getLetters(font, withNoise);
         input1 = new ArrayList();
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 5; i++) {
             ArrayList<Integer> aux = lettersN.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
@@ -125,6 +125,7 @@ public class Main {
         int nn_neurons3[];
         double errAvg;
         LayerCreator lc;
+        LayerCreator.init();
 
         do {
             lc = new LayerCreator(input1.get(0).length);

@@ -6,20 +6,25 @@ public class LayerCreator {
     private int[] auxInv;
     private static double error = 0;
     private static int length;
-    private static int min;
+    private static double min;
 
-    public LayerCreator(int n){
+    public LayerCreator(int n) {
         this.generateLayer(n);
         this.generateReverseLayer();
     }
 
+    public static void init() {
+        LayerCreator.length = 5;
+        LayerCreator.min = 0.6;
+    }
+
     private void generateLayer(int n) {
         Random r = new Random();
-        int layers = r.nextInt(20) + 5;
+        int layers = length;
         aux = new int[3+(layers*2)];
         auxInv = new int[3+(layers*2)];
         for (int i = 0; i < (aux.length - 1) / 2; i++) {
-            int auxR = r.nextInt(n - (int)(n * 0.6)) + (int)(n * 0.6);
+            int auxR = r.nextInt(n - (int)(n * min)) + (int)(n * min);
             aux[i] = auxR;
             aux[aux.length - (i+1)] = auxR;
 
@@ -58,11 +63,11 @@ public class LayerCreator {
 
     public static void update(double err) {
         if (err > LayerCreator.error) {
-            LayerCreator.length += LayerCreator.length * 0.1;
-            LayerCreator.min -= LayerCreator.min * 0.1;
+            LayerCreator.length += 1;
+            LayerCreator.min -= 0.01;
         } else {
-            LayerCreator.length -= LayerCreator.length * 0.1;
-            LayerCreator.min += LayerCreator.min * 0.1;
+            LayerCreator.length -= 1;
+            LayerCreator.min +=  0.01;
         }
         LayerCreator.error = err;
     }

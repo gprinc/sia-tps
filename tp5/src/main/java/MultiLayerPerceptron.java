@@ -185,7 +185,7 @@ public class MultiLayerPerceptron {
                 for (int j = 0; j < weights.length; j++) {
                     oldWwegight = layers.get(c).getWeight(i, j);
                     newWeight = oldWwegight - (learningRate * deltaW.get(c)[i][j]);
-                    newWeight+= (oldDeltaW.get(c)[i][j] * momentum);
+                    //newWeight+= (oldDeltaW.get(c)[i][j] * momentum);
                     layers.get(c).setWeight(i, j, newWeight);
                 }
             }
