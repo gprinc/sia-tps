@@ -20,6 +20,7 @@ public class Main {
     private static final String DEF_EJ_NOISE = "1-noise";
     public static final int DEF_ACTIVATON_METHOD = 0;
     private static final String EJ_TWO = "2";
+    private static final int DEFAULT_MAP_SIZE = 1;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -82,13 +83,16 @@ public class Main {
         }
 
         ArrayList<ArrayList<Integer>> mlpData;
+        ArrayList<ArrayList<Integer>> auxData;
+        boolean withNoise = false;
         if (ej.equals(EJ_TWO)) {
-            String mapa = InitializerJson.giveMap((String) data.get("map"));
-            EjTwo ejTwo = new EjTwo(mapa);
+            int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
+            EjTwo ejTwo = new EjTwo(mapSize);
             mlpData = ejTwo.getMap();
         } else {
-            boolean withNoise = ej.equals(DEF_EJ_NOISE);
+            withNoise = ej.equals(DEF_EJ_NOISE);
             mlpData = getLetters(font, withNoise);
+            if (withNoise) auxData = getLetters(font, false);
         }
         input1 = new ArrayList();
 
@@ -134,7 +138,13 @@ public class Main {
                 //double error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
                 //trainErrors.add(error1);
                 //System.out.println(i + " -> Error : " + error1);
-                double error = mlp2.evaluateQuadraticError(input1, input1);
+                double error;
+                if (withNoise)  {
+                    // TODO modificar esto
+                    error = mlp2.evaluateQuadraticError(input1, input1);
+                } else {
+                    error = mlp2.evaluateQuadraticError(input1, input1);
+                }
                 trainErrors.add(error);
                 System.out.println(" => Error = " + error);
             }

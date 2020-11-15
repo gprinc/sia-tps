@@ -10,7 +10,7 @@ import java.util.Iterator;
 public class BoardMain {
     Board board;
 
-    public BoardMain(String mapa) {
+    public BoardMain(int mapa) {
         JSONParser parser = new JSONParser();
 
         try {
@@ -44,7 +44,7 @@ public class BoardMain {
                     auxId++;
                 }
                 int[][] walls = new int[width][height];
-                Iterator<JSONArray> iteratorArray = boxesJSON.iterator();
+                Iterator<JSONArray> iteratorArray;
                 iteratorArray = wallsJSON.iterator();
                 auxId = 0;
                 JSONArray auxArray;
