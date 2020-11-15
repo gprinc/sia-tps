@@ -12,7 +12,7 @@ public class MultiLayerPerceptron {
     private double bigE;
 
     private static double a = 0.01;
-    private static double b = 0.001;
+    private static double b = 0.5;
 
     public MultiLayerPerceptron(int nn_neurons[], double learningRate) {
         this(nn_neurons, learningRate, Main.DEF_ACTIVATON_METHOD);
