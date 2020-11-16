@@ -258,6 +258,8 @@ public class Main {
             }
         }
 
+        mlp2.evaluateQuadraticError(input1, input2);
+
         double[][] middleOutput = mlp2.getMiddleOutput();
 
         ArrayList<double[]> middleOutputP = new ArrayList<>();
