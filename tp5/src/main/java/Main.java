@@ -113,10 +113,6 @@ public class Main {
             input1.add(doubleA);
         }
 
-
-
-
-
         System.out.println("\n********** Initialized font **********\n");
 
         long start3 = System.nanoTime();
@@ -130,13 +126,8 @@ public class Main {
         do {
             lc = new LayerCreator(input1.get(0).length);
             nn_neurons3 = lc.getLayer();
-            //System.out.println(input1.get(0).length);
             mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, activationMethod);
 
-            DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime now3 = LocalDateTime.now();
-            long nowSeconds3 = System.nanoTime();
-            double elapsedTimeInSecond3 = (double) (nowSeconds3 - start3) / 1000000000;
             ArrayList<Double> trainErrors = new ArrayList<>();
 
             for (int i = 0; i < 10; i++) {
@@ -237,7 +228,6 @@ public class Main {
             int randomNum = rand.nextInt(middleOutputP.size());
             kohonen.learn(middleOutputP.get(randomNum));
         }
-        //int[][] heatmapMatrix = kohonen.printHeatMap(normalizedMatrix,normalizeCountries);
         double[] weights = kohonen.getNodeWeight(middleOutputP.get(0));
 
         System.out.println();
@@ -247,7 +237,6 @@ public class Main {
         for (int i = 0; i < weights.length ; i++) {
             System.out.println( "Weight["+i+"]  "+weights[i]);
         }
-        //TableHeatmap.showHeatmap(heatmapMatrix);
 
         ArrayList<double[]> decode = new ArrayList<>();
         decode.add(weights);
@@ -267,8 +256,6 @@ public class Main {
 
         JFreeDraw draw = new JFreeDraw(mlp2.getMiddleOutput());
         draw.setVisible(true);
-
-        long start4 = System.nanoTime();
 
         return;
     }

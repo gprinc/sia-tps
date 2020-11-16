@@ -23,7 +23,6 @@ public class MultiLayerPerceptron {
         this.bigE = 0;
         Random rand = new Random();
 
-        // create the required layers
         layers = new ArrayList<Layer>();
         for (int i = 0; i < nn_neurons.length; i++){
             layers.add(new Layer(i == 0 ? nn_neurons[i] : nn_neurons[i - 1], nn_neurons[i], rand, activationMethod));
@@ -98,7 +97,7 @@ public class MultiLayerPerceptron {
         double error = 0;
         for (int i = 0; i < nn_output.length; i++)
             error += (nn_output[i] - d[i]) * (nn_output[i] - d[i]);
-        //System.out.println(error/(nn_output.length* nn_output.length));
+
         return error;
     }
 
@@ -120,7 +119,6 @@ public class MultiLayerPerceptron {
             }
         }
 
-        //System.out.println(error/(nn_output.length* nn_output.length));
         return error;
     }
 
@@ -233,9 +231,6 @@ public class MultiLayerPerceptron {
                 double weights[] = layers.get(c).getWeights(i);
                 for (int j = 0; j < weights.length; j++) {
                     deltaW.get(c)[i][j] += gradEx.get(c)[i] * layers.get(c-1).getOutput(j);
-                    if (deltaW.get(c)[i][j] == 0 ) {
-                        //System.out.println(i + " " + " "  + j + " " + c);
-                    }
                 }
             }
 
@@ -243,7 +238,6 @@ public class MultiLayerPerceptron {
     }
 
     private void updateWeights(double learningRate) {
-        double momentum = 0.8;
         double oldWwegight;
         double newWeight;
         // update values for each weight
@@ -253,7 +247,6 @@ public class MultiLayerPerceptron {
                 for (int j = 0; j < weights.length; j++) {
                     oldWwegight = layers.get(c).getWeight(i, j);
                     newWeight = oldWwegight - (learningRate * deltaW.get(c)[i][j]);
-                    //newWeight+= (oldDeltaW.get(c)[i][j] * momentum);
                     layers.get(c).setWeight(i, j, newWeight);
                 }
             }
@@ -275,7 +268,7 @@ public class MultiLayerPerceptron {
     public double learn(ArrayList<double[]> input, ArrayList<double[]> output, int iter, double threshold) {
         assert(false);
         double generalError = 0;
-        double error = Double.POSITIVE_INFINITY;
+        double error;
         middleOutput = new double[input.size()][];
         
         int iterations = 0;
