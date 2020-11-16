@@ -21,6 +21,8 @@ public class Main {
     public static final int DEF_ACTIVATON_METHOD = 0;
     private static final String EJ_TWO = "2";
     private static final int DEFAULT_MAP_SIZE = 1;
+    private static final int DEFAULT_LETTERS = 5;
+    private static final int DEFAULT_NOICEP = 2;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -37,6 +39,8 @@ public class Main {
         int mlp_even_partition = InitializerJson.giveInt((String) data.get("mlp_even_partition"), DEFAULT_EVEN_PARTITION);
         double threshold = InitializerJson.giveDouble((String) data.get("threshold"), DEFAULT_THRESHOLD);
         double accuracy = InitializerJson.giveDouble((String) data.get("accuracy"), DEFAULT_ACCURACY);
+        int letters = InitializerJson.giveInt((String) data.get("letters"), DEFAULT_LETTERS);
+        int noice_percentage = InitializerJson.giveInt((String) data.get("noice_percentage"), DEFAULT_NOICEP);
 
 
         int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
@@ -90,9 +94,9 @@ public class Main {
             withNoise = ej.equals(DEF_EJ_NOISE);
             mlpData = getLetters(font, withNoise);
             auxData = getLetters(font,false);
-            // TODO hacer que se creen varios arrays con ruido, asi los entrenemos a todos y capas aprende mejor
+            // TODO hacer que se creen varios arrays con ruido, asi los entrenamos a todos y capas aprende mejor
             input2 = new ArrayList();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < letters; i++) {
                 ArrayList<Integer> aux = auxData.get(i);
                 double[] doubleA = new double[aux.size()];
                 for (int j = 0; j < aux.size(); j++) {
@@ -103,8 +107,7 @@ public class Main {
         }
         input1 = new ArrayList();
 
-        // TODO agregar en el json cuantas letras queremos que aprenda
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < letters; i++) {
             ArrayList<Integer> aux = mlpData.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
@@ -185,8 +188,7 @@ public class Main {
             Random r = new Random();
             int rand = r.nextInt(input2.size());
             arrayNotNoise.add(input2.get(rand));
-            // TODO meter el noice percetange en el config-json y hacer que los parametros de entrada tambien cambien la misma cantidad de bits
-            int noice_percentage = 2;
+            // TODO hacer que los parametros de entrada tambien cambien la misma cantidad de bits
             noiseArray.add(noise(input2.get(rand),noice_percentage));
             double err;
             System.out.println("\n********** Noise err **********\n");
@@ -358,13 +360,5 @@ public class Main {
             index++;
         }
         return aux;
-    }
-
-    static ArrayList<double[]> toArrayList(double[][] a) {
-        ArrayList<double[]> b = new ArrayList<>();
-        for (int i = 0; i < a.length; i++) {
-            b.add(a[i]);
-        }
-        return b;
     }
 }

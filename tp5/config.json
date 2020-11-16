@@ -8,9 +8,11 @@
   "noise_percentage": "2",
   "ej": "1-noise",
   "font": "1",
+  "letters": "5",
   "activation_method": "0",
   "layer_size": "TODO",
   "mid_layer": "TODO",
   "min_neurons": "TODO",
-  "input_amount": "TODO"
+  "input_amount": "TODO",
+  "noice_percentage": "2"
 }
