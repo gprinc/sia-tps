@@ -7,10 +7,12 @@ public class LayerCreator {
     private static double error = 0;
     private static int length;
     private static double min;
+    private static int middle = 2;
 
-    public LayerCreator(int n) {
+    public LayerCreator(int n, int mid) {
         this.generateLayer(n);
         this.generateReverseLayer();
+        middle = mid;
     }
 
     public static void init() {
@@ -31,7 +33,7 @@ public class LayerCreator {
         }
         aux[0]= n;
         aux[aux.length-1] = n;
-        aux[layers+1] = 2;
+        aux[layers+1] = middle;
 
         /*
         aux= new int[3];
