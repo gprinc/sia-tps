@@ -7,12 +7,12 @@ public class LayerCreator {
     private static double error = 0;
     private static int length;
     private static double min;
-    private static int middle = 32;
+    private static int middle = 2;
 
     public LayerCreator(int n, int mid) {
+        middle = mid;
         this.generateLayer(n);
         this.generateReverseLayer();
-        middle = mid;
     }
 
     public static void init() {

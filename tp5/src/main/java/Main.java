@@ -257,7 +257,7 @@ public class Main {
 
             }
         }
-
+        System.out.println(input1.size());
         mlp2.evaluateQuadraticError(input1, input2);
 
         double[][] middleOutput = mlp2.getMiddleOutput();
