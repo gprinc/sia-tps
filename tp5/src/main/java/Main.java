@@ -3,8 +3,6 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,7 +15,7 @@ public class Main {
 
     private static final int DEF_NOISE_PERCENTAGE = 1;
     private static final int DEF_FONT = 1;
-    private static final String DEF_EJ_NOISE = "1-noise";
+    private static final String EJ_NOISE = "1-noise";
     public static final int DEF_ACTIVATON_METHOD = 0;
     private static final String EJ_TWO = "2";
     private static final int DEFAULT_MAP_SIZE = 1;
@@ -26,6 +24,10 @@ public class Main {
     private static final int DEFAULT_KOHONEN_K = 3;
     private static final double DEFAULT_KOHONEN_LRATE = 0.01;
     private static final int DEFAULT_KOHONEN_DELTA = 2;
+    private static final double DEF_LEARNING_RATE_A = 0.01;
+    private static final double DEF_LEARNING_RATE_B = 0.01;
+    private static final double DEF_ERROR = 1.5;
+    private static final int DEF_ITERATIONS = 20;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -53,6 +55,11 @@ public class Main {
         String ej = InitializerJson.giveEj((String) data.get("ej"));
         int activationMethod = InitializerJson.giveInt((String) data.get("activation_method"), DEF_ACTIVATON_METHOD);
         int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
+
+        int iterations = InitializerJson.giveInt((String) data.get("activation_method"), DEF_ACTIVATON_METHOD);
+        double errorI = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEF_ERROR);
+        double lrA = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEF_LEARNING_RATE_A);
+        double lrB = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEF_LEARNING_RATE_B);
 
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
@@ -102,7 +109,7 @@ public class Main {
             mlpData = ejTwo.getMap();
             // TODO ver parametros correctos y setear valores adecuados para realizar el aprendizaje de mapas
         } else {
-            withNoise = ej.equals(DEF_EJ_NOISE);
+            withNoise = ej.equals(EJ_NOISE);
             mlpData = getLetters(font, withNoise);
             mlpData2 = getLetters(font, withNoise);
             mlpData3 = getLetters(font, withNoise);

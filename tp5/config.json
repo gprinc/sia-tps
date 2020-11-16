@@ -15,5 +15,9 @@
   "middleLayer": "80",
   "kohonen_k": "3",
   "kohonen_lr": "0.01",
-  "kohonen_delta": "2"
+  "kohonen_delta": "2",
+  "error": "5",
+  "lr_a": "1",
+  "lr_b": "1",
+  "iterations": "20"
 }

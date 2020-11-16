@@ -66,7 +66,7 @@ public class EjTwo {
         for (int i = 0; i < mapa.size(); i = i + 2) {
             if (i % mapSize * 2 == 0) j++;
             String auxByte = mapa.get(i).toString() + mapa.get(i + 1).toString();
-            int finalI = Math.floorDiv(i/2,j);
+            int finalI = Math.floorDiv(i/2,mapSize);
             switch (auxByte) {
                 case winPoint:
                     winPoints.add(new Position(finalI, j));
