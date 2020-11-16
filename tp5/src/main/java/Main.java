@@ -90,9 +90,9 @@ public class Main {
             withNoise = ej.equals(DEF_EJ_NOISE);
             mlpData = getLetters(font, withNoise);
             auxData = getLetters(font,false);
-            if (withNoise) auxData = getLetters(font, false);
-
-            for (int i = 0; i < 10; i++) {
+            // TODO hacer que se creen varios arrays con ruido, asi los entrenemos a todos y capas aprende mejor
+            input2 = new ArrayList();
+            for (int i = 0; i < 5; i++) {
                 ArrayList<Integer> aux = auxData.get(i);
                 double[] doubleA = new double[aux.size()];
                 for (int j = 0; j < aux.size(); j++) {
@@ -103,7 +103,7 @@ public class Main {
         }
         input1 = new ArrayList();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             ArrayList<Integer> aux = mlpData.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
@@ -112,7 +112,7 @@ public class Main {
             input1.add(doubleA);
         }
 
-        input2 = new ArrayList();
+
 
 
 
@@ -143,6 +143,7 @@ public class Main {
 
                 double error;
                 if (withNoise)  {
+                    // TODO relacionado al del principio hacer que entrene con varios
                     mlp2.learn(input1, input2, mlp_iter_even, threshold);
                     error = mlp2.evaluateQuadraticError(input1, input2);
                 } else {
@@ -187,15 +188,36 @@ public class Main {
         } while (errAvg > 1); // en realidad es la accuracy
 
         if (withNoise)  {
-            // TODO CREAR UN INPUT NUEVO Y EVALUARLO A VER SI PUEDE SACARLE EL RUIDO
             ArrayList<double[]> noiseArray = new ArrayList<>();
             ArrayList<double[]> arrayNotNoise = new ArrayList<>();
-            arrayNotNoise.add(input2.get(0));
-            noiseArray.add(noise(input2.get(0)));
+            Random r = new Random();
+            int rand = r.nextInt(input2.size());
+            arrayNotNoise.add(input2.get(rand));
+            // TODO meter el noice percetange en el config-json y hacer que los parametros de entrada tambien cambien la misma cantidad de bits
+            int noice_percentage = 2;
+            noiseArray.add(noise(input2.get(rand),noice_percentage));
             double err;
             System.out.println("\n********** Noise err **********\n");
             err = mlp2.evaluateQuadraticError(noiseArray, arrayNotNoise);
             System.out.println("Err " + err);
+            System.out.println();
+
+            double[][] output = mlp2.getOutput();
+
+            for (int i = 0; i < noiseArray.size(); i++) {
+                for (int j = 0; j < noiseArray.get(0).length; j++) {
+                    System.out.print(((int) noiseArray.get(i)[j]) + " ");
+                }
+                System.out.println();
+                for (int j = 0; j < output[0].length; j++) {
+                    System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+                }
+                System.out.println();
+                for (int j = 0; j < noiseArray.get(0).length; j++) {
+                    System.out.print(((int) arrayNotNoise.get(i)[j]) + " ");
+                }
+                System.out.println();
+            }
         }
 
         double[][] middleOutput = mlp2.getMiddleOutput();
@@ -217,6 +239,7 @@ public class Main {
         //int[][] heatmapMatrix = kohonen.printHeatMap(normalizedMatrix,normalizeCountries);
         double[] weights = kohonen.getNodeWeight(middleOutputP.get(0));
 
+        System.out.println();
         System.out.println("********** Kohonen weights of first input **********");
         System.out.println();
 
@@ -249,17 +272,16 @@ public class Main {
         return;
     }
 
-    static double[] noise(double[] i) {
+    static double[] noise(double[] i, int noice_percentage) {
         double[] aux = new double[i.length];
         Random r = new Random();
         int randomr = r.nextInt(i.length);
         for (int j = 0; j < i.length; j++) {
-            if (j == randomr) {
-                aux[j] = (i[j] == 0 ? 1:0);
-            } else {
-                aux[j] = i[j];
-
-            }
+            aux[j] = i[j] - 0;
+        }
+        for (int j = 0; j < noice_percentage; j++) {
+            randomr = r.nextInt(i.length);
+            aux[randomr] = (i[randomr] == 0 ? 1:0);
         }
         return aux;
     }
