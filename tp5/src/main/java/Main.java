@@ -52,6 +52,7 @@ public class Main {
         int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
         String ej = InitializerJson.giveEj((String) data.get("ej"));
         int activationMethod = InitializerJson.giveInt((String) data.get("activation_method"), DEF_ACTIVATON_METHOD);
+        int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
 
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
@@ -97,7 +98,6 @@ public class Main {
         ArrayList<ArrayList<Integer>> auxData;
         boolean withNoise = false;
         if (ej.equals(EJ_TWO)) {
-            int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
             EjTwo ejTwo = new EjTwo(mapSize);
             mlpData = ejTwo.getMap();
             // TODO ver parametros correctos y setear valores adecuados para realizar el aprendizaje de mapas
@@ -247,12 +247,6 @@ public class Main {
             }
         }
 
-        if (ej.equals(EJ_TWO)) {
-            double[][] output = mlp2.getOutput();
-            for (int i = 0; i < output.length; i++) {
-
-            }
-        }
         System.out.println(input1.size());
         mlp2.evaluateQuadraticError(input1, input2);
 
@@ -296,6 +290,16 @@ public class Main {
                 System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
             }
             System.out.println();
+        }
+
+        if (ej.equals(EJ_TWO)) {
+            double[][] finalOut = mlp2.getOutput();
+            ArrayList<Integer> mapa = new ArrayList<>();
+            for (int i = 0; i < finalOut[0].length; i++) {
+                mapa.add((int) finalOut[0][i]);
+            }
+            EjTwo ejTwo = new EjTwo(mapSize);
+            ejTwo.playMap(mapa);
         }
 
         JFreeDraw draw = new JFreeDraw(mlp2.getMiddleOutput());
