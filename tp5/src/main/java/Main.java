@@ -55,8 +55,12 @@ public class Main {
 
         ArrayList<double[]> input1 = new ArrayList();
         ArrayList<double[]> input2 = new ArrayList();
+        ArrayList<double[]> input3 = new ArrayList();
+        ArrayList<double[]> input4 = new ArrayList();
         ArrayList<double[]> output1 = new ArrayList();
         ArrayList<double[]> output2 = new ArrayList();
+        ArrayList<double[]> output3 = new ArrayList();
+        ArrayList<double[]> output4 = new ArrayList();
 
         // initialization
         for (int i = 0; i < mlp_even_partition; i++){
@@ -104,9 +108,28 @@ public class Main {
                 }
                 input2.add(doubleA);
             }
+
+            output3 = new ArrayList();
+            for (int i = 5; i < letters + 5; i++) {
+                ArrayList<Integer> aux = auxData.get(i);
+                double[] doubleA = new double[aux.size()];
+                for (int j = 0; j < aux.size(); j++) {
+                    doubleA[j] = aux.get(j);
+                }
+                output3.add(doubleA);
+            }
+
+            output4 = new ArrayList();
+            for (int i = 10; i < letters + 10; i++) {
+                ArrayList<Integer> aux = auxData.get(i);
+                double[] doubleA = new double[aux.size()];
+                for (int j = 0; j < aux.size(); j++) {
+                    doubleA[j] = aux.get(j);
+                }
+                output4.add(doubleA);
+            }
         }
         input1 = new ArrayList();
-
         for (int i = 0; i < letters; i++) {
             ArrayList<Integer> aux = mlpData.get(i);
             double[] doubleA = new double[aux.size()];
@@ -114,6 +137,26 @@ public class Main {
                 doubleA[j] = aux.get(j);
             }
             input1.add(doubleA);
+        }
+
+        input3 = new ArrayList();
+        for (int i = 5; i < letters + 5; i++) {
+            ArrayList<Integer> aux = mlpData.get(i);
+            double[] doubleA = new double[aux.size()];
+            for (int j = 0; j < aux.size(); j++) {
+                doubleA[j] = aux.get(j);
+            }
+            input3.add(doubleA);
+        }
+
+        input4 = new ArrayList();
+        for (int i = 10; i < letters + 10; i++) {
+            ArrayList<Integer> aux = mlpData.get(i);
+            double[] doubleA = new double[aux.size()];
+            for (int j = 0; j < aux.size(); j++) {
+                doubleA[j] = aux.get(j);
+            }
+            input4.add(doubleA);
         }
 
         System.out.println("\n********** Initialized font **********\n");
@@ -141,6 +184,8 @@ public class Main {
                 if (withNoise)  {
                     // TODO relacionado al del principio hacer que entrene con varios
                     mlp2.learn(input1, input2, mlp_iter_even, threshold);
+                   // mlp2.learn(input3, output3, mlp_iter_even, threshold);
+                   // mlp2.learn(input4, output4, mlp_iter_even, threshold);
                     error = mlp2.evaluateQuadraticError(input1, input2);
                 } else {
                     error = mlp2.evaluateQuadraticError(input1, input1);
