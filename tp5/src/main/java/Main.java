@@ -22,7 +22,6 @@ public class Main {
     private static final String EJ_TWO = "2";
     private static final int DEFAULT_MAP_SIZE = 1;
     private static final int DEFAULT_LETTERS = 5;
-    private static final int DEFAULT_NOICEP = 2;
     private static final int DEFAULT_MIDDLE_LAYER = 2;
     private static final int DEFAULT_KOHONEN_K = 3;
     private static final double DEFAULT_KOHONEN_LRATE = 0.01;
@@ -44,11 +43,11 @@ public class Main {
         double threshold = InitializerJson.giveDouble((String) data.get("threshold"), DEFAULT_THRESHOLD);
         double accuracy = InitializerJson.giveDouble((String) data.get("accuracy"), DEFAULT_ACCURACY);
         int letters = InitializerJson.giveInt((String) data.get("letters"), DEFAULT_LETTERS);
-        int noice_percentage = InitializerJson.giveInt((String) data.get("noice_percentage"), DEFAULT_NOICEP);
         int middleLayer = InitializerJson.giveInt((String) data.get("middleLayer"), DEFAULT_MIDDLE_LAYER);
         int kohonen_k = InitializerJson.giveInt((String) data.get("kohonen_k"), DEFAULT_KOHONEN_K);
         double kohonen_lr = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEFAULT_KOHONEN_LRATE);
         int kohonen_delta = InitializerJson.giveInt((String) data.get("kohonen_delta"), DEFAULT_KOHONEN_DELTA);
+        int noisePercentage = InitializerJson.giveInt((String) data.get("noise_percentage"), DEF_NOISE_PERCENTAGE);
 
         int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
         String ej = InitializerJson.giveEj((String) data.get("ej"));
@@ -108,7 +107,6 @@ public class Main {
             mlpData2 = getLetters(font, withNoise);
             mlpData3 = getLetters(font, withNoise);
             auxData = getLetters(font,false);
-            // TODO hacer que se creen varios arrays con ruido, asi los entrenamos a todos y capas aprende mejor
             input2 = new ArrayList();
             for (int i = 0; i < letters; i++) {
                 ArrayList<Integer> aux = auxData.get(i);
@@ -161,7 +159,6 @@ public class Main {
         LayerCreator.init();
 
         do {
-            // TODO AGREGAR QUE EL TAMAÑO DE LA CAPA DEL MEDIO SEA PARAMETRIZABLE
             lc = new LayerCreator(input1.get(0).length, middleLayer);
             nn_neurons3 = lc.getLayer();
             mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, activationMethod);
@@ -173,7 +170,6 @@ public class Main {
 
                 double error;
                 if (withNoise)  {
-                    // TODO relacionado al del principio hacer que entrene con varios
                     mlp2.learn(input1, input2, mlp_iter_even, threshold);
                     mlp2.learn(input3, input2, mlp_iter_even, threshold);
                     mlp2.learn(input4, input2, mlp_iter_even, threshold);
@@ -226,7 +222,7 @@ public class Main {
             int rand = r.nextInt(input2.size());
             arrayNotNoise.add(input2.get(rand));
             // TODO hacer que los parametros de entrada tambien cambien la misma cantidad de bits
-            noiseArray.add(noise(input2.get(rand),noice_percentage));
+            noiseArray.add(noise(input2.get(rand), noisePercentage));
             double err;
             System.out.println("\n********** Noise err **********\n");
             err = mlp2.evaluateQuadraticError(noiseArray, arrayNotNoise);
@@ -308,14 +304,14 @@ public class Main {
         return;
     }
 
-    static double[] noise(double[] i, int noice_percentage) {
+    static double[] noise(double[] i, int noise_percentage) {
         double[] aux = new double[i.length];
         Random r = new Random();
         int randomr = r.nextInt(i.length);
         for (int j = 0; j < i.length; j++) {
             aux[j] = i[j] - 0;
         }
-        for (int j = 0; j < noice_percentage; j++) {
+        for (int j = 0; j < noise_percentage; j++) {
             randomr = r.nextInt(i.length);
             aux[randomr] = (i[randomr] == 0 ? 1:0);
         }
