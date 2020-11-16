@@ -94,6 +94,7 @@ public class Main {
             int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
             EjTwo ejTwo = new EjTwo(mapSize);
             mlpData = ejTwo.getMap();
+            // TODO ver parametros correctos y setear valores adecuados para realizar el aprendizaje de mapas
         } else {
             withNoise = ej.equals(DEF_EJ_NOISE);
             mlpData = getLetters(font, withNoise);
@@ -257,6 +258,13 @@ public class Main {
                     System.out.print(((int) arrayNotNoise.get(i)[j]) + " ");
                 }
                 System.out.println();
+            }
+        }
+
+        if (ej.equals(EJ_TWO)) {
+            double[][] output = mlp2.getOutput();
+            for (int i = 0; i < output.length; i++) {
+
             }
         }
 
