@@ -58,13 +58,17 @@ public class EjTwo {
     public ArrayList<ArrayList<Integer>> getMap() { return this.map; }
 
     public void playMap(ArrayList<Integer> mapa) {
+        /*if (Math.sqrt(mapa.size()/2) != mapSize) {
+            System.out.println("not a valid map");
+            return;
+        }*/
         int j = -1;
         ArrayList<Box> boxes = new ArrayList<>();
         ArrayList<Position> winPoints = new ArrayList<>();
         Position player = new Position(0,0);
         int walls[][] = new int[mapSize][mapSize];
         for (int i = 0; i < mapa.size(); i = i + 2) {
-            if (i % mapSize * 2 == 0) j++;
+            if (i % (mapSize * 2) == 0) j++;
             String auxByte = mapa.get(i).toString() + mapa.get(i + 1).toString();
             int finalI = Math.floorDiv(i/2,mapSize);
             switch (auxByte) {
@@ -77,6 +81,7 @@ public class EjTwo {
             }
             int wall = 1;
             if (!auxByte.equals(wall)) wall = 0;
+            System.out.println("[" + finalI + "]" +"[" + j + "]");
             walls[finalI][j] = wall;
         }
         Box[] boxesArray = new Box[boxes.size()];

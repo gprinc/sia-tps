@@ -15,8 +15,8 @@ public class LayerCreator {
         this.generateReverseLayer();
     }
 
-    public static void init() {
-        LayerCreator.length = 10;
+    public static void init(int length) {
+        LayerCreator.length = length;
         LayerCreator.min = 0.6;
     }
 

@@ -18,7 +18,7 @@ public class Main {
     private static final String EJ_NOISE = "1-noise";
     public static final int DEF_ACTIVATON_METHOD = 0;
     private static final String EJ_TWO = "2";
-    private static final int DEFAULT_MAP_SIZE = 1;
+    private static final int DEFAULT_MAP_SIZE = 8;
     private static final int DEFAULT_LETTERS = 5;
     private static final int DEFAULT_MIDDLE_LAYER = 2;
     private static final int DEFAULT_KOHONEN_K = 3;
@@ -57,6 +57,7 @@ public class Main {
         int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
 
         int iterations = InitializerJson.giveInt((String) data.get("iterations"), DEF_ACTIVATON_METHOD);
+        int layerSize = InitializerJson.giveInt((String) data.get("layer_size"), DEF_ACTIVATON_METHOD);
         double errorI = InitializerJson.giveDouble((String) data.get("error"), DEF_ERROR);
         double lrA = InitializerJson.giveDouble((String) data.get("lr_a"), DEF_LEARNING_RATE_A);
         double lrB = InitializerJson.giveDouble((String) data.get("lr_b"), DEF_LEARNING_RATE_B);
@@ -163,7 +164,7 @@ public class Main {
         int nn_neurons3[];
         double errAvg;
         LayerCreator lc;
-        LayerCreator.init();
+        LayerCreator.init(layerSize);
 
         do {
             lc = new LayerCreator(input1.get(0).length, middleLayer);

@@ -8,10 +8,8 @@
   "font": "1",
   "letters": "5",
   "activation_method": "0",
-  "layer_size": "TODO",
-  "mid_layer": "TODO",
+  "layer_size": "10",
   "min_neurons": "TODO",
-  "input_amount": "TODO",
   "middleLayer": "80",
   "kohonen_k": "3",
   "kohonen_lr": "0.01",
@@ -19,5 +17,6 @@
   "error": "1",
   "lr_a": "0.0001",
   "lr_b": "0.1",
-  "iterations": "20"
+  "iterations": "20",
+  "mapSize": "8"
 }
