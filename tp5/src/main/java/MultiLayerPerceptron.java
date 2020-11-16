@@ -11,7 +11,7 @@ public class MultiLayerPerceptron {
     private double learningRate;
     private double bigE;
 
-    private static double a = 0.001;
+    private static double a = 0.0001;
     private static double b = 0.1;
 
     public MultiLayerPerceptron(int nn_neurons[], double learningRate) {
