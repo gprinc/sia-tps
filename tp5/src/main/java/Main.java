@@ -103,6 +103,7 @@ public class Main {
         }
         input1 = new ArrayList();
 
+        // TODO agregar en el json cuantas letras queremos que aprenda
         for (int i = 0; i < 5; i++) {
             ArrayList<Integer> aux = mlpData.get(i);
             double[] doubleA = new double[aux.size()];
