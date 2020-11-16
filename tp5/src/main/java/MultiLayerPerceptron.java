@@ -51,10 +51,14 @@ public class MultiLayerPerceptron {
         double outputs[] = new double[inputs.length];
 
         for( int i = 0; i < layers.size(); i++) {
-            outputs = layers.get(i).evaluate(inputs);
+            double[] d = layers.get(i).evaluate(inputs);
+            outputs = d;
             inputs = outputs;
             if ((i == ((layers.size() - 3) / 2) +1)) {
-                middleOutput[j] = outputs;
+                middleOutput[j] = new double[d.length];
+                for (int k = 0; k < d.length; k++) {
+                    middleOutput[j][k] = d[k] - 0;
+                }
             }
         }
 
@@ -64,11 +68,17 @@ public class MultiLayerPerceptron {
     public double[] evaluateDecoder(double[] inputs) {
         assert(false);
 
-        double outputs[] = new double[inputs.length];
+        double[] outputs = new double[inputs.length];
 
-        for( int i = ((layers.size()-1)/2)+2; i < layers.size(); i++) {
-            outputs = layers.get(i).evaluate(inputs);
-            inputs = outputs;
+        double[] aux = inputs;
+
+        for( int i = ((layers.size()-1)/2)+1; i < layers.size(); i++) {
+            double[] j = layers.get(i).evaluate(aux);
+            outputs = new double[j.length];
+            for (int k = 0; k < j.length; k++) {
+                outputs[k] = j[k] - 0;
+            }
+            aux = j;
         }
 
         return outputs;
@@ -144,10 +154,11 @@ public class MultiLayerPerceptron {
         }
 
         double[][] finalAuxes = new double[auxes.size()][auxes.get(0).length];
-        for (double[] dob : auxes) {
-            int j = 0;
-            for (int i = 0; i < dob.length; i++) finalAuxes[j][i] = dob[i];
-            j++;
+
+        for (int i = 0; i < auxes.size(); i++) {
+            for (int j = 0; j < auxes.get(i).length; j++) {
+                finalAuxes[i][j] = auxes.get(i)[j] - 0;
+            }
         }
         return finalAuxes;
     }

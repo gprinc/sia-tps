@@ -80,8 +80,8 @@ public class Kohonen {
 
             }
         }
-        System.out.println("environmentIteration  "+ this.environmentIteration(this.iteration));
-        System.out.println("learningRateIteration  "+ this.learningRateIteration(this.iteration));
+        //System.out.println("environmentIteration  "+ this.environmentIteration(this.iteration));
+        //System.out.println("learningRateIteration  "+ this.learningRateIteration(this.iteration));
         this.updateNeighbours(x,y,input);
         this.iteration++;
     }
@@ -211,6 +211,24 @@ public class Kohonen {
         }
         int[] aux = {x,y};
         return aux;
+    }
+
+    public double[] getNodeWeight(double[] input) {
+        double distance = 1000000000;
+        int x=0;
+        int y=0;
+        for (int i = 0; i < this.nodes.length; i++) {
+            for (int j = 0; j < this.nodes.length; j++) {
+                double[] auxVector = this.nodes[i][j].getWeights();
+                double auxDistance = distance(input,auxVector);
+                if (auxDistance < distance) {
+                    distance = auxDistance;
+                    x=i;
+                    y=j;
+                }
+            }
+        }
+        return this.nodes[x][y].getWeights();
     }
 
     public static double roundAvoid(double value, int places) {

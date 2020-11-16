@@ -96,7 +96,7 @@ public class Main {
         }
         input1 = new ArrayList();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             ArrayList<Integer> aux = mlpData.get(i);
             double[] doubleA = new double[aux.size()];
             for (int j = 0; j < aux.size(); j++) {
@@ -129,15 +129,7 @@ public class Main {
 
             for (int i = 0; i < 10; i++) {
                 mlp2.learn(input1, input1, mlp_iter_even, threshold);
-                double[][] middleOutput = mlp2.getMiddleOutput();
-                for (int j = 0; j < middleOutput.length; j++) {
-                    for (int k = 0; k < middleOutput[0].length; k++) {
-                        //System.out.println("middleOutput[" + j + "][" + k + "] : " + middleOutput[j][k]);
-                    }
-                }
-                //double error1 = mlp2.evaluateAccuracy(input1, input1, accuracy);
-                //trainErrors.add(error1);
-                //System.out.println(i + " -> Error : " + error1);
+
                 double error;
                 if (withNoise)  {
                     // TODO modificar esto
@@ -145,8 +137,10 @@ public class Main {
                 } else {
                     error = mlp2.evaluateQuadraticError(input1, input1);
                 }
+
                 trainErrors.add(error);
-                System.out.println(" => Error = " + mlp2.evaluateAccuracy(input1, input1,0.5));
+                mlp2.evaluateAccuracy(input1, input1,0.5);
+                System.out.println(" => Error = " + error);
             }
 
             errAvg = 0 ;
@@ -159,8 +153,6 @@ public class Main {
 
             double[][] output = mlp2.getOutput();
 
-            //System.out.println(output[0].length);
-
             for (int i = 0; i < input1.size(); i++) {
                 for (int j = 0; j < output[0].length; j++) {
                     System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
@@ -172,13 +164,58 @@ public class Main {
                 System.out.println();
             }
 
+            System.out.println();
             System.out.println(" => Error Average = " + errAvg);
+            System.out.println();
 
             LayerCreator.update(errAvg);
 
             errAvg = trainErrors.get(trainErrors.size()-1);
 
         } while (errAvg > 1); // en realidad es la accuracy
+
+        double[][] middleOutput = mlp2.getMiddleOutput();
+
+        ArrayList<double[]> middleOutputP = new ArrayList<>();
+
+        for (double[] m: middleOutput) {
+            middleOutputP.add(m);
+        }
+
+        Kohonen kohonen;
+        kohonen = new Kohonen(3,2, Math.sqrt(3*3 + 3*3),0.01,2);
+
+        for (int i = 0; i < 3 * 500; i++) {
+            Random rand = new Random();
+            int randomNum = rand.nextInt(middleOutputP.size());
+            kohonen.learn(middleOutputP.get(randomNum));
+        }
+        //int[][] heatmapMatrix = kohonen.printHeatMap(normalizedMatrix,normalizeCountries);
+        double[] weights = kohonen.getNodeWeight(middleOutputP.get(0));
+
+        System.out.println("********** Kohonen weights of first input **********");
+        System.out.println();
+
+        for (int i = 0; i < weights.length ; i++) {
+            System.out.println( "Weight["+i+"]  "+weights[i]);
+        }
+        //TableHeatmap.showHeatmap(heatmapMatrix);
+
+        ArrayList<double[]> decode = new ArrayList<>();
+        decode.add(weights);
+
+        double[][] output = mlp2.decode(decode);
+
+        System.out.println();
+        System.out.println("********** New output generated via kohonen weights **********");
+
+        for (int i = 0; i < output.length; i++) {
+            System.out.println();
+            for (int j = 0; j < output[0].length; j++) {
+                System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+            }
+            System.out.println();
+        }
 
         JFreeDraw draw = new JFreeDraw(mlp2.getMiddleOutput());
         draw.setVisible(true);
