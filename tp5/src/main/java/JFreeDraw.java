@@ -20,6 +20,12 @@ public class JFreeDraw extends JFrame {
     }
 
     public JFreeDraw(double[][] data) {
+        /*for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                System.out.print(data[i][j] + " ");
+            }
+            System.out.println();
+        }*/
         if (data.length > 1) initUI(data[0], data[1]);
         else initUI(empty, empty);
     }
@@ -69,7 +75,7 @@ public class JFreeDraw extends JFrame {
 
         chart.getLegend().setFrame(BlockBorder.NONE);
 
-        chart.setTitle(new TextTitle("TODO CHANGE THIS",
+        chart.setTitle(new TextTitle("TP5",
                         new Font("Serif", java.awt.Font.BOLD, 18)
                 )
         );

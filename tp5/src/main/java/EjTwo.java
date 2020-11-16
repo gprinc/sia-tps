@@ -85,5 +85,6 @@ public class EjTwo {
         Position[] winPointsArray = new Position[winPoints.size()];
         for (int i = 0; i < winPoints.size(); i++) winPointsArray[i] = winPoints.get(i);
         Board board = new Board(new Player(player), boxesArray, winPointsArray, walls, new Position(mapSize, mapSize), 0);
+        board.print(false);
     }
 }
