@@ -302,11 +302,15 @@ public class Main {
         }
 
         if (ej.equals(EJ_TWO)) {
-            double[][] finalOut = mlp2.getOutput();
-            ArrayList<Integer> mapa = new ArrayList<>();
-            for (int i = 0; i < finalOut[0].length; i++) {
-                mapa.add((int) finalOut[0][i]);
+            double[] finalOut = new double[output.length * output[0].length];
+            for (int i = 0; i < output.length; i++) {
+                for (int j = 0; j < output[0].length; j++) {
+                    finalOut[i*j + j] = output[i][j] > 0.5 ? 1 : 0;
+                }
             }
+            ArrayList<Integer> mapa = new ArrayList<>();
+            for (int i = 0; i < finalOut.length; i++)
+                mapa.add((int) finalOut[i]);
             EjTwo ejTwo = new EjTwo(mapSize);
             ejTwo.playMap(mapa);
         }
