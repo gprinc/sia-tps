@@ -110,6 +110,26 @@ public class Main {
                 input2.add(doubleA);
             }
 
+            input3 = new ArrayList();
+            for (int i = 5; i < letters + 5; i++) {
+                ArrayList<Integer> aux = mlpData.get(i);
+                double[] doubleA = new double[aux.size()];
+                for (int j = 0; j < aux.size(); j++) {
+                    doubleA[j] = aux.get(j);
+                }
+                input3.add(doubleA);
+            }
+
+            input4 = new ArrayList();
+            for (int i = 10; i < letters + 10; i++) {
+                ArrayList<Integer> aux = mlpData.get(i);
+                double[] doubleA = new double[aux.size()];
+                for (int j = 0; j < aux.size(); j++) {
+                    doubleA[j] = aux.get(j);
+                }
+                input4.add(doubleA);
+            }
+
             output3 = new ArrayList();
             for (int i = 5; i < letters + 5; i++) {
                 ArrayList<Integer> aux = auxData.get(i);
@@ -138,26 +158,6 @@ public class Main {
                 doubleA[j] = aux.get(j);
             }
             input1.add(doubleA);
-        }
-
-        input3 = new ArrayList();
-        for (int i = 5; i < letters + 5; i++) {
-            ArrayList<Integer> aux = mlpData.get(i);
-            double[] doubleA = new double[aux.size()];
-            for (int j = 0; j < aux.size(); j++) {
-                doubleA[j] = aux.get(j);
-            }
-            input3.add(doubleA);
-        }
-
-        input4 = new ArrayList();
-        for (int i = 10; i < letters + 10; i++) {
-            ArrayList<Integer> aux = mlpData.get(i);
-            double[] doubleA = new double[aux.size()];
-            for (int j = 0; j < aux.size(); j++) {
-                doubleA[j] = aux.get(j);
-            }
-            input4.add(doubleA);
         }
 
         System.out.println("\n********** Initialized font **********\n");
