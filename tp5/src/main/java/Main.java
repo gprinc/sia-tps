@@ -127,7 +127,8 @@ public class Main {
         LayerCreator.init();
 
         do {
-            lc = new LayerCreator(input1.get(0).length);
+            // TODO AGREGAR QUE EL TAMAÑO DE LA CAPA DEL MEDIO SEA PARAMETRIZABLE
+            lc = new LayerCreator(input1.get(0).length,2);
             nn_neurons3 = lc.getLayer();
             mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, activationMethod);
 
@@ -223,6 +224,7 @@ public class Main {
         }
 
         Kohonen kohonen;
+        // TODO Agregar el k, lenghth, learning, delta al json.
         kohonen = new Kohonen(3,2, Math.sqrt(3*3 + 3*3),0.01,2);
 
         for (int i = 0; i < 3 * 500; i++) {
