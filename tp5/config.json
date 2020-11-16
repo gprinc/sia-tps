@@ -4,7 +4,7 @@
   "mlp_lrate_even": "0.0001",
   "mlp_iter_even": "500",
   "noise_percentage": "2",
-  "ej": "2",
+  "ej": "1-noise",
   "font": "1",
   "letters": "5",
   "activation_method": "0",
@@ -12,5 +12,9 @@
   "mid_layer": "TODO",
   "min_neurons": "TODO",
   "input_amount": "TODO",
-  "noice_percentage": "2"
+  "noice_percentage": "2",
+  "middleLayer": "2",
+  "kohonen_k": "3",
+  "kohonen_lr": "0.01",
+  "kohonen_delta": "2"
 }

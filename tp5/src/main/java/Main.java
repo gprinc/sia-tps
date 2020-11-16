@@ -23,6 +23,10 @@ public class Main {
     private static final int DEFAULT_MAP_SIZE = 1;
     private static final int DEFAULT_LETTERS = 5;
     private static final int DEFAULT_NOICEP = 2;
+    private static final int DEFAULT_MIDDLE_LAYER = 2;
+    private static final int DEFAULT_KOHONEN_K = 3;
+    private static final double DEFAULT_KOHONEN_LRATE = 0.01;
+    private static final int DEFAULT_KOHONEN_DELTA = 2;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -41,7 +45,10 @@ public class Main {
         double accuracy = InitializerJson.giveDouble((String) data.get("accuracy"), DEFAULT_ACCURACY);
         int letters = InitializerJson.giveInt((String) data.get("letters"), DEFAULT_LETTERS);
         int noice_percentage = InitializerJson.giveInt((String) data.get("noice_percentage"), DEFAULT_NOICEP);
-
+        int middleLayer = InitializerJson.giveInt((String) data.get("middleLayer"), DEFAULT_MIDDLE_LAYER);
+        int kohonen_k = InitializerJson.giveInt((String) data.get("kohonen_k"), DEFAULT_KOHONEN_K);
+        double kohonen_lr = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEFAULT_KOHONEN_LRATE);
+        int kohonen_delta = InitializerJson.giveInt((String) data.get("kohonen_delta"), DEFAULT_KOHONEN_DELTA);
 
         int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
         String ej = InitializerJson.giveEj((String) data.get("ej"));
@@ -59,8 +66,6 @@ public class Main {
         ArrayList<double[]> input4 = new ArrayList();
         ArrayList<double[]> output1 = new ArrayList();
         ArrayList<double[]> output2 = new ArrayList();
-        ArrayList<double[]> output3 = new ArrayList();
-        ArrayList<double[]> output4 = new ArrayList();
 
         // initialization
         for (int i = 0; i < mlp_even_partition; i++){
@@ -88,6 +93,8 @@ public class Main {
         }
 
         ArrayList<ArrayList<Integer>> mlpData;
+        ArrayList<ArrayList<Integer>> mlpData2;
+        ArrayList<ArrayList<Integer>> mlpData3;
         ArrayList<ArrayList<Integer>> auxData;
         boolean withNoise = false;
         if (ej.equals(EJ_TWO)) {
@@ -98,6 +105,8 @@ public class Main {
         } else {
             withNoise = ej.equals(DEF_EJ_NOISE);
             mlpData = getLetters(font, withNoise);
+            mlpData2 = getLetters(font, withNoise);
+            mlpData3 = getLetters(font, withNoise);
             auxData = getLetters(font,false);
             // TODO hacer que se creen varios arrays con ruido, asi los entrenamos a todos y capas aprende mejor
             input2 = new ArrayList();
@@ -111,8 +120,8 @@ public class Main {
             }
 
             input3 = new ArrayList();
-            for (int i = 5; i < letters + 5; i++) {
-                ArrayList<Integer> aux = mlpData.get(i);
+            for (int i = 0; i < letters; i++) {
+                ArrayList<Integer> aux = mlpData2.get(i);
                 double[] doubleA = new double[aux.size()];
                 for (int j = 0; j < aux.size(); j++) {
                     doubleA[j] = aux.get(j);
@@ -121,8 +130,8 @@ public class Main {
             }
 
             input4 = new ArrayList();
-            for (int i = 10; i < letters + 10; i++) {
-                ArrayList<Integer> aux = mlpData.get(i);
+            for (int i = 0; i < letters; i++) {
+                ArrayList<Integer> aux = mlpData3.get(i);
                 double[] doubleA = new double[aux.size()];
                 for (int j = 0; j < aux.size(); j++) {
                     doubleA[j] = aux.get(j);
@@ -130,25 +139,6 @@ public class Main {
                 input4.add(doubleA);
             }
 
-            output3 = new ArrayList();
-            for (int i = 5; i < letters + 5; i++) {
-                ArrayList<Integer> aux = auxData.get(i);
-                double[] doubleA = new double[aux.size()];
-                for (int j = 0; j < aux.size(); j++) {
-                    doubleA[j] = aux.get(j);
-                }
-                output3.add(doubleA);
-            }
-
-            output4 = new ArrayList();
-            for (int i = 10; i < letters + 10; i++) {
-                ArrayList<Integer> aux = auxData.get(i);
-                double[] doubleA = new double[aux.size()];
-                for (int j = 0; j < aux.size(); j++) {
-                    doubleA[j] = aux.get(j);
-                }
-                output4.add(doubleA);
-            }
         }
         input1 = new ArrayList();
         for (int i = 0; i < letters; i++) {
@@ -172,7 +162,7 @@ public class Main {
 
         do {
             // TODO AGREGAR QUE EL TAMAÑO DE LA CAPA DEL MEDIO SEA PARAMETRIZABLE
-            lc = new LayerCreator(input1.get(0).length,2);
+            lc = new LayerCreator(input1.get(0).length, middleLayer);
             nn_neurons3 = lc.getLayer();
             mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, activationMethod);
 
@@ -185,8 +175,8 @@ public class Main {
                 if (withNoise)  {
                     // TODO relacionado al del principio hacer que entrene con varios
                     mlp2.learn(input1, input2, mlp_iter_even, threshold);
-                   // mlp2.learn(input3, output3, mlp_iter_even, threshold);
-                   // mlp2.learn(input4, output4, mlp_iter_even, threshold);
+                    mlp2.learn(input3, input2, mlp_iter_even, threshold);
+                    mlp2.learn(input4, input2, mlp_iter_even, threshold);
                     error = mlp2.evaluateQuadraticError(input1, input2);
                 } else {
                     error = mlp2.evaluateQuadraticError(input1, input1);
@@ -277,8 +267,7 @@ public class Main {
         }
 
         Kohonen kohonen;
-        // TODO Agregar el k, lenghth, learning, delta al json.
-        kohonen = new Kohonen(3,2, Math.sqrt(3*3 + 3*3),0.01,2);
+        kohonen = new Kohonen(kohonen_k, middleLayer, Math.sqrt(3*3 + 3*3),kohonen_lr,kohonen_delta);
 
         for (int i = 0; i < 3 * 500; i++) {
             Random rand = new Random();
