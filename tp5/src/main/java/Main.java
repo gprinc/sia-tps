@@ -72,13 +72,10 @@ public class Main {
                 for (int j = 0; j < auxList.length; j++) {
                     if (z < mlp_even_partition) {
                         input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
-                        //System.out.println(input.get(z)[j + ((i%7) * 5)] + "  input(" + z + ")[" + (j + ((i%7) * 5)) + "]");
                     } else {
                         input2.get(z - mlp_even_partition)[j + ((i%7) * 5)] = auxList[j];
-                        //System.out.println(input.get(z-5)[j + ((i%7) * 5)] + "  input(" + (z-5) + ")[" + (j + ((i%7) * 5)) + "]");
                     }
                 }
-                //System.out.println("\n");
             }
         }
 
@@ -92,7 +89,17 @@ public class Main {
         } else {
             withNoise = ej.equals(DEF_EJ_NOISE);
             mlpData = getLetters(font, withNoise);
+            auxData = getLetters(font,false);
             if (withNoise) auxData = getLetters(font, false);
+
+            for (int i = 0; i < 10; i++) {
+                ArrayList<Integer> aux = auxData.get(i);
+                double[] doubleA = new double[aux.size()];
+                for (int j = 0; j < aux.size(); j++) {
+                    doubleA[j] = aux.get(j);
+                }
+                input2.add(doubleA);
+            }
         }
         input1 = new ArrayList();
 
@@ -104,6 +111,10 @@ public class Main {
             }
             input1.add(doubleA);
         }
+
+        input2 = new ArrayList();
+
+
 
         System.out.println("\n********** Initialized font **********\n");
 
@@ -132,10 +143,11 @@ public class Main {
 
                 double error;
                 if (withNoise)  {
-                    // TODO modificar esto
-                    error = mlp2.evaluateQuadraticError(input1, input1);
+                    mlp2.learn(input1, input2, mlp_iter_even, threshold);
+                    error = mlp2.evaluateQuadraticError(input1, input2);
                 } else {
                     error = mlp2.evaluateQuadraticError(input1, input1);
+                    mlp2.learn(input1, input1, mlp_iter_even, threshold);
                 }
 
                 trainErrors.add(error);
@@ -173,6 +185,10 @@ public class Main {
             errAvg = trainErrors.get(trainErrors.size()-1);
 
         } while (errAvg > 1); // en realidad es la accuracy
+
+        if (withNoise)  {
+            // TODO CREAR UN INPUT NUEVO Y EVALUARLO A VER SI PUEDE SACARLE EL RUIDO
+        }
 
         double[][] middleOutput = mlp2.getMiddleOutput();
 
