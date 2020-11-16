@@ -16,7 +16,7 @@ public class LayerCreator {
     }
 
     public static void init() {
-        LayerCreator.length = 5;
+        LayerCreator.length = 10;
         LayerCreator.min = 0.6;
     }
 

@@ -165,7 +165,7 @@ public class Main {
 
             ArrayList<Double> trainErrors = new ArrayList<>();
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 20; i++) {
                 mlp2.learn(input1, input1, mlp_iter_even, threshold);
 
                 double error;
@@ -245,6 +245,8 @@ public class Main {
                 }
                 System.out.println();
             }
+            
+            mlp2.evaluateQuadraticError(input1, input2);
         }
 
         if (ej.equals(EJ_TWO)) {
@@ -254,7 +256,6 @@ public class Main {
             }
         }
         System.out.println(input1.size());
-        mlp2.evaluateQuadraticError(input1, input2);
 
         double[][] middleOutput = mlp2.getMiddleOutput();
 
