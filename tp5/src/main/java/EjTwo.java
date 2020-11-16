@@ -81,7 +81,6 @@ public class EjTwo {
             }
             int wall = 1;
             if (!auxByte.equals(wall)) wall = 0;
-            System.out.println("[" + finalI + "]" +"[" + j + "]");
             walls[finalI][j] = wall;
         }
         Box[] boxesArray = new Box[boxes.size()];
@@ -89,6 +88,6 @@ public class EjTwo {
         Position[] winPointsArray = new Position[winPoints.size()];
         for (int i = 0; i < winPoints.size(); i++) winPointsArray[i] = winPoints.get(i);
         Board board = new Board(new Player(player), boxesArray, winPointsArray, walls, new Position(mapSize, mapSize), 0);
-        board.print(false);
+        board.print(true);
     }
 }
