@@ -7,7 +7,7 @@ public class LayerCreator {
     private static double error = 0;
     private static int length;
     private static double min;
-    private static int middle = 2;
+    private static int middle = 10;
 
     public LayerCreator(int n, int mid) {
         this.generateLayer(n);

@@ -9,13 +9,11 @@ public class EjTwo {
     private static final char wallChar = '#';
     private static final char winPointChar = '.';
     private static final char boxChar = '$';
-    private static final char playerChar = '@';
 
-    private static final int spaceInt = 0;
-    private static final int wallInt = 1;
-    private static final int winPointInt = 2;
-    private static final int boxInt = 3;
-    private static final int playerInt = 4;
+    private static final String space = "00";
+    private static final String wall = "01";
+    private static final String winPoint = "10";
+    private static final String box = "11";
 
     public EjTwo(int mapSize){
         this.map = new ArrayList<>();
@@ -33,22 +31,24 @@ public class EjTwo {
         ArrayList<Integer> aux = new ArrayList<>();
         for (int i = 0; i < charMap.length; i++) {
             for (int j = 0; j < charMap[i].length; j++) {
+                String item;
                 switch (charMap[i][j]) {
                     case wallChar:
-                        aux.add(wallInt);
+                        item = wall;
                         break;
                     case winPointChar:
-                        aux.add(winPointInt);
+                        item = winPoint;
                         break;
                     case boxChar:
-                        aux.add(boxInt);
-                        break;
-                    case playerChar:
-                        aux.add(playerInt);
+                        item = box;
                         break;
                     default:
-                        aux.add(spaceInt);
+                        item = space;
                         break;
+                }
+                char[]c = item.toCharArray();
+                for (int k = 0; k < c.length; k++) {
+                    aux.add( c[k] - '0');
                 }
             }
         }
