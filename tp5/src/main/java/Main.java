@@ -224,6 +224,7 @@ public class Main {
         }
 
         Kohonen kohonen;
+        // TODO Agregar el k, lenghth, learning, delta al json.
         kohonen = new Kohonen(3,2, Math.sqrt(3*3 + 3*3),0.01,2);
 
         for (int i = 0; i < 3 * 500; i++) {
