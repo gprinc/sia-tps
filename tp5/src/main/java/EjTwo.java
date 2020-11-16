@@ -63,22 +63,21 @@ public class EjTwo {
         ArrayList<Position> winPoints = new ArrayList<>();
         Position player = new Position(0,0);
         int walls[][] = new int[mapSize][mapSize];
-        for (int i = 0; i < mapa.size(); i++) {
-            if (i % mapSize == 0) j++;
-            switch (mapa.get(i)) {
-                case 2:
-                    winPoints.add(new Position(Math.floorDiv(i,j), j));
+        for (int i = 0; i < mapa.size(); i = i + 2) {
+            if (i % mapSize * 2 == 0) j++;
+            String auxByte = mapa.get(i).toString() + mapa.get(i + 1).toString();
+            int finalI = Math.floorDiv(i/2,j);
+            switch (auxByte) {
+                case winPoint:
+                    winPoints.add(new Position(finalI, j));
                     break;
-                case 3:
-                    boxes.add(new Box(new Position(Math.floorDiv(i,j), j)));
-                    break;
-                case 4:
-                    player = new Position(Math.floorDiv(i,j), j);
+                case box:
+                    boxes.add(new Box(new Position(finalI, j)));
                     break;
             }
             int wall = 1;
-            if (mapa.get(i) != 1) wall = 0;
-            walls[Math.floorDiv(i,j)][j] = wall;
+            if (!auxByte.equals(wall)) wall = 0;
+            walls[finalI][j] = wall;
         }
         Box[] boxesArray = new Box[boxes.size()];
         for (int i = 0; i < boxes.size(); i++) boxesArray[i] = boxes.get(i);
