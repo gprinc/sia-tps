@@ -188,6 +188,14 @@ public class Main {
 
         if (withNoise)  {
             // TODO CREAR UN INPUT NUEVO Y EVALUARLO A VER SI PUEDE SACARLE EL RUIDO
+            ArrayList<double[]> noiseArray = new ArrayList<>();
+            ArrayList<double[]> arrayNotNoise = new ArrayList<>();
+            arrayNotNoise.add(input2.get(0));
+            noiseArray.add(noise(input2.get(0)));
+            double err;
+            System.out.println("\n********** Noise err **********\n");
+            err = mlp2.evaluateQuadraticError(noiseArray, arrayNotNoise);
+            System.out.println("Err " + err);
         }
 
         double[][] middleOutput = mlp2.getMiddleOutput();
@@ -239,6 +247,21 @@ public class Main {
         long start4 = System.nanoTime();
 
         return;
+    }
+
+    static double[] noise(double[] i) {
+        double[] aux = new double[i.length];
+        Random r = new Random();
+        int randomr = r.nextInt(i.length);
+        for (int j = 0; j < i.length; j++) {
+            if (j == randomr) {
+                aux[j] = (i[j] == 0 ? 1:0);
+            } else {
+                aux[j] = i[j];
+
+            }
+        }
+        return aux;
     }
 
     static String hexToBin(String s) {
