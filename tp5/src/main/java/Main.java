@@ -56,10 +56,10 @@ public class Main {
         int activationMethod = InitializerJson.giveInt((String) data.get("activation_method"), DEF_ACTIVATON_METHOD);
         int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
 
-        int iterations = InitializerJson.giveInt((String) data.get("activation_method"), DEF_ACTIVATON_METHOD);
-        double errorI = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEF_ERROR);
-        double lrA = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEF_LEARNING_RATE_A);
-        double lrB = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEF_LEARNING_RATE_B);
+        int iterations = InitializerJson.giveInt((String) data.get("iterations"), DEF_ACTIVATON_METHOD);
+        double errorI = InitializerJson.giveDouble((String) data.get("error"), DEF_ERROR);
+        double lrA = InitializerJson.giveDouble((String) data.get("lr_a"), DEF_LEARNING_RATE_A);
+        double lrB = InitializerJson.giveDouble((String) data.get("lr_b"), DEF_LEARNING_RATE_B);
 
         File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
         ArrayList<Integer[]> aux3 = new ArrayList<>();
@@ -168,11 +168,11 @@ public class Main {
         do {
             lc = new LayerCreator(input1.get(0).length, middleLayer);
             nn_neurons3 = lc.getLayer();
-            mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, activationMethod);
+            mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, lrA, lrB, activationMethod);
 
             ArrayList<Double> trainErrors = new ArrayList<>();
 
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < iterations; i++) {
                 mlp2.learn(input1, input1, mlp_iter_even, threshold);
 
                 double error;
@@ -220,7 +220,7 @@ public class Main {
 
             errAvg = trainErrors.get(trainErrors.size()-1);
 
-        } while (errAvg > 1); // en realidad es la accuracy
+        } while (errAvg > errorI); // en realidad es la accuracy
 
         if (withNoise)  {
             ArrayList<double[]> noiseArray = new ArrayList<>();

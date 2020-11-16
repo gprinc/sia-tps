@@ -10,15 +10,16 @@ public class MultiLayerPerceptron {
     private double[][] middleOutput;
     private double learningRate;
     private double bigE;
+    private double a = 0.0001;
+    private double b = 0.1;
 
-    private static double a = 0.0001;
-    private static double b = 0.1;
-
-    public MultiLayerPerceptron(int nn_neurons[], double learningRate) {
-        this(nn_neurons, learningRate, Main.DEF_ACTIVATON_METHOD);
+    public MultiLayerPerceptron(int nn_neurons[], double learningRate, double a, double b) {
+        this(nn_neurons, learningRate, a, b, Main.DEF_ACTIVATON_METHOD);
     }
 
-    public MultiLayerPerceptron(int nn_neurons[], double learningRate, int activationMethod) {
+    public MultiLayerPerceptron(int nn_neurons[], double learningRate, double a, double b, int activationMethod) {
+        this.a = a;
+        this.b = b;
         this.learningRate = learningRate;
         this.bigE = 0;
         Random rand = new Random();

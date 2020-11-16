@@ -16,8 +16,8 @@
   "kohonen_k": "3",
   "kohonen_lr": "0.01",
   "kohonen_delta": "2",
-  "error": "5",
-  "lr_a": "1",
-  "lr_b": "1",
+  "error": "1",
+  "lr_a": "0.0001",
+  "lr_b": "0.1",
   "iterations": "20"
 }
