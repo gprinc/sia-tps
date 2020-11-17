@@ -223,6 +223,16 @@ public class Main {
 
         } while (errAvg > errorI); // en realidad es la accuracy
 
+        double[][] middleOutputDraw = mlp2.getDrawMiddleOutput();
+
+        for (int i = 0; i < middleOutputDraw.length; i++) {
+            for (int j = 0; j < middleOutputDraw[0].length; j++) {
+                System.out.print(middleOutputDraw[i][j] + " ");
+
+            }
+            System.out.println();
+        }
+
         if (withNoise)  {
             ArrayList<double[]> noiseArray = new ArrayList<>();
             ArrayList<double[]> arrayNotNoise = new ArrayList<>();
@@ -311,7 +321,7 @@ public class Main {
             ejTwo.playMap(mapa);
         }
 
-        JFreeDraw draw = new JFreeDraw(mlp2.getMiddleOutput());
+        JFreeDraw draw = new JFreeDraw(middleOutputDraw);
         draw.setVisible(true);
 
         return;

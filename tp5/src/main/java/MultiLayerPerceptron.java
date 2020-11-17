@@ -299,4 +299,13 @@ public class MultiLayerPerceptron {
     public double[][] getMiddleOutput(){
         return middleOutput;
     }
+
+    public double[][] getDrawMiddleOutput(){
+        double[][] aux = new double[2][middleOutput.length];
+        for (int i = 0; i < middleOutput.length; i++) {
+            aux[0][i] = middleOutput[i][0];
+            aux[1][i] = middleOutput[i][1];
+        }
+        return aux;
+    }
 }
