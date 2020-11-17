@@ -233,40 +233,40 @@ public class Main {
         }
 
         if (withNoise)  {
-            ArrayList<double[]> noiseArray = new ArrayList<>();
-            ArrayList<double[]> arrayNotNoise = new ArrayList<>();
-            Random r = new Random();
-            int rand = r.nextInt(input2.size());
-            arrayNotNoise.add(input2.get(rand));
-            // TODO hacer que los parametros de entrada tambien cambien la misma cantidad de bits
-            noiseArray.add(noise(input2.get(rand), noisePercentage));
-            double err;
-            System.out.println("\n********** Noise err **********\n");
-            err = mlp2.evaluateQuadraticError(noiseArray, arrayNotNoise);
-            System.out.println("Err " + err);
-            System.out.println();
+            for (int k = 0; k < input2.size(); k++) {
+                ArrayList<double[]> noiseArray = new ArrayList<>();
+                ArrayList<double[]> arrayNotNoise = new ArrayList<>();
+                Random r = new Random();
+                arrayNotNoise.add(input2.get(k));
+                // TODO hacer que los parametros de entrada tambien cambien la misma cantidad de bits
+                noiseArray.add(noise(input2.get(k), noisePercentage));
+                double err;
+                System.out.println("\n********** Noise err **********\n");
+                err = mlp2.evaluateQuadraticError(noiseArray, arrayNotNoise);
+                System.out.println("Err " + err);
+                System.out.println();
 
-            double[][] output = mlp2.getOutput();
+                double[][] output = mlp2.getOutput();
 
-            for (int i = 0; i < noiseArray.size(); i++) {
-                for (int j = 0; j < noiseArray.get(0).length; j++) {
-                    System.out.print(((int) noiseArray.get(i)[j]) + " ");
+                for (int i = 0; i < noiseArray.size(); i++) {
+                    for (int j = 0; j < noiseArray.get(0).length; j++) {
+                        System.out.print(((int) noiseArray.get(i)[j]) + " ");
+                    }
+                    System.out.println();
+                    for (int j = 0; j < output[0].length; j++) {
+                        System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+                    }
+                    System.out.println();
+                    for (int j = 0; j < noiseArray.get(0).length; j++) {
+                        System.out.print(((int) arrayNotNoise.get(i)[j]) + " ");
+                    }
+                    System.out.println();
                 }
-                System.out.println();
-                for (int j = 0; j < output[0].length; j++) {
-                    System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
-                }
-                System.out.println();
-                for (int j = 0; j < noiseArray.get(0).length; j++) {
-                    System.out.print(((int) arrayNotNoise.get(i)[j]) + " ");
-                }
-                System.out.println();
+
+                mlp2.evaluateQuadraticError(input1, input2);
             }
-            
-            mlp2.evaluateQuadraticError(input1, input2);
-        }
 
-        System.out.println(input1.size());
+        }
 
         double[][] middleOutput = mlp2.getMiddleOutput();
 
