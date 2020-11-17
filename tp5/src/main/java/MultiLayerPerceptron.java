@@ -269,11 +269,11 @@ public class MultiLayerPerceptron {
     public double learn(ArrayList<double[]> input, ArrayList<double[]> output, int iter, double threshold) {
         assert(false);
         double generalError = 0;
-        double error;
+        double error = 99;
         middleOutput = new double[input.size()][];
         
         int iterations = 0;
-        while (iterations < iter) {
+        while (iterations < iter && error > 1) {
 
             batchBackPropagation(input, output, learningRate);
 

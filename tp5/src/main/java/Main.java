@@ -76,25 +76,25 @@ public class Main {
         ArrayList<double[]> output2 = new ArrayList();
 
         // initialization
-        for (int i = 0; i < mlp_even_partition; i++){
+        for (int i = 0; i < mlp_even_partition; i++) {
             input1.add(new double[35]);
             output1.add(new double[1]);
         }
 
-        for (int i = 0; i < (10 - mlp_even_partition); i++){
+        for (int i = 0; i < (10 - mlp_even_partition); i++) {
             input2.add(new double[35]);
             output2.add(new double[1]);
         }
 
         // fill the examples database
         for (int z = 0; z < 10; z++) {
-            for (int i = (z * 7); i < (z+1) * 7 ; i++) {
+            for (int i = (z * 7); i < (z + 1) * 7; i++) {
                 Integer[] auxList = aux3.get(i);
                 for (int j = 0; j < auxList.length; j++) {
                     if (z < mlp_even_partition) {
                         input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
                     } else {
-                        input2.get(z - mlp_even_partition)[j + ((i%7) * 5)] = auxList[j];
+                        input2.get(z - mlp_even_partition)[j + ((i % 7) * 5)] = auxList[j];
                     }
                 }
             }
@@ -113,7 +113,7 @@ public class Main {
             mlpData = getLetters(font, withNoise);
             mlpData2 = getLetters(font, withNoise);
             mlpData3 = getLetters(font, withNoise);
-            auxData = getLetters(font,false);
+            auxData = getLetters(font, false);
             input2 = new ArrayList();
             for (int i = 0; i < letters; i++) {
                 ArrayList<Integer> aux = auxData.get(i);
@@ -157,70 +157,129 @@ public class Main {
 
         System.out.println("\n********** Initialized font **********\n");
 
-        long start3 = System.nanoTime();
-
-        MultiLayerPerceptron mlp2;
-        int nn_neurons3[];
-        double errAvg;
-        LayerCreator lc;
+        LayerCreator lc ;
         LayerCreator.init(layerSize);
+        int nn_neurons3[] ;
+        MultiLayerPerceptron mlp2;
+        double errAvg;
 
-        do {
-            lc = new LayerCreator(input1.get(0).length, middleLayer);
-            nn_neurons3 = lc.getLayer();
-            mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, lrA, lrB, activationMethod);
+        if (!withNoise) {
+            do {
+                lc = new LayerCreator(input1.get(0).length, middleLayer);
+                nn_neurons3 = lc.getLayer();
+                mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, lrA, lrB, activationMethod);
 
-            ArrayList<Double> trainErrors = new ArrayList<>();
+                ArrayList<Double> trainErrors = new ArrayList<>();
 
-            for (int i = 0; i < iterations; i++) {
-                mlp2.learn(input1, input1, mlp_iter_even, threshold);
+                for (int i = 0; i < iterations; i++) {
+                    mlp2.learn(input1, input1, mlp_iter_even, threshold);
 
-                double error;
-                if (withNoise)  {
-                    mlp2.learn(input1, input2, mlp_iter_even, threshold);
-                    mlp2.learn(input3, input2, mlp_iter_even, threshold);
-                    mlp2.learn(input4, input2, mlp_iter_even, threshold);
-                    error = mlp2.evaluateQuadraticError(input1, input2);
-                } else {
+                    double error;
+
+
                     error = mlp2.evaluateQuadraticError(input1, input1);
                     mlp2.learn(input1, input1, mlp_iter_even, threshold);
+
+                    trainErrors.add(error);
+                    mlp2.evaluateAccuracy(input1, input1, 0.5);
+                    System.out.println(" => Error = " + error);
                 }
 
-                trainErrors.add(error);
-                mlp2.evaluateAccuracy(input1, input1,0.5);
-                System.out.println(" => Error = " + error);
-            }
+                errAvg = 0;
 
-            errAvg = 0 ;
-
-            for (double e: trainErrors) {
-                errAvg += e;
-            }
-
-            errAvg = errAvg / trainErrors.size();
-
-            double[][] output = mlp2.getOutput();
-
-            for (int i = 0; i < input1.size(); i++) {
-                for (int j = 0; j < output[0].length; j++) {
-                    System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+                for (double e : trainErrors) {
+                    errAvg += e;
                 }
+
+                errAvg = errAvg / trainErrors.size();
+
+                double[][] output = mlp2.getOutput();
+
+                for (int i = 0; i < input1.size(); i++) {
+                    for (int j = 0; j < output[0].length; j++) {
+                        System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+                    }
+                    System.out.println();
+                    for (int j = 0; j < input1.get(0).length; j++) {
+                        System.out.print(((int) input1.get(i)[j]) + " ");
+                    }
+                    System.out.println();
+                }
+
                 System.out.println();
-                for (int j = 0; j < input1.get(0).length; j++) {
-                    System.out.print(((int) input1.get(i)[j]) + " ");
-                }
+                System.out.println(" => Error Average = " + errAvg);
                 System.out.println();
-            }
 
-            System.out.println();
-            System.out.println(" => Error Average = " + errAvg);
-            System.out.println();
+                LayerCreator.update(errAvg);
 
-            LayerCreator.update(errAvg);
+                errAvg = trainErrors.get(trainErrors.size() - 1);
 
-            errAvg = trainErrors.get(trainErrors.size()-1);
+            } while (errAvg > errorI) ; // en realidad es la accuracy
+        } else {
+            do {
+                lc = new LayerCreator(input1.get(0).length, middleLayer);
+                nn_neurons3 = lc.getLayer();
+                mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, lrA, lrB, activationMethod);
 
-        } while (errAvg > errorI); // en realidad es la accuracy
+                ArrayList<Double> trainErrors = new ArrayList<>();
+                for (int z = 0; z < input1.size(); z++) {
+                    ArrayList<double[]> auxlist = new ArrayList<>();
+                    ArrayList<double[]> auxlistError = new ArrayList<>();
+
+                    for (int o = 0; o < z+1; o++) {
+                        auxlist.add(input1.get(o));
+                        auxlist.add(input3.get(o));
+                        auxlist.add(input4.get(o));
+                        auxlistError.add(input2.get(o));
+                        auxlistError.add(input2.get(o));
+                        auxlistError.add(input2.get(o));
+
+                        System.out.println(auxlist.size());
+                    }
+
+                    for (int i = 0; i < iterations; i++) {
+                        mlp2.learn(auxlist, auxlistError, mlp_iter_even, threshold);
+
+                        double error;
+                        error = mlp2.evaluateQuadraticError(auxlist, auxlistError);
+
+                        trainErrors.add(error);
+                        mlp2.evaluateAccuracy(input1, input1, 0.5);
+                        System.out.println(" => Error = " + error);
+                    }
+                }
+
+                errAvg = 0;
+
+                for (double e : trainErrors) {
+                    errAvg += e;
+                }
+
+                errAvg = errAvg / trainErrors.size();
+
+                double[][] output = mlp2.getOutput();
+
+                for (int i = 0; i < input1.size(); i++) {
+                    for (int j = 0; j < output[0].length; j++) {
+                        System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+                    }
+                    System.out.println();
+                    for (int j = 0; j < input1.get(0).length; j++) {
+                        System.out.print(((int) input1.get(i)[j]) + " ");
+                    }
+                    System.out.println();
+                }
+
+                System.out.println();
+                System.out.println(" => Error Average = " + errAvg);
+                System.out.println();
+
+                LayerCreator.update(errAvg);
+
+                errAvg = trainErrors.get(trainErrors.size() - 1);
+
+            } while (errAvg > errorI) ;
+        }
 
         double[][] middleOutputDraw = mlp2.getDrawMiddleOutput();
 
@@ -249,16 +308,31 @@ public class Main {
                 double[][] output = mlp2.getOutput();
 
                 for (int i = 0; i < noiseArray.size(); i++) {
+                    System.out.println("\n** Noise **\n");
                     for (int j = 0; j < noiseArray.get(0).length; j++) {
+                        if (j%7 == 0) {
+                            System.out.println();
+                        }
                         System.out.print(((int) noiseArray.get(i)[j]) + " ");
+
                     }
                     System.out.println();
+                    System.out.println("\n** Output **\n");
                     for (int j = 0; j < output[0].length; j++) {
+                        if (j%7 == 0) {
+                            System.out.println();
+                        }
                         System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+
                     }
                     System.out.println();
+                    System.out.println("\n** Expected **\n");
                     for (int j = 0; j < noiseArray.get(0).length; j++) {
+                        if (j%7 == 0) {
+                            System.out.println();
+                        }
                         System.out.print(((int) arrayNotNoise.get(i)[j]) + " ");
+
                     }
                     System.out.println();
                 }

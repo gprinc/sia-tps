@@ -5,7 +5,7 @@ public class LayerCreator {
     private int[] aux;
     private int[] auxInv;
     private static double error = 0;
-    private static int length;
+    private static int length = 1;
     private static double min;
     private static int middle = 2;
 
