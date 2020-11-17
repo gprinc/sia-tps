@@ -101,7 +101,7 @@ public class EjTwo {
                     walls.add(new int[]{x, y});
                     break;
                 default:
-                    System.out.print(' ');
+                    System.out.print('0');
                     break;
             }
         }
@@ -134,12 +134,12 @@ public class EjTwo {
 
 
         char[] jsonCharArray = jsonObject.toJSONString().toCharArray();
-        jsonCharArray[jsonCharArray.length - 1] = ',';
+        jsonCharArray[jsonObject.toJSONString().length() - 1] = ',';
         String jsonString = String.valueOf(jsonCharArray) + " walls: [";
         for (int i = 0; i < mapSize; i++) {
             jsonString += "[";
             for (int l = 0; l < mapSize; l++) {
-                jsonString += '"' + wallsChar[i][j] + '"';
+                jsonString += String.valueOf('"' + wallsChar[i][j] + '"');
                 if (l != mapSize - 1)
                     jsonString += ",";
             }

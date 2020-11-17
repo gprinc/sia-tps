@@ -108,7 +108,6 @@ public class Main {
         if (ej.equals(EJ_TWO)) {
             EjTwo ejTwo = new EjTwo(mapSize, true);
             mlpData = ejTwo.getMap();
-            // TODO ver parametros correctos y setear valores adecuados para realizar el aprendizaje de mapas
         } else {
             withNoise = ej.equals(EJ_NOISE);
             mlpData = getLetters(font, withNoise);
