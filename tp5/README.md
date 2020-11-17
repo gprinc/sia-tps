@@ -24,21 +24,21 @@ They are all *string* values.
 
 - `font`: the number of the font to be used. Its default value is 1. Its possible values are 1, 2 or 3.
 
-- `letters`: Its default value is 1.5f.
+- `letters`: amount of items. Its default value is 5.
 
-- `activation_method`: Its default value is 1.5f.
+- `activation_method`: the activation method to be used. If its 0 then ...., if its 1 then ...., if its 2 then ...., other values is.... . Its default value is 0.
 
-- `layer_size`: Its default value is 1.5f.
+- `layer_size`: the amount of layers to use. Its default value is 5.
 
-- `middelLayer`: Its default value is 1.5f.
+- `middelLayer`: the size of the middle layer. Its default value is 2.
 
-- `kohonen_k`: Its default value is 1.5f.
+- `kohonen_k`: k value for kohonen. Its default value is 3.
 
-- `kohonnen_lr`: Its default value is 1.5f.
+- `kohonnen_lr`: learning rate for kohonen. Its default value is 0.1f.
 
-- `kohonen_delta`: Its default value is 1.5f.
+- `kohonen_delta`: delta value for kohonen. Its default value is 2.
 
-- `error`: Its default value is 1.5f.
+- `error`: the acceptable error to finish when learning. Its default value is 1.5f.
 
 - `lr_a`: the value for `a` for the learning rate optimization. Its default value is  0.01f.
 
