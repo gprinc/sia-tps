@@ -310,7 +310,7 @@ public class Main {
                 for (int i = 0; i < noiseArray.size(); i++) {
                     System.out.println("\n** Noise **\n");
                     for (int j = 0; j < noiseArray.get(0).length; j++) {
-                        if (j%7 == 0) {
+                        if (j%5 == 0) {
                             System.out.println();
                         }
                         System.out.print(((int) noiseArray.get(i)[j]) + " ");
@@ -319,7 +319,7 @@ public class Main {
                     System.out.println();
                     System.out.println("\n** Output **\n");
                     for (int j = 0; j < output[0].length; j++) {
-                        if (j%7 == 0) {
+                        if (j%5 == 0) {
                             System.out.println();
                         }
                         System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
@@ -328,7 +328,7 @@ public class Main {
                     System.out.println();
                     System.out.println("\n** Expected **\n");
                     for (int j = 0; j < noiseArray.get(0).length; j++) {
-                        if (j%7 == 0) {
+                        if (j%5 == 0) {
                             System.out.println();
                         }
                         System.out.print(((int) arrayNotNoise.get(i)[j]) + " ");

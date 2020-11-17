@@ -273,7 +273,7 @@ public class MultiLayerPerceptron {
         middleOutput = new double[input.size()][];
         
         int iterations = 0;
-        while (iterations < iter && error > 1) {
+        while (iterations < iter && error > 0.5) {
 
             batchBackPropagation(input, output, learningRate);
 
