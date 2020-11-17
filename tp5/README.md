@@ -26,7 +26,7 @@ They are all *string* values.
 
 - `letters`: amount of items. Its default value is 5.
 
-- `activation_method`: the activation method to be used. If its 0 then ...., if its 1 then ...., if its 2 then ...., other values is.... . Its default value is 0.
+- `activation_method`: the activation method to be used. If its 0 then sigmoid, if its 1 then Relu, if its 2 then LeakyRelu, other values is SoftPlus . Its default value is 0.
 
 - `layer_size`: the amount of layers to use. Its default value is 5.
 
