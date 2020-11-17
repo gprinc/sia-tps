@@ -303,11 +303,9 @@ public class Main {
 
         if (ej.equals(EJ_TWO)) {
             ArrayList<Integer> mapa = new ArrayList<>();
-            for (int i = 0; i < output.length; i++) {
-                for (int j = 0; j < output[0].length; j++) {
+            for (int i = 0; i < output.length; i++)
+                for (int j = 0; j < output[0].length; j++)
                     mapa.add(output[i][j] > 0.5 ? 1 : 0);
-                }
-            }
 
             EjTwo ejTwo = new EjTwo(mapSize, false);
             ejTwo.playMap(mapa);
