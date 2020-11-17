@@ -1,233 +1,428 @@
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.util.*;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Main {
-    static Hopfield trainingPattern;
-    private final static double DEFAULT_RATE = 0.01;
-    private final static int DEFAULT_ITERATIONS = 1000;
-    private final static int DEFAULT_HOP_ITERATIONS = 1;
-    private final static int DEFAULT_K = 5;
-    private final static int DEFAULT_DELTA = 2;
-    private final static int COUNTRIES_DATA_AMOUNT = 7;
-    private final static int DEFAULT_HOP_BITS = 1;
+    private static final double DEFAULT_LRATE_EVEN = 0.1;
+    private static final int DEFAULT_ITER_EVEN = 5;
+    private static final int DEFAULT_EVEN_PARTITION = 5;
+    private static final double DEFAULT_THRESHOLD = 0.1;
+    private static final double DEFAULT_ACCURACY = 0.001;
+
+    private static final int DEF_NOISE_PERCENTAGE = 1;
+    private static final int DEF_FONT = 1;
+    private static final String EJ_NOISE = "1-noise";
+    public static final int DEF_ACTIVATON_METHOD = 0;
+    private static final String EJ_TWO = "2";
+    private static final int DEFAULT_MAP_SIZE = 8;
+    private static final int DEFAULT_LETTERS = 5;
+    private static final int DEFAULT_MIDDLE_LAYER = 2;
+    private static final int DEFAULT_KOHONEN_K = 3;
+    private static final double DEFAULT_KOHONEN_LRATE = 0.01;
+    private static final int DEFAULT_KOHONEN_DELTA = 2;
+    private static final double DEF_LEARNING_RATE_A = 0.01;
+    private static final double DEF_LEARNING_RATE_B = 0.01;
+    private static final double DEF_ERROR = 1.5;
+    private static final int DEF_ITERATIONS = 20;
+    private static final int DEF_LAYER_SIZE = 5;
 
     public static void main(String[] args) {
-        File csvFile;
-        BufferedReader csvReader;
         JSONParser parser = new JSONParser();
-        JSONObject jsonData = null;
-        String ej;
-        String letter1;
-        String letter2;
-        String letter3;
-        String letter4;
-        String letter5;
-        double rate;
-        int iterations;
-        int hopfieldIterations;
-        int hopfieldBits;
-        int k;
-        int delta;
-        boolean initialized = true;
+        JSONObject data;
         try {
-            jsonData = (JSONObject) parser.parse(new FileReader("config.json"));
-            ej = InitializerJson.giveEj((String) jsonData.get("ej"));
-            letter1 = InitializerJson.giveLetter((String) jsonData.get("letter1"), "a");
-            letter2 = InitializerJson.giveLetter((String) jsonData.get("letter2"), "b");
-            letter3 = InitializerJson.giveLetter((String) jsonData.get("letter3"), "c");
-            letter4 = InitializerJson.giveLetter((String) jsonData.get("letter4"), "d");
-            letter5 = InitializerJson.giveLetter((String) jsonData.get("letter5"), "z");
-            rate = InitializerJson.giveDouble((String) jsonData.get("rate"), DEFAULT_RATE);
-            iterations = InitializerJson.giveInt((String) jsonData.get("iterations"), DEFAULT_ITERATIONS);
-            hopfieldIterations = InitializerJson.giveInt((String) jsonData.get("hopfieldIterations"), DEFAULT_HOP_ITERATIONS);
-            hopfieldBits = InitializerJson.giveInt((String) jsonData.get("hopfieldBits"), DEFAULT_HOP_BITS);
-            initialized = InitializerJson.giveBoolean((String) jsonData.get("initialized"));
-            if (hopfieldBits > 25)
-                hopfieldBits = DEFAULT_HOP_BITS;
-            k = InitializerJson.giveInt((String) jsonData.get("k"), DEFAULT_K);
-            delta = InitializerJson.giveInt((String) jsonData.get("delta"), DEFAULT_DELTA);
-        } catch (IOException e) {
+            data = (JSONObject) parser.parse(new FileReader("config.json"));
+        } catch (Exception e) {
             e.printStackTrace();
-            return;
-        } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println("Error reading config in TP2");
             return;
         }
+        double mlp_lrate_even = InitializerJson.giveDouble((String) data.get("mlp_lrate_even"), DEFAULT_LRATE_EVEN);
+        int mlp_iter_even = InitializerJson.giveInt((String) data.get("mlp_iter_even"), DEFAULT_ITER_EVEN);
+        int mlp_even_partition = InitializerJson.giveInt((String) data.get("mlp_even_partition"), DEFAULT_EVEN_PARTITION);
+        double threshold = InitializerJson.giveDouble((String) data.get("threshold"), DEFAULT_THRESHOLD);
+        int letters = InitializerJson.giveInt((String) data.get("letters"), DEFAULT_LETTERS);
+        int middleLayer = InitializerJson.giveInt((String) data.get("middleLayer"), DEFAULT_MIDDLE_LAYER);
+        int kohonen_k = InitializerJson.giveInt((String) data.get("kohonen_k"), DEFAULT_KOHONEN_K);
+        double kohonen_lr = InitializerJson.giveDouble((String) data.get("kohonen_lr"), DEFAULT_KOHONEN_LRATE);
+        int kohonen_delta = InitializerJson.giveInt((String) data.get("kohonen_delta"), DEFAULT_KOHONEN_DELTA);
+        int noisePercentage = InitializerJson.giveInt((String) data.get("noise_percentage"), DEF_NOISE_PERCENTAGE);
 
-        ArrayList<ArrayList<Integer>> letters = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            String[] data;
-            ArrayList<Integer> letter = new ArrayList<>();
-            try {
-                switch (i) {
-                    case 0:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter1 + ".csv"));
-                        break;
-                    case 1:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter2 + ".csv"));
-                        break;
-                    case 2:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter3 + ".csv"));
-                        break;
-                    case 3:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter4 + ".csv"));
-                        break;
-                    default:
-                        csvReader = new BufferedReader(new FileReader("letters/" + letter5 + ".csv"));
-                        break;
-                }
-                String row;
-                while ((row = csvReader.readLine()) != null) {
-                    data = row.split(",");
-                    for (String s: data) {
-                        letter.add(Integer.parseInt(s.trim()));
-                    }
-                }
+        int font = InitializerJson.giveInt((String) data.get("font"), DEF_FONT);
+        String ej = InitializerJson.giveEj((String) data.get("ej"));
+        int activationMethod = InitializerJson.giveInt((String) data.get("activation_method"), DEF_ACTIVATON_METHOD);
+        int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
 
-                letters.add(letter);
-                csvReader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        int iterations = InitializerJson.giveInt((String) data.get("iterations"), DEF_ITERATIONS);
+        int layerSize = InitializerJson.giveInt((String) data.get("layer_size"), DEF_LAYER_SIZE);
+        double errorI = InitializerJson.giveDouble((String) data.get("error"), DEF_ERROR);
+        double lrA = InitializerJson.giveDouble((String) data.get("lr_a"), DEF_LEARNING_RATE_A);
+        double lrB = InitializerJson.giveDouble((String) data.get("lr_b"), DEF_LEARNING_RATE_B);
+
+        File file3 = new File("TP3-ej3-mapa-de-pixeles-digitos-decimales.txt");
+        ArrayList<Integer[]> aux3 = new ArrayList<>();
+        aux3 = TxtReader.getIntegerArrayFromTxt(file3, 5);
+
+        System.out.println("\n\n=======\nMultiLayer Perceptron");
+
+        ArrayList<double[]> input1 = new ArrayList();
+        ArrayList<double[]> input2 = new ArrayList();
+        ArrayList<double[]> input3 = new ArrayList();
+        ArrayList<double[]> input4 = new ArrayList();
+        ArrayList<double[]> output1 = new ArrayList();
+        ArrayList<double[]> output2 = new ArrayList();
+
+        // initialization
+        for (int i = 0; i < mlp_even_partition; i++){
+            input1.add(new double[35]);
+            output1.add(new double[1]);
         }
 
-        if (ej.equals("Hopfield")) {
-            System.out.println("Hopfield Ejs:");
-            Hopf.startHopfield(letters, hopfieldIterations, hopfieldBits);
-            return;
+        for (int i = 0; i < (10 - mlp_even_partition); i++){
+            input2.add(new double[35]);
+            output2.add(new double[1]);
         }
 
-        String country;
-        Double area;
-        Double gdp;
-        Double inflation;
-        Double lifeExpect;
-        Double military;
-        Double popGrowth;
-        Double unemployment;
-        /*
-        for (int trainingPatterns = 0; trainingPatterns < sp.length; trainingPatterns++) {
-            float[] storedPattern = Hopfield.getPattern(sp[trainingPatterns]);
-
-            // Get training pattern and run the learning function.
-            trainingPattern = new Hopfield(storedPattern.length);
-            trainingPattern.learn(storedPattern);
-        }
-
-        for (int i = 0; i < ip.length; i++) {
-            // Get the patterns into int array format
-            float[] incompletePattern = Hopfield.getPattern(ip[i]);
-
-            // Generate the network output.
-            Hopfield.generateOutput(trainingPattern, incompletePattern);
-        }
-        */
-        csvFile = new File("europe.csv");
-        String[] data;
-        ArrayList<Country> countries = new ArrayList<>();
-        if (csvFile.isFile()) {
-            try {
-                csvReader = new BufferedReader(new FileReader("europe.csv"));
-                String row;
-                boolean isFirstLine = true;
-                while ((row = csvReader.readLine()) != null) {
-                    data = row.split(",");
-                    if (isFirstLine) {
-                        isFirstLine = false;
+        // fill the examples database
+        for (int z = 0; z < 10; z++) {
+            for (int i = (z * 7); i < (z+1) * 7 ; i++) {
+                Integer[] auxList = aux3.get(i);
+                for (int j = 0; j < auxList.length; j++) {
+                    if (z < mlp_even_partition) {
+                        input1.get(z)[j + ((i % 7) * 5)] = auxList[j];
                     } else {
-                        data = row.split(",");
-                        country = data[0];
-                        area = Double.parseDouble(data[1]);
-                        gdp = Double.parseDouble(data[2]);
-                        inflation = Double.parseDouble(data[3]);
-                        lifeExpect = Double.parseDouble(data[4]);
-                        military = Double.parseDouble(data[5]);
-                        popGrowth = Double.parseDouble(data[6]);
-                        unemployment = Double.parseDouble(data[7]);
-                        countries.add(new Country(country, area, gdp, inflation, lifeExpect, military, popGrowth, unemployment));
+                        input2.get(z - mlp_even_partition)[j + ((i%7) * 5)] = auxList[j];
                     }
                 }
-                csvReader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Country media = new Country();
-            for (Country c : countries) {
-                media.setArea(media.getArea() + (c.getArea() / countries.size()));
-                media.setGdp(media.getGdp() + (c.getGdp() / countries.size()));
-                media.setInflation(media.getInflation() + (c.getInflation() / countries.size()));
-                media.setLifeExpect(media.getLifeExpect() + (c.getLifeExpect() / countries.size()));
-                media.setMilitary(media.getMilitary() + (c.getMilitary() / countries.size()));
-                media.setPopGrowth(media.getPopGrowth() + (c.getPopGrowth() / countries.size()));
-                media.setUnemployment(media.getUnemployment() + (c.getUnemployment() / countries.size()));
-            }
-
-            Country covarianza = new Country();
-            for (Country c: countries) {
-                covarianza.setArea(covarianza.getArea() + (Math.pow((c.getArea() - media.getArea()) , 2 ) / (countries.size() - 1)));
-                covarianza.setGdp(covarianza.getGdp() + (Math.pow((c.getGdp() - media.getGdp()) , 2 ) / (countries.size() - 1)));
-                covarianza.setInflation(covarianza.getInflation() + (Math.pow((c.getInflation() - media.getInflation()) , 2 ) / (countries.size() - 1)));
-                covarianza.setLifeExpect(covarianza.getLifeExpect() + (Math.pow((c.getLifeExpect() - media.getLifeExpect()) , 2 ) / (countries.size() - 1)));
-                covarianza.setMilitary(covarianza.getMilitary() + (Math.pow((c.getMilitary() - media.getMilitary()) , 2 ) / (countries.size() - 1)));
-                covarianza.setPopGrowth(covarianza.getPopGrowth() + (Math.pow((c.getPopGrowth() - media.getPopGrowth()) , 2 ) / (countries.size() - 1)));
-                covarianza.setUnemployment(covarianza.getUnemployment() + (Math.pow((c.getUnemployment() - media.getUnemployment()) , 2 ) / (countries.size() - 1)));
-            }
-
-            ArrayList<Country> normalizeCountries = new ArrayList<>();
-            for (Country c : countries) {
-                area = (c.getArea() - media.getArea()) / Math.sqrt(covarianza.getArea());
-                gdp = (c.getGdp() - media.getGdp()) / Math.sqrt(covarianza.getGdp());
-                inflation = (c.getInflation() - media.getInflation()) / Math.sqrt(covarianza.getInflation());
-                lifeExpect = (c.getLifeExpect() - media.getLifeExpect()) / Math.sqrt(covarianza.getLifeExpect());
-                military = (c.getMilitary() - media.getMilitary()) / Math.sqrt(covarianza.getMilitary());
-                popGrowth = (c.getPopGrowth() - media.getPopGrowth()) / Math.sqrt(covarianza.getPopGrowth());
-                unemployment = (c.getUnemployment() - media.getUnemployment()) / Math.sqrt(covarianza.getUnemployment());
-                normalizeCountries.add(new Country(c.getCountry(),area,gdp,inflation,lifeExpect,military,popGrowth,unemployment));
-            }
-
-            double[][] countriesMatrix = new double[countries.size()][7];
-            for (int i = 0; i < countries.size(); i++) {
-                Country aux = countries.get(i);
-                countriesMatrix[i][0] = aux.getArea();
-                countriesMatrix[i][1] = aux.getGdp();
-                countriesMatrix[i][2] = aux.getInflation();
-                countriesMatrix[i][3] = aux.getLifeExpect();
-                countriesMatrix[i][4] = aux.getMilitary();
-                countriesMatrix[i][5] = aux.getPopGrowth();
-                countriesMatrix[i][6] = aux.getUnemployment();
-            }
-
-            double[][] normalizedMatrix = new double[countries.size()][7];
-            for (int i = 0; i < normalizeCountries.size(); i++) {
-                Country aux = normalizeCountries.get(i);
-                normalizedMatrix[i][0] = aux.getArea();
-                normalizedMatrix[i][1] = aux.getGdp();
-                normalizedMatrix[i][2] = aux.getInflation();
-                normalizedMatrix[i][3] = aux.getLifeExpect();
-                normalizedMatrix[i][4] = aux.getMilitary();
-                normalizedMatrix[i][5] = aux.getPopGrowth();
-                normalizedMatrix[i][6] = aux.getUnemployment();
             }
         }
+
+        ArrayList<ArrayList<Integer>> mlpData;
+        ArrayList<ArrayList<Integer>> mlpData2;
+        ArrayList<ArrayList<Integer>> mlpData3;
+        ArrayList<ArrayList<Integer>> auxData;
+        boolean withNoise = false;
+        if (ej.equals(EJ_TWO)) {
+            EjTwo ejTwo = new EjTwo(mapSize, true);
+            mlpData = ejTwo.getMap();
+        } else {
+            withNoise = ej.equals(EJ_NOISE);
+            mlpData = getLetters(font, withNoise);
+            mlpData2 = getLetters(font, withNoise);
+            mlpData3 = getLetters(font, withNoise);
+            auxData = getLetters(font,false);
+            input2 = new ArrayList();
+            for (int i = 0; i < letters; i++) {
+                ArrayList<Integer> aux = auxData.get(i);
+                double[] doubleA = new double[aux.size()];
+                for (int j = 0; j < aux.size(); j++) {
+                    doubleA[j] = aux.get(j);
+                }
+                input2.add(doubleA);
+            }
+
+            input3 = new ArrayList();
+            for (int i = 0; i < letters; i++) {
+                ArrayList<Integer> aux = mlpData2.get(i);
+                double[] doubleA = new double[aux.size()];
+                for (int j = 0; j < aux.size(); j++) {
+                    doubleA[j] = aux.get(j);
+                }
+                input3.add(doubleA);
+            }
+
+            input4 = new ArrayList();
+            for (int i = 0; i < letters; i++) {
+                ArrayList<Integer> aux = mlpData3.get(i);
+                double[] doubleA = new double[aux.size()];
+                for (int j = 0; j < aux.size(); j++) {
+                    doubleA[j] = aux.get(j);
+                }
+                input4.add(doubleA);
+            }
+
+        }
+        input1 = new ArrayList();
+        for (int i = 0; i < letters; i++) {
+            ArrayList<Integer> aux = mlpData.get(i);
+            double[] doubleA = new double[aux.size()];
+            for (int j = 0; j < aux.size(); j++) {
+                doubleA[j] = aux.get(j);
+            }
+            input1.add(doubleA);
+        }
+
+        System.out.println("\n********** Initialized font **********\n");
+
+        long start3 = System.nanoTime();
+
+        MultiLayerPerceptron mlp2;
+        int nn_neurons3[];
+        double errAvg;
+        LayerCreator lc;
+        LayerCreator.init(layerSize);
+
+        do {
+            lc = new LayerCreator(input1.get(0).length, middleLayer);
+            nn_neurons3 = lc.getLayer();
+            mlp2 = new MultiLayerPerceptron(nn_neurons3, mlp_lrate_even, lrA, lrB, activationMethod);
+
+            ArrayList<Double> trainErrors = new ArrayList<>();
+
+            for (int i = 0; i < iterations; i++) {
+                mlp2.learn(input1, input1, mlp_iter_even, threshold);
+
+                double error;
+                if (withNoise)  {
+                    mlp2.learn(input1, input2, mlp_iter_even, threshold);
+                    mlp2.learn(input3, input2, mlp_iter_even, threshold);
+                    mlp2.learn(input4, input2, mlp_iter_even, threshold);
+                    error = mlp2.evaluateQuadraticError(input1, input2);
+                } else {
+                    error = mlp2.evaluateQuadraticError(input1, input1);
+                    mlp2.learn(input1, input1, mlp_iter_even, threshold);
+                }
+
+                trainErrors.add(error);
+                mlp2.evaluateAccuracy(input1, input1,0.5);
+                System.out.println(" => Error = " + error);
+            }
+
+            errAvg = 0 ;
+
+            for (double e: trainErrors) {
+                errAvg += e;
+            }
+
+            errAvg = errAvg / trainErrors.size();
+
+            double[][] output = mlp2.getOutput();
+
+            for (int i = 0; i < input1.size(); i++) {
+                for (int j = 0; j < output[0].length; j++) {
+                    System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+                }
+                System.out.println();
+                for (int j = 0; j < input1.get(0).length; j++) {
+                    System.out.print(((int) input1.get(i)[j]) + " ");
+                }
+                System.out.println();
+            }
+
+            System.out.println();
+            System.out.println(" => Error Average = " + errAvg);
+            System.out.println();
+
+            LayerCreator.update(errAvg);
+
+            errAvg = trainErrors.get(trainErrors.size()-1);
+
+        } while (errAvg > errorI); // en realidad es la accuracy
+
+        double[][] middleOutputDraw = mlp2.getDrawMiddleOutput();
+
+        for (int i = 0; i < middleOutputDraw.length; i++) {
+            for (int j = 0; j < middleOutputDraw[0].length; j++) {
+                System.out.print(middleOutputDraw[i][j] + " ");
+
+            }
+            System.out.println();
+        }
+
+        if (withNoise)  {
+            for (int k = 0; k < input2.size(); k++) {
+                ArrayList<double[]> noiseArray = new ArrayList<>();
+                ArrayList<double[]> arrayNotNoise = new ArrayList<>();
+                Random r = new Random();
+                arrayNotNoise.add(input2.get(k));
+                // TODO hacer que los parametros de entrada tambien cambien la misma cantidad de bits
+                noiseArray.add(noise(input2.get(k), noisePercentage));
+                double err;
+                System.out.println("\n********** Noise err **********\n");
+                err = mlp2.evaluateQuadraticError(noiseArray, arrayNotNoise);
+                System.out.println("Err " + err);
+                System.out.println();
+
+                double[][] output = mlp2.getOutput();
+
+                for (int i = 0; i < noiseArray.size(); i++) {
+                    for (int j = 0; j < noiseArray.get(0).length; j++) {
+                        System.out.print(((int) noiseArray.get(i)[j]) + " ");
+                    }
+                    System.out.println();
+                    for (int j = 0; j < output[0].length; j++) {
+                        System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+                    }
+                    System.out.println();
+                    for (int j = 0; j < noiseArray.get(0).length; j++) {
+                        System.out.print(((int) arrayNotNoise.get(i)[j]) + " ");
+                    }
+                    System.out.println();
+                }
+
+                mlp2.evaluateQuadraticError(input1, input2);
+            }
+
+        }
+
+        double[][] middleOutput = mlp2.getMiddleOutput();
+
+        ArrayList<double[]> middleOutputP = new ArrayList<>();
+
+        for (double[] m: middleOutput) {
+            middleOutputP.add(m);
+        }
+
+        Kohonen kohonen;
+        kohonen = new Kohonen(kohonen_k, middleLayer, Math.sqrt(3*3 + 3*3),kohonen_lr,kohonen_delta);
+
+        for (int i = 0; i < 3 * 500; i++) {
+            Random rand = new Random();
+            int randomNum = rand.nextInt(middleOutputP.size());
+            kohonen.learn(middleOutputP.get(randomNum));
+        }
+        double[] weights = kohonen.getNodeWeight(middleOutputP.get(0));
+
+        System.out.println();
+        System.out.println("********** Kohonen weights of first input **********");
+        System.out.println();
+
+        for (int i = 0; i < weights.length ; i++) {
+            System.out.println( "Weight["+i+"]  "+weights[i]);
+        }
+
+        ArrayList<double[]> decode = new ArrayList<>();
+        decode.add(weights);
+
+        double[][] output = mlp2.decode(decode);
+
+        System.out.println();
+        System.out.println("********** New output generated via kohonen weights **********");
+
+        for (int i = 0; i < output.length; i++) {
+            System.out.println();
+            for (int j = 0; j < output[0].length; j++) {
+                System.out.print((output[i][j] > 0.5 ? 1 : 0) + " ");
+            }
+            System.out.println();
+        }
+
+        if (ej.equals(EJ_TWO)) {
+            ArrayList<Integer> mapa = new ArrayList<>();
+            for (int i = 0; i < output.length; i++)
+                for (int j = 0; j < output[0].length; j++)
+                    mapa.add(output[i][j] > 0.5 ? 1 : 0);
+
+            EjTwo ejTwo = new EjTwo(mapSize, false);
+            ejTwo.playMap(mapa);
+        }
+
+        JFreeDraw draw = new JFreeDraw(middleOutputDraw);
+        draw.setVisible(true);
 
         return;
-
     }
 
-    private static double fillMatrix(int i, int k, double[][] matrix, Country media, int size) {
-        double aux = 0;
-        for (int j = 0; j < size; j++) {
-            aux += (matrix[i][j] - media.getByNumber(i)) * (matrix[k][j] - media.getByNumber(k));
+    static double[] noise(double[] i, int noise_percentage) {
+        double[] aux = new double[i.length];
+        Random r = new Random();
+        int randomr = r.nextInt(i.length);
+        for (int j = 0; j < i.length; j++) {
+            aux[j] = i[j] - 0;
         }
-        return aux / 7;
+        for (int j = 0; j < noise_percentage; j++) {
+            randomr = r.nextInt(i.length);
+            aux[randomr] = (i[randomr] == 0 ? 1:0);
+        }
+        return aux;
+    }
+
+    static String hexToBin(String s) {
+        return new BigInteger(s, 16).toString(2);
+    }
+
+    static String completeString(String s) {
+        String aux = s;
+        int amount = 5 - aux.length();
+        while (amount > 0) {
+            amount--;
+            aux = '0' + aux;
+        }
+        return aux;
+    }
+
+    static ArrayList<ArrayList<Integer>> getLetters(int fontNumber, boolean withNoise){
+        int[][] font;
+        switch (fontNumber) {
+            case 3:
+                font = Fonts.font3;
+                break;
+            case 2:
+                font = Fonts.font2;
+                break;
+            default:
+                font = Fonts.font1;
+                break;
+        }
+        String[] letterInBinary = new String[7];
+        String aux;
+        ArrayList<ArrayList<Integer>> lettersN = new ArrayList<>();
+        for (int j = 0; j < 32; j++) {
+            for (int i = 0; i < 7; i++) {
+                aux = hexToBin(String.valueOf(font[j][i]));
+                if (aux.length() > 5)
+                    aux = aux.substring(aux.length() - 5);
+                aux = completeString(aux);
+                letterInBinary[i] = aux;
+            }
+            ArrayList<Integer> bite = new ArrayList<>();
+            for (String s: letterInBinary) {
+                char[]c = s.toCharArray();
+
+                for (int i = 0; i < c.length; i++) {
+                    bite.add( c[i] - '0');
+                }
+            }
+            if (withNoise) {
+                ArrayList<Integer> auxBite = saltAndPepperLetter(bite);
+                lettersN.add(auxBite);
+            } else
+                lettersN.add(bite);
+        }
+        return lettersN;
+    }
+
+    static ArrayList<Integer> saltAndPepperLetter(ArrayList<Integer> letter) {
+        JSONParser parser = new JSONParser();
+        JSONObject data;
+        try {
+            data = (JSONObject) parser.parse(new FileReader("config.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error reading config");
+            return null;
+        }
+        int noisePercentage = InitializerJson.giveInt((String) data.get("noise_percentage"), DEF_NOISE_PERCENTAGE);
+        int amountOfBits = letter.size() * (noisePercentage / 100);
+        Random r = new Random();
+        ArrayList<Integer> aux = new ArrayList<>();
+        ArrayList<Integer> indexesToChange = new ArrayList<>();
+        for (int i = 0; i < amountOfBits; i++) {
+            indexesToChange.add(r.nextInt(letter.size()-1) + 1);
+        }
+        int index = 0;
+        for (Integer i: letter) {
+            if (indexesToChange.contains(index)) {
+                if (i.equals(1)) aux.add(0);
+                else aux.add(1);
+            } else {
+                aux.add(i);
+            }
+            index++;
+        }
+        return aux;
     }
 }

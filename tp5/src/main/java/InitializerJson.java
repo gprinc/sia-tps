@@ -1,7 +1,8 @@
 public class InitializerJson {
-    private final static String DEFAULT_EJ = "Kohonen";
-    public final static String[] possibleEjs = {"Kohonen", "Oja", "Hopfield"};
-    public final static String[] possibleLetters = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+    private final static String DEFAULT_EJ = "1";
+    public final static String[] possibleEjs = {"1", "1-noise", "2"};
+    private final static String DEFAULT_MAP = "1";
+    public final static String[] possibleMaps = {"1", "2", "3", "4", "5"};
 
     public static String giveEj(String method) {
         if (method == null)
@@ -13,14 +14,14 @@ public class InitializerJson {
         return DEFAULT_EJ;
     }
 
-    public static String giveLetter(String letter, String def) {
-        if (letter == null)
-            return def;
-        for (String s: possibleLetters) {
-            if (s.equals(letter.toLowerCase()))
-                return letter.toLowerCase();
+    public static String giveMap(String map) {
+        if (map == null)
+            return DEFAULT_MAP;
+        for (String s: possibleMaps) {
+            if (s.equals(map))
+                return map;
         }
-        return def;
+        return DEFAULT_MAP;
     }
 
     public static boolean giveBoolean(String s) {
