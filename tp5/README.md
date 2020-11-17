@@ -12,21 +12,47 @@ They are all *string* values.
 
 - `threshold`: threshold value for the larning step. Its default value is 0.1f.
 
-- `accuracy`: accuracy value for the errors. Its default value is 0.001f.
+- `mlp_lrate_even`: leraning rate value. Its default value is 0.1f.
 
-- `mlp_lrate_even`: leraning rate value for even. Its default value is 0.1f.
+- `mlp_iter_even`: iterations for the mlp. Its default value is 5.
 
-- `mlp_iter_even`: iterations for even. Its default value is 5.
+- `mlp_even_partition`: mlp partition value. Its default value is 5.
 
-- `mlp_even_partition`: even partition value. Its default value is 5.
+- `noise_percentage`: the percentage of noise. Its default value is 1.
 
+- `ej`: the exercise to run. Its default value is 1. Its possible values are `1`, `1-noise` and  `2`.
+
+- `font`: the number of the font to be used. Its default value is 1. Its possible values are 1, 2 or 3.
+
+- `letters`: Its default value is 1.5f.
+
+- `activation_method`: Its default value is 1.5f.
+
+- `layer_size`: Its default value is 1.5f.
+
+- `middelLayer`: Its default value is 1.5f.
+
+- `kohonen_k`: Its default value is 1.5f.
+
+- `kohonnen_lr`: Its default value is 1.5f.
+
+- `kohonen_delta`: Its default value is 1.5f.
+
+- `error`: Its default value is 1.5f.
+
+- `lr_a`: the value for `a` for the learning rate optimization. Its default value is  0.01f.
+
+- `lr_b`: the value for `b` for the learning rate optimization. Its default value is 0.01f.
+
+- `iterations`: amount of epochs. Its default value is 20.
+
+- `mapSize`: the height and width of the map. Its default value is 8.
 
 Example: 
 
 ```
 {
   "threshold": "0.1",
-  "accuracy": "0.001",
   "mlp_lrate_even": "0.001",
   "mlp_iter_even": "200",
   "noise_percentage": "2",

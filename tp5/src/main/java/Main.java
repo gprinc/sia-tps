@@ -28,6 +28,7 @@ public class Main {
     private static final double DEF_LEARNING_RATE_B = 0.01;
     private static final double DEF_ERROR = 1.5;
     private static final int DEF_ITERATIONS = 20;
+    private static final int DEF_LAYER_SIZE = 5;
 
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -43,7 +44,6 @@ public class Main {
         int mlp_iter_even = InitializerJson.giveInt((String) data.get("mlp_iter_even"), DEFAULT_ITER_EVEN);
         int mlp_even_partition = InitializerJson.giveInt((String) data.get("mlp_even_partition"), DEFAULT_EVEN_PARTITION);
         double threshold = InitializerJson.giveDouble((String) data.get("threshold"), DEFAULT_THRESHOLD);
-        double accuracy = InitializerJson.giveDouble((String) data.get("accuracy"), DEFAULT_ACCURACY);
         int letters = InitializerJson.giveInt((String) data.get("letters"), DEFAULT_LETTERS);
         int middleLayer = InitializerJson.giveInt((String) data.get("middleLayer"), DEFAULT_MIDDLE_LAYER);
         int kohonen_k = InitializerJson.giveInt((String) data.get("kohonen_k"), DEFAULT_KOHONEN_K);
@@ -56,8 +56,8 @@ public class Main {
         int activationMethod = InitializerJson.giveInt((String) data.get("activation_method"), DEF_ACTIVATON_METHOD);
         int mapSize = InitializerJson.giveInt((String) data.get("mapSize"), DEFAULT_MAP_SIZE);
 
-        int iterations = InitializerJson.giveInt((String) data.get("iterations"), DEF_ACTIVATON_METHOD);
-        int layerSize = InitializerJson.giveInt((String) data.get("layer_size"), DEF_ACTIVATON_METHOD);
+        int iterations = InitializerJson.giveInt((String) data.get("iterations"), DEF_ITERATIONS);
+        int layerSize = InitializerJson.giveInt((String) data.get("layer_size"), DEF_LAYER_SIZE);
         double errorI = InitializerJson.giveDouble((String) data.get("error"), DEF_ERROR);
         double lrA = InitializerJson.giveDouble((String) data.get("lr_a"), DEF_LEARNING_RATE_A);
         double lrB = InitializerJson.giveDouble((String) data.get("lr_b"), DEF_LEARNING_RATE_B);

@@ -133,7 +133,7 @@ public class EjTwo {
         jsonObject.put("boxes", boxesArrayObject);
 
 
-        char[] jsonCharArray = jsonObject.toJSONString().toCharArray();
+        /*char[] jsonCharArray = jsonObject.toJSONString().toCharArray();
         jsonCharArray[jsonObject.toJSONString().length() - 1] = ',';
         String jsonString = String.valueOf(jsonCharArray) + " walls: [";
         for (int i = 0; i < mapSize; i++) {
@@ -147,11 +147,11 @@ public class EjTwo {
             if (i != mapSize - 1)
                 jsonString += ",";
         }
-        jsonString += "]}";
+        jsonString += "]}";*/
 
         try {
             FileWriter file = new FileWriter("mapa.json");
-            file.write(jsonString);
+            file.write(jsonObject.toJSONString());
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
