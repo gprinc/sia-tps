@@ -106,7 +106,7 @@ public class Main {
         ArrayList<ArrayList<Integer>> auxData;
         boolean withNoise = false;
         if (ej.equals(EJ_TWO)) {
-            EjTwo ejTwo = new EjTwo(mapSize);
+            EjTwo ejTwo = new EjTwo(mapSize, true);
             mlpData = ejTwo.getMap();
             // TODO ver parametros correctos y setear valores adecuados para realizar el aprendizaje de mapas
         } else {
@@ -302,16 +302,14 @@ public class Main {
         }
 
         if (ej.equals(EJ_TWO)) {
-            double[] finalOut = new double[output.length * output[0].length];
+            ArrayList<Integer> mapa = new ArrayList<>();
             for (int i = 0; i < output.length; i++) {
                 for (int j = 0; j < output[0].length; j++) {
-                    finalOut[i*j + j] = output[i][j] > 0.5 ? 1 : 0;
+                    mapa.add(output[i][j] > 0.5 ? 1 : 0);
                 }
             }
-            ArrayList<Integer> mapa = new ArrayList<>();
-            for (int i = 0; i < finalOut.length; i++)
-                mapa.add((int) finalOut[i]);
-            EjTwo ejTwo = new EjTwo(mapSize);
+
+            EjTwo ejTwo = new EjTwo(mapSize, false);
             ejTwo.playMap(mapa);
         }
 

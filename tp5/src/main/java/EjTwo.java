@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EjTwo {
     private ArrayList<ArrayList<Integer>> map;
@@ -19,13 +20,15 @@ public class EjTwo {
     private static final String winPoint = "10";
     private static final String box = "11";
 
-    public EjTwo(int mapSize){
+    public EjTwo(int mapSize, boolean shouldGenerate){
         this.map = new ArrayList<>();
         this.mapSize = mapSize;
 
-        for (int i = 1; i < 6; i++) {
-            BoardMain bm = new BoardMain(i);
-            generateMap(bm);
+        if (shouldGenerate) {
+            for (int i = 1; i < 6; i++) {
+                BoardMain bm = new BoardMain(i);
+                generateMap(bm);
+            }
         }
     }
 
@@ -62,87 +65,67 @@ public class EjTwo {
     public ArrayList<ArrayList<Integer>> getMap() { return this.map; }
 
     public void playMap(ArrayList<Integer> mapa) {
-        int printMap[][] = new int[mapSize][mapSize];
-        int j = -1;
-        ArrayList<Box> boxes = new ArrayList<>();
-        ArrayList<Position> winPoints = new ArrayList<>();
-        Position player = new Position(0,0);
-        int walls[][] = new int[mapSize][mapSize];
-        for (int i = 0; i < mapa.size(); i = i + 2) {
-            if (i % (mapSize * 2) == 0) j++;
-            String auxByte = mapa.get(i).toString() + mapa.get(i + 1).toString();
-            int finalI = Math.floorDiv(i/2,mapSize);
-            switch (auxByte) {
-                case winPoint:
-                    printMap[finalI][j] = 2;
-                    winPoints.add(new Position(finalI, j));
-                    break;
-                case box:
-                    printMap[finalI][j] = 3;
-                    boxes.add(new Box(new Position(finalI, j)));
-                    break;
-                case wall:
-                    printMap[finalI][j] = 1;
-                    break;
-                default:
-                    printMap[finalI][j] = 0;
-                    break;
-            }
-            int wall = 1;
-            if (!auxByte.equals(wall)) wall = 0;
-            walls[finalI][j] = wall;
-        }
-        /*Box[] boxesArray = new Box[boxes.size()];
-        for (int i = 0; i < boxes.size(); i++) boxesArray[i] = boxes.get(i);
-        Position[] winPointsArray = new Position[winPoints.size()];
-        for (int i = 0; i < winPoints.size(); i++) winPointsArray[i] = winPoints.get(i);
-        Board board = new Board(new Player(player), boxesArray, winPointsArray, walls, new Position(mapSize, mapSize), 0);*/
-
+        for (Integer asd: mapa)
+            System.out.print(asd);
         System.out.println();
-        for (int i = 0; i < printMap.length; i++) {
-            for (int k = 0; k < printMap[i].length; k++) {
-                System.out.print(printMap[i][k] + " ");
-            }
-            System.out.println();
-        }
-        JSONObject jsonObject = new JSONObject();
 
+        int j = -1;
+        int i = 0;
+        int walls[][] = new int[mapSize][mapSize];
+        for (int k = 0; k < walls.length; k++)
+            Arrays.fill(walls[k], 0);
+
+        JSONObject jsonObject = new JSONObject();
+        JSONArray winPointArrayObject = new JSONArray();
+        JSONArray boxesArrayObject = new JSONArray();
+        JSONArray wallsArrayObject = new JSONArray();
+        String[] wallsRow = new String[mapSize];
+        for (int k = 0; k < wallsRow.length; k++)
+            wallsRow[k] = "1";
+        JSONObject winPointObject;
+        JSONObject boxesObject;
         jsonObject.put("id", "1");
         jsonObject.put("width", String.valueOf(mapSize));
         jsonObject.put("height", String.valueOf(mapSize));
 
-        JSONObject auxObject = new JSONObject();
-        auxObject.put("x", "0");
-        auxObject.put("y", "0");
-        jsonObject.put("player", auxObject);
-
-        JSONArray auxArrayObject = new JSONArray();
-        for (Position p: winPoints) {
-            auxObject = new JSONObject();
-            auxObject.put("x", String.valueOf(p.getX()));
-            auxObject.put("y", String.valueOf(p.getY()));
-            auxArrayObject.add(auxObject);
-        }
-        jsonObject.put("winPoints", auxArrayObject);
-
-        auxArrayObject = new JSONArray();
-        for (Box b: boxes) {
-            auxObject = new JSONObject();
-            auxObject.put("x", String.valueOf(b.getPos().getX()));
-            auxObject.put("y", String.valueOf(b.getPos().getY()));
-            auxArrayObject.add(auxObject);
-        }
-        jsonObject.put("boxes", auxArrayObject);
-
-        auxArrayObject = new JSONArray();
-        for (int i = 0; i < walls.length; i++) {
-            String[] auxStringArr = new String[walls[i].length];
-            for (int k = 0; k < walls[i].length; k++) {
-                auxStringArr[i] = String.valueOf(walls[i][j]);
+        while (i < mapa.size()) {
+            if (i % (mapSize * 2) == 0) {
+                if (i != 0) wallsArrayObject.add(wallsRow);
+                j++;
             }
-            auxArrayObject.add(auxStringArr);
+
+            String auxByte = mapa.get(i).toString() + mapa.get(i + 1).toString();
+            System.out.print(auxByte + " ");
+            int finalI = Math.floorDiv(i,mapSize * 2);
+            switch (auxByte) {
+                case winPoint:
+                    winPointObject = new JSONObject();
+                    winPointObject.put("x", String.valueOf(finalI));
+                    winPointObject.put("y", String.valueOf(j));
+                    winPointArrayObject.add(winPointObject);
+                    break;
+                case box:
+                    boxesObject = new JSONObject();
+                    boxesObject.put("x", String.valueOf(finalI));
+                    boxesObject.put("y", String.valueOf(j));
+                    boxesArrayObject.add(boxesObject);
+                    break;
+            }
+            switch (auxByte) {
+                case wall:
+                    wallsRow[finalI] = "1";
+                    break;
+                default:
+                    wallsRow[finalI] = "0";
+                    break;
+            }
+            i += 2;
         }
-        jsonObject.put("walls", auxArrayObject);
+        System.out.println();
+
+        jsonObject.put("winPoints", winPointArrayObject);
+        jsonObject.put("boxes", boxesArrayObject);
+        jsonObject.put("walls", wallsArrayObject);
 
         try {
             FileWriter file = new FileWriter("mapa.json");
